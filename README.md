@@ -1,4 +1,4 @@
-# Al-Khwarizmi Surveillance System
+# Khwarizmi Surveillance System
 
 [![.github/workflows/build.yml](https://github.com/veyon/veyon/actions/workflows/build.yml/badge.svg?branch=4.5)](https://github.com/veyon/veyon/actions/workflows/build.yml)
 [![Latest stable release](https://img.shields.io/github/release/veyon/veyon.svg?maxAge=3600)](https://github.com/veyon/veyon/releases)
@@ -8,11 +8,17 @@
 [![license](https://img.shields.io/badge/license-GPLv2-green.svg)](LICENSE)
 
 
-## What is Al-Khwarizmi?
+> **Khwarizmi Surveillance System** is a rebranded fork of [**Veyon**](https://veyon.io)
+> (Virtual Eye On Networks) created by Tobias Junghans and contributors, distributed under
+> the GNU General Public License v2. All original copyright notices are retained — only the
+> branding (name, logo, colors) has been changed. Many thanks to the upstream Veyon project.
 
-Al-Khwarizmi Surveillance System is a free and open source software for monitoring and controlling
+## What is Khwarizmi?
+
+Khwarizmi Surveillance System is a free and open source software for monitoring and controlling
 computers across multiple platforms. It supports you in teaching in digital
 learning environments, performing virtual trainings or giving remote support.
+It is based on [Veyon](https://veyon.io).
 
 The following features are available:
 

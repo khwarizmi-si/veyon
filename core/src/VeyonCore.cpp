@@ -610,13 +610,20 @@ void VeyonCore::initUi()
 			app->setStyle(QStyleFactory::create(QStringLiteral("Fusion")));
 		}
 
+		// Khwarizmi brand palette (derived from the logo): teal primary + orange accent
 		app->setStyleSheet(QStringLiteral(
-							   "QToolButton:checked {background-color:#88ddff;}"
+							   "QToolButton:checked {background-color:#e56e2d; color:#ffffff;}"
 							   "QToolTip {padding:5px; border:0px;}"
 							   ));
 
+		// recolor selections/highlights throughout the UI with the brand teal
+		auto appPalette = app->palette();
+		appPalette.setColor(QPalette::Highlight, QColor(0x2f, 0xa1, 0x8b));
+		appPalette.setColor(QPalette::HighlightedText, Qt::white);
+		app->setPalette(appPalette);
+
 		auto toolTipPalette = QToolTip::palette();
-		static const char* toolTipBackgroundColor = "#198cb3";
+		static const char* toolTipBackgroundColor = "#1d847a";
 		toolTipPalette.setColor(QPalette::Window, toolTipBackgroundColor);
 		toolTipPalette.setColor(QPalette::ToolTipBase, toolTipBackgroundColor);
 		toolTipPalette.setColor(QPalette::ToolTipText, Qt::white);

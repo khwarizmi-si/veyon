@@ -139,7 +139,7 @@
        <item row="5" column="1">
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string notr="true">&lt;a href=&quot;https://veyon.io&quot;&gt;https://veyon.io&lt;/a&gt;</string>
+          <string notr="true">&lt;a href=&quot;https://github.com/khwarizmi-si/veyon&quot;&gt;github.com/khwarizmi-si/veyon&lt;/a&gt; · based on &lt;a href=&quot;https://veyon.io&quot;&gt;Veyon&lt;/a&gt;</string>
          </property>
          <property name="openExternalLinks">
           <bool>true</bool>
@@ -149,7 +149,7 @@
        <item row="3" column="0" colspan="2">
         <widget class="QLabel" name="label_8">
          <property name="text">
-          <string notr="true">Copyright © 2004-2026 Tobias Junghans / Khwarizmi</string>
+          <string notr="true">Based on Veyon · Copyright © 2004-2026 Tobias Junghans and contributors · Licensed under the GNU GPL v2</string>
          </property>
         </widget>
        </item>
@@ -176,7 +176,7 @@
        <item row="6" column="0" colspan="2">
         <widget class="QPushButton" name="donateButton">
          <property name="text">
-          <string>Support Khwarizmi project with a donation</string>
+          <string>Support the Veyon project with a donation</string>
          </property>
         </widget>
        </item>
