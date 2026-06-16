@@ -3,7 +3,7 @@
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="windowTitle">
-   <string>Al-Khwarizmi Configurator</string>
+   <string>Khwarizmi Configurator</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/configurator.qrc">
@@ -220,7 +220,7 @@
      <normaloff>:/core/help-about.png</normaloff>:/core/help-about.png</iconset>
    </property>
    <property name="text">
-    <string>About Al-Khwarizmi</string>
+    <string>About Khwarizmi Surveillance System</string>
    </property>
   </action>
   <action name="actionAboutQt">
@@ -351,7 +351,7 @@
   </connection>
  </connections>
  <slots>
-  <slot>aboutVeyon()</slot>
+  <slot>aboutAlKhwarizmi()</slot>
   <slot>resetConfiguration()</slot>
  </slots>
 </ui>

@@ -51,7 +51,7 @@ private Q_SLOTS:
 	void loadSettingsFromFile();
 	void saveSettingsToFile();
 	void resetConfiguration();
-	void aboutVeyon();
+	void aboutAlKhwarizmi();
 
 private:
 	void updateSizes();

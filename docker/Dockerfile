@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Qt5 + dev
     qtbase5-dev qtbase5-private-dev qttools5-dev qttools5-dev-tools \
     libqt5x11extras5-dev \
-    # crypto / ssl
-    libqca-qt5-2-dev libssl-dev \
+    # crypto / ssl (libqca-...-plugins wajib: sediakan RSA, tanpa ini veyon-master crash)
+    libqca-qt5-2-dev libqca-qt5-2-plugins libssl-dev \
     # X11 libs yang dibutuhkan Veyon
     libxtst-dev libxrandr-dev libxinerama-dev libxcursor-dev \
     libxdamage-dev libxfixes-dev libxext-dev \

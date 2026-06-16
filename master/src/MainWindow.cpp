@@ -367,7 +367,7 @@ void MainWindow::closeEvent( QCloseEvent* event )
 		const Feature& activeFeature = VeyonCore::featureManager().feature( m_master.currentMode() );
 
 		QMessageBox::information(this, tr("Feature active"),
-								 tr("The feature \"%1\" is still active. Please stop it before closing Al-Khwarizmi.")
+								 tr("The feature \"%1\" is still active. Please stop it before closing Khwarizmi.")
 								 .arg(activeFeature.displayName()));
 		event->ignore();
 		return;

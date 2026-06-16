@@ -12,7 +12,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About Al-Khwarizmi</string>
+   <string>About Khwarizmi Surveillance System</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/core.qrc">
@@ -80,7 +80,7 @@
         </font>
        </property>
        <property name="text">
-        <string>About Al-Khwarizmi</string>
+        <string>About Khwarizmi Surveillance System</string>
        </property>
       </widget>
      </item>
@@ -118,7 +118,7 @@
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string notr="true">Al-Khwarizmi - Surveillance System</string>
+          <string notr="true">Khwarizmi Surveillance System</string>
          </property>
         </widget>
        </item>
@@ -149,7 +149,7 @@
        <item row="3" column="0" colspan="2">
         <widget class="QLabel" name="label_8">
          <property name="text">
-          <string notr="true">Copyright © 2004-2026 Tobias Junghans / Al-Khwarizmi</string>
+          <string notr="true">Copyright © 2004-2026 Tobias Junghans / Khwarizmi</string>
          </property>
         </widget>
        </item>
@@ -176,7 +176,7 @@
        <item row="6" column="0" colspan="2">
         <widget class="QPushButton" name="donateButton">
          <property name="text">
-          <string>Support Al-Khwarizmi project with a donation</string>
+          <string>Support Khwarizmi project with a donation</string>
          </property>
         </widget>
        </item>
@@ -247,7 +247,7 @@
          <property name="text">
           <string>Current language not translated yet (or native English).
 
-If you're interested in translating Al-Khwarizmi into your local or another language or want to improve an existing translation, please contact the project maintainer!</string>
+If you're interested in translating Khwarizmi into your local or another language or want to improve an existing translation, please contact the project maintainer!</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

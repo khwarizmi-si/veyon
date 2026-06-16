@@ -17,7 +17,7 @@
       <bool>false</bool>
      </property>
      <property name="placeholderText">
-      <string>e.g. Al-Khwarizmi</string>
+      <string>e.g. Khwarizmi</string>
      </property>
     </widget>
    </item>

@@ -223,9 +223,9 @@ QString VeyonCore::sessionIdEnvironmentVariable()
 
 void VeyonCore::setupApplicationParameters()
 {
-	QCoreApplication::setOrganizationName( QStringLiteral( "Al-Khwarizmi" ) );
+	QCoreApplication::setOrganizationName( QStringLiteral( "Khwarizmi" ) );
 	QCoreApplication::setOrganizationDomain( QStringLiteral( "veyon.io" ) );
-	QCoreApplication::setApplicationName( QStringLiteral( "Al-Khwarizmi" ) );
+	QCoreApplication::setApplicationName( QStringLiteral( "Khwarizmi Surveillance System" ) );
 
 	QCoreApplication::setAttribute( Qt::AA_ShareOpenGLContexts );
 
