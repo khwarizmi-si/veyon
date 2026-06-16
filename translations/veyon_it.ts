@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="it">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="it">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -3348,7 +3350,7 @@ Tieni premuto per caricare la disposizione da un file o salvare la disposizione 
     </message>
     <message>
         <source>Guest user identity extension</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>None</source>
@@ -3356,11 +3358,11 @@ Tieni premuto per caricare la disposizione da un file o salvare la disposizione 
     </message>
     <message>
         <source>Prefix</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Suffix</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Behaviour</source>

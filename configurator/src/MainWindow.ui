@@ -3,7 +3,7 @@
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="windowTitle">
-   <string>Veyon Configurator</string>
+   <string>Al-Khwarizmi Configurator</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/configurator.qrc">
@@ -165,7 +165,7 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="actionAboutVeyon"/>
+    <addaction name="actionAboutAlKhwarizmi"/>
     <addaction name="actionAboutQt"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -214,13 +214,13 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionAboutVeyon">
+  <action name="actionAboutAlKhwarizmi">
    <property name="icon">
     <iconset resource="../../core/resources/core.qrc">
      <normaloff>:/core/help-about.png</normaloff>:/core/help-about.png</iconset>
    </property>
    <property name="text">
-    <string>About Veyon</string>
+    <string>About Al-Khwarizmi</string>
    </property>
   </action>
   <action name="actionAboutQt">
@@ -305,7 +305,7 @@
    <sender>actionAboutVeyon</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>aboutVeyon()</slot>
+   <slot>aboutAlKhwarizmi()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

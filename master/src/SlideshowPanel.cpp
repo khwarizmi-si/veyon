@@ -115,7 +115,7 @@ void SlideshowPanel::switchViewMode()
 	{
 		m_originalParent = parentWidget();
 		setParent(nullptr);
-		setWindowTitle(tr("Veyon Master – Slideshow"));
+		setWindowTitle(tr("Al-Khwarizmi Master – Slideshow"));
 		showMaximized();
 	}
 	else

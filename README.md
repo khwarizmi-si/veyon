@@ -1,4 +1,4 @@
-# Veyon - Virtual Eye On Networks
+# Al-Khwarizmi Surveillance System
 
 [![.github/workflows/build.yml](https://github.com/veyon/veyon/actions/workflows/build.yml/badge.svg?branch=4.5)](https://github.com/veyon/veyon/actions/workflows/build.yml)
 [![Latest stable release](https://img.shields.io/github/release/veyon/veyon.svg?maxAge=3600)](https://github.com/veyon/veyon/releases)
@@ -8,13 +8,13 @@
 [![license](https://img.shields.io/badge/license-GPLv2-green.svg)](LICENSE)
 
 
-## What is Veyon?
+## What is Al-Khwarizmi?
 
-Veyon is a free and open source software for monitoring and controlling
-computers across multiple platforms. Veyon supports you in teaching in digital
+Al-Khwarizmi Surveillance System is a free and open source software for monitoring and controlling
+computers across multiple platforms. It supports you in teaching in digital
 learning environments, performing virtual trainings or giving remote support.
 
-The following features are available in Veyon:
+The following features are available:
 
   * Overview: monitor all computers in one or multiple locations or classrooms
   * Remote access: view or control computers to watch and support users
@@ -30,7 +30,9 @@ The following features are available in Veyon:
 
 ## License
 
-Copyright (c) 2004-2026 Tobias Junghans / Veyon Solutions.
+Copyright (c) 2004-2026 Tobias Junghans / Al-Khwarizmi.
+
+Based on Veyon (https://veyon.io) — a free and open source computer monitoring and control software.
 
 See the file COPYING for the GNU GENERAL PUBLIC LICENSE.
 

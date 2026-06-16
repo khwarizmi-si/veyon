@@ -1,0 +1,16 @@
+services:
+  veyon-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: veyon-dev:latest
+    container_name: veyon-dev
+    # Mount seluruh source code repo ke /veyon di dalam container.
+    # Edit file di Mac -> langsung kebaca di container, tinggal `make` ulang.
+    volumes:
+      - ../:/veyon
+    ports:
+      - "6080:6080"   # noVNC -> buka http://localhost:6080/vnc.html
+    shm_size: "1gb"   # XFCE/Qt butuh shared memory yang cukup
+    stdin_open: true
+    tty: true
