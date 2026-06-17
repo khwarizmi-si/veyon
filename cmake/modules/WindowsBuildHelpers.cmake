@@ -1,4 +1,4 @@
-﻿function(add_windows_resources TARGET)
+function(add_windows_resources TARGET)
 	set(args_option REQUIRE_ADMINISTRATOR_PRIVILEGES CONSOLE)
 	set(args_single NAME DESCRIPTION WINDOWS_ICON)
 	set(args_multi)
