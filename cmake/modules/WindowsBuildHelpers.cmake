@@ -1,4 +1,4 @@
-function(add_windows_resources TARGET)
+﻿function(add_windows_resources TARGET)
 	set(args_option REQUIRE_ADMINISTRATOR_PRIVILEGES CONSOLE)
 	set(args_single NAME DESCRIPTION WINDOWS_ICON)
 	set(args_multi)
@@ -13,7 +13,7 @@ function(add_windows_resources TARGET)
 	endif()
 
 	if (NOT arg_DESCRIPTION)
-		set(arg_DESCRIPTION "Veyon ${arg_NAME}")
+		set(arg_DESCRIPTION "Khwarizmi ${arg_NAME}")
 	endif()
 
 	if (arg_CONSOLE)
@@ -45,13 +45,13 @@ function(add_windows_resources TARGET)
 		"	BEGIN\n"
 		"		BLOCK \"040904E4\"\n"
 		"		BEGIN\n"
-		"			VALUE \"Comments\",         \"Virtual Eye On Networks (https://veyon.io)\\0\"\n"
-		"			VALUE \"CompanyName\",      \"Veyon Solutions\\0\"\n"
-		"			VALUE \"ProductName\",      \"Veyon\\0\"\n"
+		"			VALUE \"Comments\",         \"Khwarizmi Surveillance System / Based on Veyon (https://veyon.io)\\0\"\n"
+		"			VALUE \"CompanyName\",      \"Sekolah Impian Studio\\0\"\n"
+		"			VALUE \"ProductName\",      \"Khwarizmi Surveillance System\\0\"\n"
 		"			VALUE \"ProductVersion\",   \"${VERSION_STRING}\\0\"\n"
 		"			VALUE \"FileDescription\",  \"${arg_DESCRIPTION}\\0\"\n"
 		"			VALUE \"FileVersion\",      \"${VERSION_STRING}\\0\"\n"
-		"			VALUE \"LegalCopyright\",   \"Copyright (c) 2017-2026 Veyon Solutions / Tobias Junghans\\0\"\n"
+		"			VALUE \"LegalCopyright\",   \"Copyright (c) 2017-2026 Sekolah Impian Studio / Tobias Junghans\\0\"\n"
 		"			VALUE \"OriginalFilename\", \"${TARGET}.${SUFFIX}\\0\"\n"
 		"		END\n"
 		"	END\n"
