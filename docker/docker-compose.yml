@@ -12,5 +12,9 @@ services:
     ports:
       - "6080:6080"   # noVNC -> buka http://localhost:6080/vnc.html
     shm_size: "1gb"   # XFCE/Qt butuh shared memory yang cukup
+    # NET_ADMIN diperlukan agar add-on Internet Access Control bisa mengubah
+    # firewall (iptables) di dalam container saat pengujian.
+    cap_add:
+      - NET_ADMIN
     stdin_open: true
     tty: true
