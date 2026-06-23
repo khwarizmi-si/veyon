@@ -21,6 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg-dev zlib1g-dev libpng-dev liblzo2-dev \
     # proses enumerasi (platform linux plugin)
     libprocps-dev \
+    # firewall (dibutuhkan add-on Internet Access Control untuk blokir internet)
+    iptables \
     # desktop ringan + VNC + noVNC (untuk lihat GUI via browser)
     xfce4 xfce4-terminal dbus-x11 \
     tigervnc-standalone-server tigervnc-common \
