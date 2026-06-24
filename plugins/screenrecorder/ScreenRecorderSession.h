@@ -49,6 +49,8 @@ private:
 	ComputerControlInterface::Pointer m_computerControlInterface;
 	const QString m_outputFilePath;
 	ComputerControlInterface::UpdateMode m_previousUpdateMode;
+	QSize m_previousScaledFramebufferSize;
+	bool m_requestedFullResolution = false;
 
 	QTimer* m_timer = nullptr;
 	QProcess* m_encoder = nullptr;

@@ -35,6 +35,7 @@
 namespace
 {
 constexpr int kFrameRate = 4; // frames per second - enough for exam monitoring, light on storage
+constexpr int kMaxRecordingWidth = 1280; // cap so a high-res screen stays readable but not huge
 
 QString buildOutputPath( const ComputerControlInterface::Pointer& computerControlInterface, const QString& directory )
 {
@@ -56,7 +57,8 @@ ScreenRecorderSession::ScreenRecorderSession( ComputerControlInterface::Pointer 
 	QObject( parent ),
 	m_computerControlInterface( computerControlInterface ),
 	m_outputFilePath( buildOutputPath( computerControlInterface, outputDirectory ) ),
-	m_previousUpdateMode( computerControlInterface->updateMode() )
+	m_previousUpdateMode( computerControlInterface->updateMode() ),
+	m_previousScaledFramebufferSize( computerControlInterface->scaledFramebufferSize() )
 {
 	// request full framebuffer updates so the recording is sharp, not just thumbnail quality
 	m_computerControlInterface->setUpdateMode( ComputerControlInterface::UpdateMode::Live );
@@ -87,6 +89,11 @@ ScreenRecorderSession::~ScreenRecorderSession()
 		}
 	}
 
+	// restore the master's original thumbnail size and update mode
+	if( m_requestedFullResolution )
+	{
+		m_computerControlInterface->setScaledFramebufferSize( m_previousScaledFramebufferSize );
+	}
 	m_computerControlInterface->setUpdateMode( m_previousUpdateMode );
 }
 
@@ -94,13 +101,30 @@ ScreenRecorderSession::~ScreenRecorderSession()
 
 void ScreenRecorderSession::captureFrame()
 {
-	if( m_computerControlInterface->hasValidFramebuffer() == false )
+	// the master decodes the framebuffer at the "scaled" size, so by default only a
+	// small thumbnail is available here - request a near-full-resolution decode once
+	// the real screen size is known so the recording is actually readable
+	if( m_requestedFullResolution == false )
 	{
-		return;
+		const auto screen = m_computerControlInterface->screenSize();
+		if( screen.isEmpty() == false )
+		{
+			auto target = screen;
+			if( target.width() > kMaxRecordingWidth )
+			{
+				target = QSize( kMaxRecordingWidth, kMaxRecordingWidth * screen.height() / screen.width() );
+			}
+			m_computerControlInterface->setScaledFramebufferSize( target );
+			m_requestedFullResolution = true;
+			return; // let the new-size frame arrive before we lock the encoder dimensions
+		}
 	}
 
-	const auto image = m_computerControlInterface->framebuffer();
-	if( image.isNull() )
+	// the master decodes the framebuffer at the "scaled" size, so that is the
+	// image actually available here (full framebuffer() stays empty in monitoring)
+	const auto image = m_computerControlInterface->scaledFramebuffer();
+
+	if( image.isNull() || image.width() < 2 || image.height() < 2 )
 	{
 		return;
 	}
