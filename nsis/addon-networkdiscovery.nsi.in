@@ -1,0 +1,10 @@
+; Standalone installer for the Khwarizmi Network Discovery add-on.
+; Drops networkdiscovery.dll into an existing Khwarizmi installation. After
+; installing, select "Network Discovery" as the network object directory
+; backend in the Khwarizmi Configurator (Network settings) to activate it.
+!define ADDON_NAME "NetworkDiscovery"
+!define ADDON_DLL "networkdiscovery.dll"
+!define ADDON_VERSION "1.0"
+!define KH_ARCH "@VEYON_WINDOWS_ARCH@"
+!define KH_SETREGVIEW "@VEYON_NSIS_SETREGVIEW@"
+!include "nsis\addon-common.nsh"

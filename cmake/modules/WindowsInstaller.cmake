@@ -85,9 +85,11 @@ add_custom_target(create-windows-installer
 add_custom_target(create-addon-installers
 	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-chat.nsi ${WINDOWS_INSTALL_FILES}
 	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-internetaccesscontrol.nsi ${WINDOWS_INSTALL_FILES}
+	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-networkdiscovery.nsi ${WINDOWS_INSTALL_FILES}
 	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-screenrecorder.nsi ${WINDOWS_INSTALL_FILES}
 	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-chat.nsi
 	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-internetaccesscontrol.nsi
+	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-networkdiscovery.nsi
 	COMMAND sh -c "cp ${CMAKE_SOURCE_DIR}/3rdparty/ffmpeg/ffmpeg.exe ${WINDOWS_INSTALL_FILES}/ && makensis ${WINDOWS_INSTALL_FILES}/addon-screenrecorder.nsi || echo 'SKIP ScreenRecorder installer: place an LGPL ffmpeg.exe at 3rdparty/ffmpeg/ffmpeg.exe'"
 	COMMAND mv ${WINDOWS_INSTALL_FILES}/Khwarizmi-*-Addon-*setup.exe .
 	DEPENDS windows-binaries
