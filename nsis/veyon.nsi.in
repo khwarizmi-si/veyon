@@ -178,6 +178,7 @@ Delete "$INSTDIR\plugins\chat.dll"
 Delete "$INSTDIR\plugins\internetaccesscontrol.dll"
 Delete "$INSTDIR\plugins\screenrecorder.dll"
 Delete "$INSTDIR\plugins\networkdiscovery.dll"
+Delete "$INSTDIR\plugins\auvidus.dll"
 # translations
 SetOutPath "$INSTDIR\translations"
 File "translations/*.qm"

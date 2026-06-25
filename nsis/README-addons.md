@@ -8,11 +8,12 @@ installed and removed independently of the base application.
 
 | Package | Contents |
 |---------|----------|
-| **Khwarizmi Basic** | `veyon-*-setup.exe` — core + free built-in plugins. The base installer explicitly removes the add-on DLLs (`chat`, `internetaccesscontrol`, `screenrecorder`, `networkdiscovery`). |
+| **Khwarizmi Basic** | `veyon-*-setup.exe` — core + free built-in plugins. The base installer explicitly removes the add-on DLLs (`chat`, `internetaccesscontrol`, `screenrecorder`, `networkdiscovery`, `auvidus`). |
 | **Add-on: Chat** | `Khwarizmi-Chat-Addon-*-setup.exe` — drops `chat.dll`. |
 | **Add-on: Internet Access Control** | drops `internetaccesscontrol.dll`. |
 | **Add-on: Screen Recorder** | drops `screenrecorder.dll` **and** `ffmpeg.exe`. |
 | **Add-on: Network Discovery** | drops `networkdiscovery.dll`. After installing, select **Network Discovery** as the directory backend in the Configurator (Network settings) to activate it. |
+| **Add-on: Auvidus** | drops `auvidus.dll` (audio/webcam/USB control). Windows-only device control. |
 
 Sell Basic on its own; sell/deploy add-ons on top as "Plus". An add-on
 installer refuses to run unless the Basic application is already installed.
