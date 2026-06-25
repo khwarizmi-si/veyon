@@ -172,6 +172,11 @@ File "README.TXT"
 # plugins
 SetOutPath "$INSTDIR\plugins"
 File "plugins/*.dll"
+# commercial add-ons are sold and installed separately (Khwarizmi "Plus"),
+# so the base ("Basic") installer must not ship them - remove if present
+Delete "$INSTDIR\plugins\chat.dll"
+Delete "$INSTDIR\plugins\internetaccesscontrol.dll"
+Delete "$INSTDIR\plugins\screenrecorder.dll"
 # translations
 SetOutPath "$INSTDIR\translations"
 File "translations/*.qm"

@@ -77,6 +77,22 @@ add_custom_target(create-windows-installer
 	DEPENDS windows-binaries
 )
 
+# Standalone per-add-on installers (Khwarizmi "Plus"). Reuses the same staging
+# folder as the base installer so every add-on DLL is built against the exact
+# same core (ABI lock). Run this BEFORE create-windows-installer, which deletes
+# the staging folder. The Screen Recorder add-on additionally needs an LGPL
+# ffmpeg.exe placed at 3rdparty/ffmpeg/ffmpeg.exe (see nsis/README-addons.md).
+add_custom_target(create-addon-installers
+	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-chat.nsi ${WINDOWS_INSTALL_FILES}
+	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-internetaccesscontrol.nsi ${WINDOWS_INSTALL_FILES}
+	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-screenrecorder.nsi ${WINDOWS_INSTALL_FILES}
+	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-chat.nsi
+	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-internetaccesscontrol.nsi
+	COMMAND sh -c "cp ${CMAKE_SOURCE_DIR}/3rdparty/ffmpeg/ffmpeg.exe ${WINDOWS_INSTALL_FILES}/ && makensis ${WINDOWS_INSTALL_FILES}/addon-screenrecorder.nsi || echo 'SKIP ScreenRecorder installer: place an LGPL ffmpeg.exe at 3rdparty/ffmpeg/ffmpeg.exe'"
+	COMMAND mv ${WINDOWS_INSTALL_FILES}/Khwarizmi-*-Addon-*setup.exe .
+	DEPENDS windows-binaries
+)
+
 add_custom_target(prepare-dev-nsi
 	COMMAND sed -i ${WINDOWS_INSTALL_FILES}/veyon.nsi -e "s,/SOLID lzma,zlib,g"
 	DEPENDS windows-binaries)
