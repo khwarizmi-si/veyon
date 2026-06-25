@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/auvidus" >
+        <file>audio-volume-muted.png</file>
+        <file>drive-removable-media.png</file>
+        <file>camera-web.png</file>
+    </qresource>
+</RCC>
