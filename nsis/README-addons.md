@@ -69,3 +69,34 @@ Per FFmpeg's LGPL terms, ship the corresponding source offer alongside.
 
 Close **Khwarizmi Master** before installing — the master process also loads the
 plugin DLLs.
+
+## Windows build checklist
+
+The add-on plugins are picked up automatically by the normal Windows build (the
+`plugins/*` glob), so the only extra steps are the installer targets:
+
+1. Drop an LGPL `ffmpeg.exe` at `3rdparty/ffmpeg/ffmpeg.exe` (Screen Recorder).
+2. Build the staged binaries: `make windows-binaries`.
+3. Build the add-on installers from that staging: `make create-addon-installers`.
+4. Build the Basic installer (this deletes the staging): `make create-windows-installer`.
+
+You get one Basic `.exe` plus one `.exe` per add-on (Chat, Internet Access
+Control, Screen Recorder, Network Discovery, Auvidus).
+
+### Qt note
+
+The dev build (Docker) is Qt5; the Windows build is **Qt6/MinGW**. All add-on
+code was audited and the Qt-heavy parts compile clean under Qt6. The only code
+that could not be checked off-Windows is the Auvidus device control (see below).
+
+## On-device verification (run once on real Windows hardware)
+
+These paths can only be confirmed on Windows — verify each after deploying:
+
+| Add-on | What to confirm |
+|--------|-----------------|
+| Chat | two-way teacher↔student messaging (already proven on Linux too) |
+| Internet Access Control | the **netsh** firewall path actually blocks internet while the Khwarizmi link stays up; unblock restores it |
+| Screen Recorder | `ffmpeg.exe` is found next to the executables and produces a valid MP4 |
+| Network Discovery | the subnet scan lists the lab PCs (select it as the directory backend) |
+| **Auvidus** | the Windows-only device control — **untested off-Windows**: USB block (`USBSTOR\Start` registry), webcam consent registry, and the **Core Audio COM** mute path. Confirm it compiles under MinGW and each toggle works. |
