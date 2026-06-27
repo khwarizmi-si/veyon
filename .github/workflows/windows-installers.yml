@@ -98,6 +98,7 @@ jobs:
             -DCMAKE_PREFIX_PATH=/mingw64 \
             -DCMAKE_INSTALL_PREFIX=/mingw64 \
             -DQT_TRANSLATIONS_DIR=/mingw64/share/qt6/translations \
+            -DVEYON_UPDATE_TRANSLATIONS=OFF \
             -DMINGW_TARGET=x86_64-w64-mingw32 \
             -DMINGW_PREFIX=/mingw64 \
             -DMINGW_TOOL_PREFIX=/mingw64/bin/
