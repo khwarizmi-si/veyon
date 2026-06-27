@@ -21,7 +21,7 @@ cp "${source_dir}/3rdparty/interception/"* "${install_files}/interception"
 cp "${source_dir}/3rdparty/ddengine/${dll_ddengine}" "${install_files}"
 cp core/veyon-core.dll "${install_files}"
 
-find . -mindepth 2 -name 'veyon-*.exe' -exec cp '{}' "${install_files}/" ';'
+find cli configurator master server service worker -name 'veyon-*.exe' -exec cp '{}' "${install_files}/" ';'
 
 mkdir -p "${install_files}/plugins"
 find plugins/ -name '*.dll' -exec cp '{}' "${install_files}/plugins/" ';'
@@ -37,7 +37,7 @@ fi
 mkdir -p "${install_files}/translations"
 cp translations/*qm "${install_files}/translations/"
 
-cp "${dll_dir}/libjpeg-62.dll" "${install_files}"
+cp "${dll_dir}"/libjpeg*.dll "${install_files}"
 cp "${dll_dir}/libpng16-16.dll" "${install_files}"
 cp "${dll_dir}"/libcrypto-3*.dll "${dll_dir}"/libssl-3*.dll "${install_files}"
 cp "${dll_dir}/libqca-qt6.dll" "${install_files}"
