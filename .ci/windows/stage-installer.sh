@@ -209,7 +209,13 @@ fi
 cp "${source_dir}/COPYING" "${install_files}"
 cp "${source_dir}/COPYING" "${install_files}/LICENSE.TXT"
 cp "${source_dir}/README.md" "${install_files}/README.TXT"
-todos "${install_files}"/*.TXT
+if command -v unix2dos > /dev/null; then
+	unix2dos "${install_files}"/*.TXT
+elif command -v todos > /dev/null; then
+	todos "${install_files}"/*.TXT
+else
+	echo "WARNING: unix2dos/todos not available; leaving text files with original line endings"
+fi
 
 cp -ra "${source_dir}/nsis" "${install_files}"
 cp "${binary_dir}/nsis/veyon.nsi" "${install_files}"
