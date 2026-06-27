@@ -1,0 +1,114 @@
+name: "Windows installer build"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/sahid-branding
+    paths:
+      - ".github/workflows/windows-installers.yml"
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - "configurator/**"
+      - "core/**"
+      - "master/**"
+      - "nsis/**"
+      - "plugins/**"
+      - "3rdparty/**"
+
+jobs:
+  build-windows-installers:
+    name: Build Sahid Windows installers
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            base-devel
+            git
+            dos2unix
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-pkgconf
+            mingw-w64-x86_64-nsis
+            mingw-w64-x86_64-qt6-base
+            mingw-w64-x86_64-qt6-tools
+            mingw-w64-x86_64-qt6-5compat
+            mingw-w64-x86_64-qt6-websockets
+            mingw-w64-x86_64-qt6-httpserver
+            mingw-w64-x86_64-qca-qt6
+            mingw-w64-x86_64-cyrus-sasl
+            mingw-w64-x86_64-openldap
+            mingw-w64-x86_64-lzo2
+            mingw-w64-x86_64-libjpeg-turbo
+            mingw-w64-x86_64-libpng
+            mingw-w64-x86_64-libvncserver
+            mingw-w64-x86_64-openssl
+            mingw-w64-x86_64-zlib
+
+      - name: Prepare installer runtime layout
+        run: |
+          set -euxo pipefail
+          gcc -shared -o /mingw64/bin/interception.dll "$GITHUB_WORKSPACE/3rdparty/interception/interception_stub.c"
+
+          gcc_major="$(gcc -dumpversion | cut -d. -f1)"
+          gcc_dll_dir="/usr/lib/gcc/x86_64-w64-mingw32/${gcc_major}-posix"
+          mkdir -p "$gcc_dll_dir"
+          for dll in libstdc++-6.dll libssp-0.dll libgcc_s_seh-1.dll; do
+            test -f "/mingw64/bin/${dll}"
+            ln -sf "/mingw64/bin/${dll}" "${gcc_dll_dir}/${dll}"
+          done
+
+          for dll in zlib1.dll libwinpthread-1.dll; do
+            test -f "/mingw64/bin/${dll}"
+            ln -sf "/mingw64/bin/${dll}" "/mingw64/lib/${dll}"
+          done
+
+      - name: Configure
+        run: |
+          set -euxo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          "$GITHUB_WORKSPACE/.ci/common/strip-ultravnc-sources.sh"
+          qt-cmake -S "$GITHUB_WORKSPACE" -B "$GITHUB_WORKSPACE/build-win64" \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_INSTALL_PREFIX=/mingw64 \
+            -DQT_TRANSLATIONS_DIR=/mingw64/share/qt6/translations \
+            -DMINGW_TARGET=x86_64-w64-mingw32 \
+            -DMINGW_PREFIX=/mingw64 \
+            -DMINGW_TOOL_PREFIX=/mingw64/bin/
+
+      - name: Build add-on installers
+        run: |
+          set -euxo pipefail
+          cmake --build "$GITHUB_WORKSPACE/build-win64" --target create-addon-installers
+
+      - name: Build base installer
+        run: |
+          set -euxo pipefail
+          cmake --build "$GITHUB_WORKSPACE/build-win64" --target create-windows-installer
+
+      - name: List installers
+        run: |
+          set -euxo pipefail
+          find "$GITHUB_WORKSPACE/build-win64" -maxdepth 1 -type f -name "*.exe" -print -ls
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sahid-windows-installers
+          path: |
+            build-win64/*.exe
+          if-no-files-found: error
