@@ -58,7 +58,12 @@ fi
 cp "${dll_dir_gcc}/${dll_gcc}" "${install_files}"
 
 mkdir -p "${install_files}/crypto"
-cp "${dll_dir_lib}/qca-qt6/crypto/libqca-ossl.dll" "${install_files}/crypto"
+qca_ossl_plugin="$(find "${mingw_prefix}" -path '*/crypto/libqca-ossl.dll' -print -quit)"
+if [ -n "${qca_ossl_plugin}" ]; then
+	cp "${qca_ossl_plugin}" "${install_files}/crypto"
+else
+	echo "WARNING: libqca-ossl.dll not found under ${mingw_prefix}; continuing without QCA OpenSSL plugin"
+fi
 
 cp "${dll_dir}/Qt6Core.dll" \
 	"${dll_dir}/Qt6Core5Compat.dll" \
