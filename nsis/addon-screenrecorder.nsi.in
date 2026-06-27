@@ -1,5 +1,5 @@
-; Standalone installer for the Khwarizmi Screen Recorder add-on.
-; Drops screenrecorder.dll into an existing Khwarizmi installation and bundles
+; Standalone installer for the Sahid Screen Recorder add-on.
+; Drops screenrecorder.dll into an existing Sahid installation and bundles
 ; ffmpeg.exe next to the executables (the recorder pipes frames to it).
 !define ADDON_NAME "ScreenRecorder"
 !define ADDON_DLL "screenrecorder.dll"

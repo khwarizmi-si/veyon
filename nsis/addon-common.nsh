@@ -1,4 +1,4 @@
-; addon-common.nsh - shared logic for standalone Khwarizmi add-on installers
+; addon-common.nsh - shared logic for standalone Sahid add-on installers
 ;
 ; Each add-on installer (.nsi) defines the following before including this file:
 ;   ADDON_NAME       e.g. "Chat"            (display name + registry/uninstaller id)
@@ -9,11 +9,11 @@
 ; Optional, for add-ons that ship an extra executable next to the core (e.g. ffmpeg):
 ;   ADDON_EXTRA_FILE host path to the file to bundle, copied into the install root
 ;
-; The add-on is just one plugin DLL dropped into the existing Khwarizmi
+; The add-on is just one plugin DLL dropped into the existing Sahid
 ; installation. The base application MUST already be installed - this installer
 ; locates it through the registry key the base installer writes.
 
-!define KH_APP        "Khwarizmi"
+!define KH_APP        "Sahid"
 !define KH_MAIN_EXE   "veyon-master.exe"
 !define KH_CLI        "veyon-wcli.exe"
 !define KH_APP_PATH   "Software\Microsoft\Windows\CurrentVersion\App Paths\${KH_MAIN_EXE}"
@@ -28,7 +28,7 @@ RequestExecutionLevel admin
 ShowInstDetails show
 ShowUninstDetails show
 
-Var KH_DIR ; resolved Khwarizmi installation directory
+Var KH_DIR ; resolved Sahid installation directory
 
 !include "LogicLib.nsh"
 !include "FileFunc.nsh"
@@ -59,16 +59,16 @@ Function .onInit
 	# the base installer stores the full path to veyon-master.exe here
 	ReadRegStr $0 HKLM "${KH_APP_PATH}" ""
 	${If} $0 == ""
-		MessageBox MB_ICONSTOP "Khwarizmi is not installed.$\n$\nPlease install the Khwarizmi base application before installing this add-on."
+		MessageBox MB_ICONSTOP "Sahid is not installed.$\n$\nPlease install the Sahid base application before installing this add-on."
 		Quit
 	${EndIf}
 	${GetParent} "$0" $KH_DIR ; strip \veyon-master.exe -> installation directory
 	${IfNot} ${FileExists} "$KH_DIR\${KH_MAIN_EXE}"
-		MessageBox MB_ICONSTOP "Could not locate the Khwarizmi installation directory."
+		MessageBox MB_ICONSTOP "Could not locate the Sahid installation directory."
 		Quit
 	${EndIf}
 
-	MessageBox MB_OKCANCEL "This will install the ${ADDON_NAME} add-on into:$\n$KH_DIR$\n$\nPlease close Khwarizmi Master before continuing." IDOK +2
+	MessageBox MB_OKCANCEL "This will install the ${ADDON_NAME} add-on into:$\n$KH_DIR$\n$\nPlease close Sahid Master before continuing." IDOK +2
 	Quit
 FunctionEnd
 

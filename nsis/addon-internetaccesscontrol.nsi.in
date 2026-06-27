@@ -1,5 +1,5 @@
-; Standalone installer for the Khwarizmi Internet Access Control add-on.
-; Drops internetaccesscontrol.dll into an existing Khwarizmi installation.
+; Standalone installer for the Sahid Internet Access Control add-on.
+; Drops internetaccesscontrol.dll into an existing Sahid installation.
 !define ADDON_NAME "InternetAccessControl"
 !define ADDON_DLL "internetaccesscontrol.dll"
 !define ADDON_VERSION "1.0"

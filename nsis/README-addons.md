@@ -1,15 +1,15 @@
-# Khwarizmi — Basic vs Plus packaging
+# Sahid — Basic vs Plus packaging
 
-Each add-on is just **one plugin DLL** dropped into `…\Khwarizmi\plugins\`.
-Khwarizmi loads every `*.dll` in that folder on startup, so add-ons are
+Each add-on is just **one plugin DLL** dropped into `…\Sahid\plugins\`.
+Sahid loads every `*.dll` in that folder on startup, so add-ons are
 installed and removed independently of the base application.
 
 ## Packages
 
 | Package | Contents |
 |---------|----------|
-| **Khwarizmi Basic** | `veyon-*-setup.exe` — core + free built-in plugins. The base installer explicitly removes the add-on DLLs (`chat`, `internetaccesscontrol`, `screenrecorder`, `networkdiscovery`, `auvidus`). |
-| **Add-on: Chat** | `Khwarizmi-Chat-Addon-*-setup.exe` — drops `chat.dll`. |
+| **Sahid Basic** | `veyon-*-setup.exe` — core + free built-in plugins. The base installer explicitly removes the add-on DLLs (`chat`, `internetaccesscontrol`, `screenrecorder`, `networkdiscovery`, `auvidus`). |
+| **Add-on: Chat** | `Sahid-Chat-Addon-*-setup.exe` — drops `chat.dll`. |
 | **Add-on: Internet Access Control** | drops `internetaccesscontrol.dll`. |
 | **Add-on: Screen Recorder** | drops `screenrecorder.dll` **and** `ffmpeg.exe`. |
 | **Add-on: Network Discovery** | drops `networkdiscovery.dll`. After installing, select **Network Discovery** as the directory backend in the Configurator (Network settings) to activate it. |
@@ -21,10 +21,10 @@ installer refuses to run unless the Basic application is already installed.
 ## ⚠️ ABI lock (must read)
 
 An add-on DLL links against `veyon-core`, so it **only works with the exact
-Khwarizmi version it was built against**. Always:
+Sahid version it was built against**. Always:
 
 1. Build the base app and all add-ons from the **same source tree / same build**.
-2. Version-lock each add-on release to a Khwarizmi version.
+2. Version-lock each add-on release to a Sahid version.
 3. Re-build **all** add-ons whenever the core is updated.
 
 This is why the source for every add-on lives together on one branch — see
@@ -60,14 +60,14 @@ Per FFmpeg's LGPL terms, ship the corresponding source offer alongside.
 
 ## How an add-on installer works
 
-1. Reads the Khwarizmi install path from the registry
+1. Reads the Sahid install path from the registry
    (`HKLM\…\App Paths\veyon-master.exe`) and aborts if the base app is missing.
-2. Stops the Khwarizmi service so the plugin DLL is not locked.
+2. Stops the Sahid service so the plugin DLL is not locked.
 3. Copies the DLL into `plugins\` (and `ffmpeg.exe` for Screen Recorder).
 4. Writes its own Add/Remove Programs entry + uninstaller.
 5. Restarts the service.
 
-Close **Khwarizmi Master** before installing — the master process also loads the
+Close **Sahid Master** before installing — the master process also loads the
 plugin DLLs.
 
 ## Windows build checklist
@@ -96,7 +96,7 @@ These paths can only be confirmed on Windows — verify each after deploying:
 | Add-on | What to confirm |
 |--------|-----------------|
 | Chat | two-way teacher↔student messaging (already proven on Linux too) |
-| Internet Access Control | the **netsh** firewall path actually blocks internet while the Khwarizmi link stays up; unblock restores it |
+| Internet Access Control | the **netsh** firewall path actually blocks internet while the Sahid link stays up; unblock restores it |
 | Screen Recorder | `ffmpeg.exe` is found next to the executables and produces a valid MP4 |
 | Network Discovery | the subnet scan lists the lab PCs (select it as the directory backend) |
 | **Auvidus** | the Windows-only device control — **untested off-Windows**: USB block (`USBSTOR\Start` registry), webcam consent registry, and the **Core Audio COM** mute path. Confirm it compiles under MinGW and each toggle works. |

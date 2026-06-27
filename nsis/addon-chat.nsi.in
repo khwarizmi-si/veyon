@@ -1,5 +1,5 @@
-; Standalone installer for the Khwarizmi Chat add-on.
-; Drops chat.dll into an existing Khwarizmi installation.
+; Standalone installer for the Sahid Chat add-on.
+; Drops chat.dll into an existing Sahid installation.
 !define ADDON_NAME "Chat"
 !define ADDON_DLL "chat.dll"
 !define ADDON_VERSION "1.0"

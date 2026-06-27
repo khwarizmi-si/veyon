@@ -1,6 +1,6 @@
-; Standalone installer for the Khwarizmi Auvidus add-on.
+; Standalone installer for the Sahid Auvidus add-on.
 ; Drops auvidus.dll (audio/webcam/USB device control) into an existing
-; Khwarizmi installation.
+; Sahid installation.
 !define ADDON_NAME "Auvidus"
 !define ADDON_DLL "auvidus.dll"
 !define ADDON_VERSION "1.0"
