@@ -8,6 +8,7 @@ on:
     paths:
       - ".github/workflows/windows-installers.yml"
       - "CMakeLists.txt"
+      - ".ci/windows/**"
       - "cmake/**"
       - "configurator/**"
       - "core/**"
