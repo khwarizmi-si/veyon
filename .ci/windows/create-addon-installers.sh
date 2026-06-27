@@ -13,16 +13,18 @@ cp nsis/addon-networkdiscovery.nsi "${install_files}"
 cp nsis/addon-auvidus.nsi "${install_files}"
 cp nsis/addon-screenrecorder.nsi "${install_files}"
 
-makensis "${install_files}/addon-chat.nsi"
-makensis "${install_files}/addon-internetaccesscontrol.nsi"
-makensis "${install_files}/addon-networkdiscovery.nsi"
-makensis "${install_files}/addon-auvidus.nsi"
+pushd "${install_files}" > /dev/null
+
+makensis addon-chat.nsi
+makensis addon-internetaccesscontrol.nsi
+makensis addon-networkdiscovery.nsi
+makensis addon-auvidus.nsi
 
 if [ -f "${source_dir}/3rdparty/ffmpeg/ffmpeg.exe" ]; then
-	cp "${source_dir}/3rdparty/ffmpeg/ffmpeg.exe" "${install_files}/"
-	makensis "${install_files}/addon-screenrecorder.nsi"
+	cp "${source_dir}/3rdparty/ffmpeg/ffmpeg.exe" .
+	makensis addon-screenrecorder.nsi
 else
 	echo "SKIP ScreenRecorder installer: place an LGPL ffmpeg.exe at 3rdparty/ffmpeg/ffmpeg.exe"
 fi
 
-mv "${install_files}"/Sahid-*-Addon-*setup.exe .
+mv Sahid-*-Addon-*setup.exe "${binary_dir}"
