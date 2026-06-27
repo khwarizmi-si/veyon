@@ -15,12 +15,7 @@
 
 #include <windows.h>
 
-typedef void* InterceptionContext;
-typedef int InterceptionDevice;
-typedef int InterceptionPrecedence;
-typedef unsigned short InterceptionFilter;
-typedef struct { char data[8]; } InterceptionStroke;
-typedef int (*InterceptionPredicate)(InterceptionDevice);
+#include "interception.h"
 
 __declspec(dllexport) InterceptionContext interception_create_context(void) { return NULL; }
 __declspec(dllexport) void interception_destroy_context(InterceptionContext c) { (void)c; }

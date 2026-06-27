@@ -68,7 +68,10 @@ jobs:
       - name: Prepare installer runtime layout
         run: |
           set -euxo pipefail
-          gcc -shared -o /mingw64/bin/interception.dll "$GITHUB_WORKSPACE/3rdparty/interception/interception_stub.c"
+          gcc -shared \
+            -Wl,--out-implib,/mingw64/lib/libinterception.dll.a \
+            -o /mingw64/bin/interception.dll \
+            "$GITHUB_WORKSPACE/3rdparty/interception/interception_stub.c"
 
           gcc_major="$(gcc -dumpversion | cut -d. -f1)"
           gcc_dll_dir="/usr/lib/gcc/x86_64-w64-mingw32/${gcc_major}-posix"
