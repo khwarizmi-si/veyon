@@ -47,7 +47,7 @@ int main( int argc, char** argv )
 	}
 #endif
 
-	QSplashScreen splashScreen( QPixmap( QStringLiteral(":/master/splash.png") ) );
+	QSplashScreen splashScreen( QPixmap( QStringLiteral(":/master/sahid-logo.png") ) );
 	splashScreen.show();
 
 	if( MainWindow::initAuthentication() == false ||

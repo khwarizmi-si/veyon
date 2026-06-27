@@ -13,7 +13,7 @@ function(add_windows_resources TARGET)
 	endif()
 
 	if (NOT arg_DESCRIPTION)
-		set(arg_DESCRIPTION "Khwarizmi ${arg_NAME}")
+		set(arg_DESCRIPTION "Sahid ${arg_NAME}")
 	endif()
 
 	if (arg_CONSOLE)
@@ -45,9 +45,9 @@ function(add_windows_resources TARGET)
 		"	BEGIN\n"
 		"		BLOCK \"040904E4\"\n"
 		"		BEGIN\n"
-		"			VALUE \"Comments\",         \"Khwarizmi Surveillance System / Based on Veyon (https://veyon.io)\\0\"\n"
+		"			VALUE \"Comments\",         \"Sahid Surveillance System / Based on Veyon (https://veyon.io)\\0\"\n"
 		"			VALUE \"CompanyName\",      \"Sekolah Impian Studio\\0\"\n"
-		"			VALUE \"ProductName\",      \"Khwarizmi Surveillance System\\0\"\n"
+		"			VALUE \"ProductName\",      \"Sahid Surveillance System\\0\"\n"
 		"			VALUE \"ProductVersion\",   \"${VERSION_STRING}\\0\"\n"
 		"			VALUE \"FileDescription\",  \"${arg_DESCRIPTION}\\0\"\n"
 		"			VALUE \"FileVersion\",      \"${VERSION_STRING}\\0\"\n"

@@ -60,12 +60,12 @@ public:
 
 	QString vendor() const override
 	{
-		return QStringLiteral("Al-Khwarizmi");
+		return QStringLiteral("Sahid");
 	}
 
 	QString copyright() const override
 	{
-		return QStringLiteral("Al-Khwarizmi");
+		return QStringLiteral("Sahid");
 	}
 
 	const FeatureList& featureList() const override;

@@ -111,7 +111,7 @@ bool AuvidusFeaturePlugin::handleFeatureMessage( VeyonServerInterface& server,
 		return false;
 	}
 
-	// the Khwarizmi Service runs with system privileges, so the change happens here
+	// the Sahid Service runs with system privileges, so the change happens here
 	const bool active = ( message.command<FeatureCommand>() == FeatureCommand::Activate );
 
 	if( featureUid == m_muteAudioFeature.uid() )

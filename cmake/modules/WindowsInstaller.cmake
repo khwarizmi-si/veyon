@@ -77,7 +77,7 @@ add_custom_target(create-windows-installer
 	DEPENDS windows-binaries
 )
 
-# Standalone per-add-on installers (Khwarizmi "Plus"). Reuses the same staging
+# Standalone per-add-on installers (Sahid "Plus"). Reuses the same staging
 # folder as the base installer so every add-on DLL is built against the exact
 # same core (ABI lock). Run this BEFORE create-windows-installer, which deletes
 # the staging folder. The Screen Recorder add-on additionally needs an LGPL
@@ -93,7 +93,7 @@ add_custom_target(create-addon-installers
 	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-networkdiscovery.nsi
 	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-auvidus.nsi
 	COMMAND sh -c "cp ${CMAKE_SOURCE_DIR}/3rdparty/ffmpeg/ffmpeg.exe ${WINDOWS_INSTALL_FILES}/ && makensis ${WINDOWS_INSTALL_FILES}/addon-screenrecorder.nsi || echo 'SKIP ScreenRecorder installer: place an LGPL ffmpeg.exe at 3rdparty/ffmpeg/ffmpeg.exe'"
-	COMMAND mv ${WINDOWS_INSTALL_FILES}/Khwarizmi-*-Addon-*setup.exe .
+	COMMAND mv ${WINDOWS_INSTALL_FILES}/Sahid-*-Addon-*setup.exe .
 	DEPENDS windows-binaries
 )
 
@@ -104,4 +104,3 @@ add_custom_target(prepare-dev-nsi
 add_custom_target(dev-nsi
 	DEPENDS prepare-dev-nsi create-windows-installer
 )
-

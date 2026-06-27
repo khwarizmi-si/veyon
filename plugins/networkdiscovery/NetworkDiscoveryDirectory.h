@@ -31,7 +31,7 @@
 
 class NetworkScanner;
 
-// Discovers computers running a Khwarizmi/Veyon server by scanning the local
+// Discovers computers running a Sahid/Veyon server by scanning the local
 // subnet(s) for the server port and exposes them as a self-updating directory.
 class NetworkDiscoveryDirectory : public NetworkObjectDirectory
 {

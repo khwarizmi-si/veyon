@@ -11,11 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">Sistem Pengawasan Khwarizmi</string>
+   <string notr="true">Sistem Pengawasan Sahid</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/master.qrc">
-    <normaloff>:/master/splash.png</normaloff>:/master/splash.png</iconset>
+    <normaloff>:/master/sahid-icon.png</normaloff>:/master/sahid-icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="centralLayout">
@@ -110,7 +110,7 @@
         </rect>
        </property>
        <property name="toolTip">
-        <string>Tentang Sistem Pengawasan Khwarizmi</string>
+        <string>Tentang Sistem Pengawasan Sahid</string>
        </property>
        <property name="text">
         <string>About</string>

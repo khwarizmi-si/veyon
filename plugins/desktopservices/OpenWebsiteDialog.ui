@@ -17,7 +17,7 @@
       <bool>false</bool>
      </property>
      <property name="placeholderText">
-      <string>e.g. Khwarizmi</string>
+      <string>contoh: Sahid</string>
      </property>
     </widget>
    </item>

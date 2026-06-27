@@ -26,7 +26,7 @@
 
 // Toggles device access on the local computer. Implemented for Windows
 // (registry + Core Audio); on other platforms the calls are no-ops.
-// Must run with elevated privileges (Khwarizmi Service / SYSTEM).
+// Must run with elevated privileges (Sahid Service / SYSTEM).
 namespace DeviceController
 {
 

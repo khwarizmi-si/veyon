@@ -223,9 +223,9 @@ QString VeyonCore::sessionIdEnvironmentVariable()
 
 void VeyonCore::setupApplicationParameters()
 {
-	QCoreApplication::setOrganizationName( QStringLiteral( "Khwarizmi" ) );
+	QCoreApplication::setOrganizationName( QStringLiteral( "Sahid" ) );
 	QCoreApplication::setOrganizationDomain( QStringLiteral( "veyon.io" ) );
-	QCoreApplication::setApplicationName( QStringLiteral( "Khwarizmi Surveillance System" ) );
+	QCoreApplication::setApplicationName( QStringLiteral( "Sahid Surveillance System" ) );
 
 	QCoreApplication::setAttribute( Qt::AA_ShareOpenGLContexts );
 
@@ -610,7 +610,7 @@ void VeyonCore::initUi()
 			app->setStyle(QStyleFactory::create(QStringLiteral("Fusion")));
 		}
 
-		// Khwarizmi modern theme: clean operational surfaces with focused brand accents.
+		// Sahid modern theme: clean operational surfaces with focused brand accents.
 		app->setStyleSheet(QStringLiteral(R"(
 * { color:#1c2b2f; }
 QMainWindow, QDialog, QWidget#centralWidget { background:#f4f7f8; }

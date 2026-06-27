@@ -505,11 +505,11 @@ void RemoteAccessWidget::updateRemoteAccessTitle()
 
 	if (username.isEmpty() )
 	{
-		setWindowTitle(tr("%1 - Khwarizmi Remote Access").arg(m_computerControlInterface->computerName()));
+		setWindowTitle(tr("%1 - Sahid Remote Access").arg(m_computerControlInterface->computerName()));
 	}
 	else
 	{
-		setWindowTitle(tr("%1 - %2 - Khwarizmi Remote Access").arg(username,
+		setWindowTitle(tr("%1 - %2 - Sahid Remote Access").arg(username,
 															m_computerControlInterface->computerName()));
 	}
 }

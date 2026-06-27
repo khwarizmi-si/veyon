@@ -411,7 +411,7 @@ void ComputerMonitoringWidget::paintEvent( QPaintEvent* event )
 {
 	FlexibleListView::paintEvent( event );
 
-	static const QPixmap watermark( QStringLiteral(":/master/splash.png") );
+	static const QPixmap watermark( QStringLiteral(":/master/sahid-logo-watermark.png") );
 	if( watermark.isNull() || viewport() == nullptr )
 	{
 		return;
