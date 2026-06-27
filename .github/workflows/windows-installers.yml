@@ -67,10 +67,14 @@ jobs:
           gcc_major="$(gcc -dumpversion | cut -d. -f1)"
           gcc_dll_dir="/usr/lib/gcc/x86_64-w64-mingw32/${gcc_major}-posix"
           mkdir -p "$gcc_dll_dir"
-          for dll in libstdc++-6.dll libssp-0.dll libgcc_s_seh-1.dll; do
+          for dll in libstdc++-6.dll libgcc_s_seh-1.dll; do
             test -f "/mingw64/bin/${dll}"
             ln -sf "/mingw64/bin/${dll}" "${gcc_dll_dir}/${dll}"
           done
+
+          if [ -f /mingw64/bin/libssp-0.dll ]; then
+            ln -sf /mingw64/bin/libssp-0.dll "${gcc_dll_dir}/libssp-0.dll"
+          fi
 
           for dll in zlib1.dll libwinpthread-1.dll; do
             test -f "/mingw64/bin/${dll}"
