@@ -86,9 +86,10 @@ jobs:
           set -euxo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           "$GITHUB_WORKSPACE/.ci/common/strip-ultravnc-sources.sh"
-          qt-cmake -S "$GITHUB_WORKSPACE" -B "$GITHUB_WORKSPACE/build-win64" \
+          cmake -S "$GITHUB_WORKSPACE" -B "$GITHUB_WORKSPACE/build-win64" \
             -G Ninja \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_PREFIX_PATH=/mingw64 \
             -DCMAKE_INSTALL_PREFIX=/mingw64 \
             -DQT_TRANSLATIONS_DIR=/mingw64/share/qt6/translations \
             -DMINGW_TARGET=x86_64-w64-mingw32 \
