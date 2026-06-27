@@ -39,7 +39,8 @@ MainToolBar::MainToolBar( QWidget* parent ) :
 	m_layout(findChild<QLayout *>())
 {
 	setExpanded();
-	setIconSize(QSize(32, 32));
+	setIconSize(QSize(20, 20));
+	setMinimumHeight( 36 );
 
 	ToolButton::setToolTipsDisabled( m_mainWindow->masterCore().userConfig().noToolTips() );
 	ToolButton::setIconOnlyMode( m_mainWindow, m_mainWindow->masterCore().userConfig().toolButtonIconOnlyMode() );

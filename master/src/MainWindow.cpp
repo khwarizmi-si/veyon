@@ -54,6 +54,179 @@
 
 #include "ui_MainWindow.h"
 
+namespace
+{
+
+QString localizedFeatureLabel( const Feature& feature )
+{
+	const auto featureName = feature.name();
+	const auto displayName = feature.displayName();
+
+	if( featureName == QStringLiteral("MonitoringMode") )
+	{
+		return QStringLiteral("Pantau");
+	}
+	if( featureName == QStringLiteral("Demo") || displayName == QStringLiteral("Demo") )
+	{
+		return QStringLiteral("Peraga");
+	}
+	if( featureName == QStringLiteral("LockScreen") || displayName == QStringLiteral("Lock") )
+	{
+		return QStringLiteral("Kunci");
+	}
+	if( featureName == QStringLiteral("InternetAccessControl") )
+	{
+		return QStringLiteral("Blokir net");
+	}
+	if( featureName == QStringLiteral("ScreenRecorder") )
+	{
+		return QStringLiteral("Rekam layar");
+	}
+	if( featureName == QStringLiteral("RemoteView") )
+	{
+		return QStringLiteral("Lihat layar");
+	}
+	if( featureName == QStringLiteral("RemoteControl") )
+	{
+		return QStringLiteral("Kendali");
+	}
+	if( featureName == QStringLiteral("Chat") || displayName == QStringLiteral("Chat") )
+	{
+		return QStringLiteral("Chat");
+	}
+	if( featureName == QStringLiteral("PowerOn") )
+	{
+		return QStringLiteral("Nyalakan");
+	}
+	if( featureName == QStringLiteral("Reboot") || displayName == QStringLiteral("Restart") )
+	{
+		return QStringLiteral("Restart");
+	}
+	if( featureName == QStringLiteral("PowerDown") )
+	{
+		return QStringLiteral("Matikan");
+	}
+	if( featureName == QStringLiteral("UserLogin") )
+	{
+		return QStringLiteral("Masuk");
+	}
+	if( featureName == QStringLiteral("UserLogoff") )
+	{
+		return QStringLiteral("Keluar");
+	}
+	if( featureName == QStringLiteral("TextMessage") )
+	{
+		return QStringLiteral("Pesan");
+	}
+	if( featureName == QStringLiteral("StartApp") )
+	{
+		return QStringLiteral("Buka app");
+	}
+	if( featureName == QStringLiteral("OpenWebsite") )
+	{
+		return QStringLiteral("Buka web");
+	}
+	if( featureName == QStringLiteral("DistributeFiles") )
+	{
+		return QStringLiteral("Kirim file");
+	}
+	if( featureName == QStringLiteral("FileCollect") )
+	{
+		return QStringLiteral("Ambil file");
+	}
+	if( featureName == QStringLiteral("Screenshot") || displayName == QStringLiteral("Screenshot") )
+	{
+		return QStringLiteral("Tangkapan");
+	}
+	if( featureName == QStringLiteral("MuteAudio") || displayName == QStringLiteral("Mute audio") )
+	{
+		return QStringLiteral("Bisukan audio");
+	}
+	if( featureName == QStringLiteral("BlockUsbStorage") || displayName == QStringLiteral("Block USB storage") )
+	{
+		return QStringLiteral("Blokir USB");
+	}
+	if( featureName == QStringLiteral("DisableWebcam") || displayName == QStringLiteral("Disable webcam") )
+	{
+		return QStringLiteral("Matikan webcam");
+	}
+
+	return displayName;
+}
+
+QString localizedFeatureActiveLabel( const Feature& feature )
+{
+	if( feature.displayNameActive().isEmpty() )
+	{
+		return {};
+	}
+	const auto featureName = feature.name();
+	const auto activeName = feature.displayNameActive();
+
+	if( featureName == QStringLiteral("Demo") )
+	{
+		return QStringLiteral("Stop peraga");
+	}
+	if( featureName == QStringLiteral("ScreenLock") )
+	{
+		return QStringLiteral("Buka kunci");
+	}
+	if( featureName == QStringLiteral("ScreenRecorder") )
+	{
+		return QStringLiteral("Stop rekam");
+	}
+	if( featureName == QStringLiteral("MuteAudio") || activeName == QStringLiteral("Unmute audio") )
+	{
+		return QStringLiteral("Aktifkan audio");
+	}
+	if( featureName == QStringLiteral("BlockUsbStorage") || activeName == QStringLiteral("Allow USB storage") )
+	{
+		return QStringLiteral("Izinkan USB");
+	}
+	if( featureName == QStringLiteral("DisableWebcam") || activeName == QStringLiteral("Enable webcam") )
+	{
+		return QStringLiteral("Aktifkan webcam");
+	}
+
+	return localizedFeatureLabel( feature );
+}
+
+QString modernFeatureIconUrl( const Feature& feature )
+{
+	if( feature.name() == QStringLiteral("MonitoringMode") )
+	{
+		return QStringLiteral(":/master/computers.png");
+	}
+	if( feature.name() == QStringLiteral("ScreenRecorder") )
+	{
+		return QStringLiteral(":/core/media-record.png");
+	}
+	if( feature.name() == QStringLiteral("RemoteView") )
+	{
+		return QStringLiteral(":/core/view-fullscreen.png");
+	}
+	if( feature.name() == QStringLiteral("RemoteControl") )
+	{
+		return QStringLiteral(":/remoteaccess/preferences-system-windows-effect-desktopgrid.png");
+	}
+	if( feature.name() == QStringLiteral("TextMessage") )
+	{
+		return QStringLiteral(":/core/dialog-ok-apply.png");
+	}
+	if( feature.name() == QStringLiteral("StartApp") )
+	{
+		return QStringLiteral(":/core/media-playback-start.png");
+	}
+	if( feature.name() == QStringLiteral("Screenshot") )
+	{
+		return QStringLiteral(":/master/camera-photo.png");
+	}
+
+	return feature.iconUrl();
+}
+
+}
+
 
 MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	QMainWindow( parent ),
@@ -80,6 +253,15 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	ui->statusBar->addWidget( ui->alignComputersButton );
 	ui->statusBar->addWidget( ui->spacerLabel4 );
 	ui->statusBar->addWidget( ui->aboutButton );
+	ui->statusBar->setSizeGripEnabled( false );
+	ui->filterLineEdit->setMinimumWidth( 220 );
+	ui->gridSizeSlider->setMinimumWidth( 145 );
+	ui->panelButtons->layout()->setSpacing( 4 );
+	ui->computerSelectPanelButton->setText( tr( "Lokasi dan komputer" ) );
+	ui->screenshotManagementPanelButton->setText( tr( "Tangkapan" ) );
+	ui->slideshowPanelButton->setText( tr( "Tayangan" ) );
+	ui->spotlightPanelButton->setText( tr( "Sorotan" ) );
+	ui->filterLineEdit->setPlaceholderText( tr( "Cari pengguna dan komputer" ) );
 
 	// create all views
 	auto mainSplitter = new QSplitter( Qt::Horizontal, ui->centralWidget );
@@ -133,8 +315,7 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	QList<int> splitterSizes;
 	for( auto* splitter : { slideshowSpotlightSplitter, monitoringSplitter, mainSplitter } )
 	{
-		splitter->setHandleWidth( 7 );
-		splitter->setStyleSheet( QStringLiteral("QSplitter::handle:hover{background-color:#66a0b3;}") );
+		splitter->setHandleWidth( 9 );
 
 		splitter->installEventFilter( this );
 
@@ -235,10 +416,10 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	auto customComputerPositionsControlMenu = new QMenu;
 	const auto darkSuffix = VeyonCore::useDarkMode() ? QStringLiteral("-dark") : QString();
 	customComputerPositionsControlMenu->addAction(QIcon(QStringLiteral(":/core/document-open%1.png").arg(darkSuffix)),
-													tr("Load computer positions"),
+													tr("Muat posisi komputer"),
 													this, &MainWindow::loadComputerPositions);
 	customComputerPositionsControlMenu->addAction(QIcon(QStringLiteral(":/core/document-save%1.png").arg(darkSuffix)),
-													tr("Save computer positions"),
+													tr("Simpan posisi komputer"),
 													this, &MainWindow::saveComputerPositions);
 	ui->useCustomComputerPositionsButton->setMenu(customComputerPositionsControlMenu);
 
@@ -252,7 +433,8 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	const auto toolButtons = findChildren<QToolButton*>();
 	for(auto* btn : toolButtons)
 	{
-		btn->setIconSize(QSize(20, 20));
+		btn->setIconSize(QSize(18, 18));
+		btn->setMinimumHeight( 30 );
 	}
 
 	if (VeyonCore::useDarkMode())
@@ -266,7 +448,9 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	}
 
 	// create the main toolbar
-	ui->toolBar->layout()->setSpacing( 2 );
+	ui->toolBar->setMovable( false );
+	ui->toolBar->setFloatable( false );
+	ui->toolBar->layout()->setSpacing( 6 );
 	ui->toolBar->toggleViewAction()->setEnabled( false );
 
 	addToolBar( Qt::TopToolBarArea, ui->toolBar );
@@ -466,9 +650,9 @@ void MainWindow::addFeaturesToToolBar()
 			continue;
 		}
 
-		auto btn = new ToolButton( QIcon( feature.iconUrl() ),
-										  feature.displayName(),
-										  feature.displayNameActive(),
+		auto btn = new ToolButton( QIcon( modernFeatureIconUrl( feature ) ),
+										  localizedFeatureLabel( feature ),
+										  localizedFeatureActiveLabel( feature ),
 										  feature.description(),
 										  feature.shortcut() );
 		connect(btn, &QToolButton::clicked, this, [=, this] () {
@@ -516,7 +700,7 @@ void MainWindow::addSubFeaturesToToolButton( QToolButton* button, const Feature&
 
 	for( const auto& subFeature : subFeatures )
 	{
-		auto action = menu->addAction(QIcon(subFeature.iconUrl()), subFeature.displayName(),
+		auto action = menu->addAction(QIcon(subFeature.iconUrl()), localizedFeatureLabel( subFeature ),
 							   #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
 									  subFeature.shortcut(),
 							   #endif
@@ -566,7 +750,7 @@ void MainWindow::updateModeButtonGroup()
 
 void MainWindow::loadComputerPositions()
 {
-	if (const auto fileName = QFileDialog::getOpenFileName(this, tr("Load computer positions"),
+	if (const auto fileName = QFileDialog::getOpenFileName(this, tr("Muat posisi komputer"),
 														   QDir::homePath(), tr("JSON files (*.json)"));
 		!fileName.isEmpty())
 	{
@@ -588,7 +772,7 @@ void MainWindow::loadComputerPositions()
 
 void MainWindow::saveComputerPositions()
 {
-	if (const auto fileName = QFileDialog::getSaveFileName(this, tr("Save computer positions"),
+	if (const auto fileName = QFileDialog::getSaveFileName(this, tr("Simpan posisi komputer"),
 														   QDir::homePath(), tr("JSON files (*.json)"));
 		!fileName.isEmpty())
 	{

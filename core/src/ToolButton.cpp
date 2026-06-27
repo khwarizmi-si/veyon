@@ -47,8 +47,10 @@ ToolButton::ToolButton( const QIcon& icon,
 
 	setIcon(icon);
 	setText(label);
+	setIconSize(QSize(20, 20));
 	setAutoRaise(true);
-	setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextUnderIcon);
+	setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextBesideIcon);
+	setMinimumHeight(28);
 
 	if (m_altLabel.length() > 0)
 	{
@@ -66,7 +68,7 @@ void ToolButton::setIconOnlyMode( QWidget* mainWindow, bool enabled )
 	const auto toolButtons = mainWindow->findChildren<ToolButton *>();
 	for( auto toolButton : toolButtons )
 	{
-		toolButton->setToolButtonStyle(enabled ? Qt::ToolButtonIconOnly : Qt::ToolButtonTextUnderIcon);
+		toolButton->setToolButtonStyle(enabled ? Qt::ToolButtonIconOnly : Qt::ToolButtonTextBesideIcon);
 	}
 }
 
