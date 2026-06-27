@@ -486,7 +486,7 @@ bool MainWindow::initAuthentication()
 								 tr("No authentication key files were found or your current ones "
 									"are outdated. Please create new key files using Veyon "
 									"Configurator. Alternatively set up logon authentication "
-									"using Veyon Configurator. Otherwise you won't be "
+									"using Sahid Configurator. Otherwise you won't be "
 									"able to access computers using Veyon."));
 	}
 

@@ -42,6 +42,13 @@
 #include "PlatformFilesystemFunctions.h"
 #include "UserConfig.h"
 
+namespace
+{
+
+const auto DefaultSelfComputerUid = NetworkObject::Uid( QStringLiteral("86e828ef-9134-4c61-8778-e6ae9e775a2f") );
+
+}
+
 
 ComputerManager::ComputerManager( UserConfig& config, QObject* parent ) :
 	QObject( parent ),
@@ -62,7 +69,7 @@ ComputerManager::ComputerManager( UserConfig& config, QObject* parent ) :
 							  tr("Missing network object directory plugin"),
 							  tr("No default network object directory plugin was found. "
 								 "Please check your installation or configure a different "
-								 "network object directory backend via Veyon Configurator."));
+								 "network object directory backend via Sahid Configurator."));
 		qFatal( "ComputerManager: missing network object directory plugin!" );
 	}
 
@@ -366,6 +373,11 @@ void ComputerManager::initComputerTreeModel()
 	else
 	{
 		checkedNetworkObjects = m_config.checkedNetworkObjects();
+		if( checkedNetworkObjects.isEmpty() &&
+			findNetworkObject( DefaultSelfComputerUid ).isValid() )
+		{
+			checkedNetworkObjects += DefaultSelfComputerUid.toString();
+		}
 	}
 
 	m_computerTreeModel->loadStates( checkedNetworkObjects );

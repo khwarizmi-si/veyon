@@ -53,7 +53,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 {
 	ui->setupUi( this );
 
-	setWindowTitle(tr("Khwarizmi Configurator %1").arg(VeyonCore::versionString()));
+	setWindowTitle(tr("Sahid Configurator %1").arg(VeyonCore::versionString()));
 
 	loadConfigurationPagePlugins();
 
@@ -133,7 +133,7 @@ void MainWindow::apply()
 	const auto showError = [this](const ConfigurationManager& configurationManager) {
 		vCritical() << configurationManager.errorString().toUtf8().constData();
 
-		QMessageBox::critical(this, tr("Khwarizmi Configurator"), configurationManager.errorString());
+		QMessageBox::critical(this, tr("Sahid Configurator"), configurationManager.errorString());
 	};
 
 	ConfigurationManager configurationManager;
@@ -247,7 +247,7 @@ void MainWindow::resetConfiguration()
 
 
 
-void MainWindow::aboutAlKhwarizmi()
+void MainWindow::aboutSahid()
 {
 	AboutDialog( this ).exec();
 }

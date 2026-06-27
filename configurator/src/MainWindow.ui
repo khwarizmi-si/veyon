@@ -3,7 +3,7 @@
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="windowTitle">
-   <string>Khwarizmi Configurator</string>
+   <string>Sahid Configurator</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/configurator.qrc">
@@ -165,7 +165,7 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="actionAboutAlKhwarizmi"/>
+    <addaction name="actionAboutSahid"/>
     <addaction name="actionAboutQt"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -214,13 +214,13 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionAboutAlKhwarizmi">
+  <action name="actionAboutSahid">
    <property name="icon">
     <iconset resource="../../core/resources/core.qrc">
      <normaloff>:/core/help-about.png</normaloff>:/core/help-about.png</iconset>
    </property>
    <property name="text">
-    <string>About Khwarizmi Surveillance System</string>
+    <string>About Sahid Surveillance System</string>
    </property>
   </action>
   <action name="actionAboutQt">
@@ -302,10 +302,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionAboutVeyon</sender>
+   <sender>actionAboutSahid</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>aboutAlKhwarizmi()</slot>
+   <slot>aboutSahid()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -351,7 +351,7 @@
   </connection>
  </connections>
  <slots>
-  <slot>aboutAlKhwarizmi()</slot>
+  <slot>aboutSahid()</slot>
   <slot>resetConfiguration()</slot>
  </slots>
 </ui>
