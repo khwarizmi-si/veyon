@@ -14,6 +14,21 @@ strip_tool="${10}"
 
 cd "$binary_dir"
 
+qt_plugin_dir()
+{
+	local relative_dir="$1"
+	local candidate
+
+	for candidate in "${mingw_prefix}/plugins/${relative_dir}" "${mingw_prefix}/share/qt6/plugins/${relative_dir}"; do
+		if [ -d "${candidate}" ]; then
+			printf '%s\n' "${candidate}"
+			return 0
+		fi
+	done
+
+	find "${mingw_prefix}" -type d -path "*/plugins/${relative_dir}" -print -quit
+}
+
 rm -rf "${install_files}"*
 
 mkdir -p "${install_files}/interception"
@@ -76,16 +91,20 @@ cp "${dll_dir}/Qt6Core.dll" \
 	"${install_files}"
 
 mkdir -p "${install_files}/imageformats"
-cp "${mingw_prefix}/plugins/imageformats/qjpeg.dll" "${install_files}/imageformats"
+imageformats_dir="$(qt_plugin_dir imageformats)"
+cp "${imageformats_dir}/qjpeg.dll" "${install_files}/imageformats"
 
 mkdir -p "${install_files}/platforms"
-cp "${mingw_prefix}/plugins/platforms/qwindows.dll" "${install_files}/platforms"
+platforms_dir="$(qt_plugin_dir platforms)"
+cp "${platforms_dir}/qwindows.dll" "${install_files}/platforms"
 
 mkdir -p "${install_files}/styles"
-cp "${mingw_prefix}"/plugins/styles/*.dll "${install_files}/styles"
+styles_dir="$(qt_plugin_dir styles)"
+cp "${styles_dir}"/*.dll "${install_files}/styles"
 
 mkdir -p "${install_files}/tls"
-cp "${mingw_prefix}/plugins/tls/qopensslbackend.dll" "${install_files}/tls"
+tls_dir="$(qt_plugin_dir tls)"
+cp "${tls_dir}/qopensslbackend.dll" "${install_files}/tls"
 
 "${strip_tool}" "${install_files}"/*.dll \
 	"${install_files}"/*.exe \
