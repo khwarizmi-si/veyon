@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+shopt -s nullglob
 
 source_dir="$1"
 binary_dir="$2"
@@ -14,6 +15,67 @@ strip_tool="${10}"
 
 cd "$binary_dir"
 
+copy_required()
+{
+	local target_dir="$1"
+	shift
+
+	local matches=()
+	local pattern
+	for pattern in "$@"; do
+		matches+=( ${pattern} )
+	done
+
+	if [ "${#matches[@]}" -eq 0 ]; then
+		echo "ERROR: required file pattern not found: $*" >&2
+		return 1
+	fi
+
+	cp "${matches[@]}" "${target_dir}"
+}
+
+copy_optional()
+{
+	local target_dir="$1"
+	shift
+
+	local matches=()
+	local pattern
+	for pattern in "$@"; do
+		matches+=( ${pattern} )
+	done
+
+	if [ "${#matches[@]}" -gt 0 ]; then
+		cp "${matches[@]}" "${target_dir}"
+	else
+		echo "WARNING: optional file pattern not found: $*"
+	fi
+}
+
+find_required_file()
+{
+	local pattern="$1"
+	local match
+
+	match="$(find "${mingw_prefix}" -name "${pattern}" -print -quit)"
+	if [ -z "${match}" ]; then
+		echo "ERROR: required ${pattern} not found under ${mingw_prefix}" >&2
+		return 1
+	fi
+
+	printf '%s\n' "${match}"
+}
+
+copy_found_required()
+{
+	local target_dir="$1"
+	local pattern="$2"
+	local match
+
+	match="$(find_required_file "${pattern}")"
+	cp "${match}" "${target_dir}"
+}
+
 qt_plugin_dir()
 {
 	local relative_dir="$1"
@@ -27,6 +89,41 @@ qt_plugin_dir()
 	done
 
 	find "${mingw_prefix}" -type d -path "*/plugins/${relative_dir}" -print -quit
+}
+
+copy_qt_plugin_optional()
+{
+	local relative_dir="$1"
+	local plugin_name="$2"
+	local target_dir="${install_files}/${relative_dir}"
+	local plugin_dir
+
+	mkdir -p "${target_dir}"
+	plugin_dir="$(qt_plugin_dir "${relative_dir}")"
+
+	if [ -n "${plugin_dir}" ] && [ -f "${plugin_dir}/${plugin_name}" ]; then
+		cp "${plugin_dir}/${plugin_name}" "${target_dir}"
+	else
+		echo "WARNING: optional Qt plugin ${relative_dir}/${plugin_name} not found"
+	fi
+}
+
+copy_qt_plugin_required()
+{
+	local relative_dir="$1"
+	local plugin_name="$2"
+	local target_dir="${install_files}/${relative_dir}"
+	local plugin_dir
+
+	mkdir -p "${target_dir}"
+	plugin_dir="$(qt_plugin_dir "${relative_dir}")"
+
+	if [ -n "${plugin_dir}" ] && [ -f "${plugin_dir}/${plugin_name}" ]; then
+		cp "${plugin_dir}/${plugin_name}" "${target_dir}"
+	else
+		echo "ERROR: required Qt plugin ${relative_dir}/${plugin_name} not found" >&2
+		return 1
+	fi
 }
 
 rm -rf "${install_files}"*
@@ -52,25 +149,25 @@ fi
 mkdir -p "${install_files}/translations"
 cp translations/*qm "${install_files}/translations/"
 
-cp "${dll_dir}"/libjpeg*.dll "${install_files}"
-cp "${dll_dir}/libpng16-16.dll" "${install_files}"
-cp "${dll_dir}"/libcrypto-3*.dll "${dll_dir}"/libssl-3*.dll "${install_files}"
-cp "${dll_dir}/libqca-qt6.dll" "${install_files}"
-cp "${dll_dir}/libsasl2-3.dll" "${install_files}"
-cp "${dll_dir}/libldap.dll" "${dll_dir}/liblber.dll" "${install_files}"
-cp "${dll_dir}/interception.dll" "${install_files}"
-cp "${dll_dir}/liblzo2-2.dll" "${install_files}"
-cp "${dll_dir}/libvncclient.dll" "${install_files}"
-cp "${dll_dir}/libvncserver.dll" "${install_files}"
-cp "${dll_dir_lib}/zlib1.dll" "${install_files}"
-cp "${dll_dir_lib}/libwinpthread-1.dll" "${install_files}"
-cp "${dll_dir_gcc}/libstdc++-6.dll" "${install_files}"
+copy_optional "${install_files}" "${dll_dir}"/libjpeg*.dll
+copy_required "${install_files}" "${dll_dir}"/libpng*.dll
+copy_required "${install_files}" "${dll_dir}"/libcrypto-3*.dll "${dll_dir}"/libssl-3*.dll
+copy_found_required "${install_files}" libqca-qt6.dll
+copy_required "${install_files}" "${dll_dir}"/libsasl2*.dll
+copy_required "${install_files}" "${dll_dir}"/libldap*.dll "${dll_dir}"/liblber*.dll
+copy_required "${install_files}" "${dll_dir}/interception.dll"
+copy_required "${install_files}" "${dll_dir}"/liblzo2*.dll
+copy_required "${install_files}" "${dll_dir}/libvncclient.dll"
+copy_required "${install_files}" "${dll_dir}/libvncserver.dll"
+copy_found_required "${install_files}" zlib1.dll
+copy_found_required "${install_files}" libwinpthread-1.dll
+copy_found_required "${install_files}" libstdc++-6.dll
 
 if [ -f "${dll_dir_gcc}/libssp-0.dll" ]; then
 	cp "${dll_dir_gcc}/libssp-0.dll" "${install_files}"
 fi
 
-cp "${dll_dir_gcc}/${dll_gcc}" "${install_files}"
+copy_found_required "${install_files}" "${dll_gcc}"
 
 mkdir -p "${install_files}/crypto"
 qca_ossl_plugin="$(find "${mingw_prefix}" -path '*/crypto/libqca-ossl.dll' -print -quit)"
@@ -80,38 +177,34 @@ else
 	echo "WARNING: libqca-ossl.dll not found under ${mingw_prefix}; continuing without QCA OpenSSL plugin"
 fi
 
-cp "${dll_dir}/Qt6Core.dll" \
-	"${dll_dir}/Qt6Core5Compat.dll" \
-	"${dll_dir}/Qt6Gui.dll" \
-	"${dll_dir}/Qt6Widgets.dll" \
-	"${dll_dir}/Qt6Network.dll" \
-	"${dll_dir}/Qt6Concurrent.dll" \
-	"${dll_dir}/Qt6HttpServer.dll" \
-	"${dll_dir}/Qt6WebSockets.dll" \
-	"${install_files}"
+for qt_dll in Qt6Core.dll Qt6Core5Compat.dll Qt6Gui.dll Qt6Widgets.dll Qt6Network.dll Qt6Concurrent.dll Qt6HttpServer.dll Qt6WebSockets.dll; do
+	copy_found_required "${install_files}" "${qt_dll}"
+done
 
-mkdir -p "${install_files}/imageformats"
-imageformats_dir="$(qt_plugin_dir imageformats)"
-cp "${imageformats_dir}/qjpeg.dll" "${install_files}/imageformats"
+copy_qt_plugin_optional imageformats qjpeg.dll
+copy_qt_plugin_required platforms qwindows.dll
+copy_qt_plugin_optional tls qopensslbackend.dll
 
-mkdir -p "${install_files}/platforms"
-platforms_dir="$(qt_plugin_dir platforms)"
-cp "${platforms_dir}/qwindows.dll" "${install_files}/platforms"
-
-mkdir -p "${install_files}/styles"
 styles_dir="$(qt_plugin_dir styles)"
-cp "${styles_dir}"/*.dll "${install_files}/styles"
+mkdir -p "${install_files}/styles"
+if [ -n "${styles_dir}" ]; then
+	copy_optional "${install_files}/styles" "${styles_dir}"/*.dll
+else
+	echo "WARNING: optional Qt styles plugin directory not found"
+fi
 
-mkdir -p "${install_files}/tls"
-tls_dir="$(qt_plugin_dir tls)"
-cp "${tls_dir}/qopensslbackend.dll" "${install_files}/tls"
-
-"${strip_tool}" "${install_files}"/*.dll \
-	"${install_files}"/*.exe \
-	"${install_files}"/plugins/*.dll \
-	"${install_files}"/platforms/*.dll \
-	"${install_files}"/styles/*.dll \
+strip_targets=(
+	"${install_files}"/*.dll
+	"${install_files}"/*.exe
+	"${install_files}"/plugins/*.dll
+	"${install_files}"/platforms/*.dll
+	"${install_files}"/styles/*.dll
 	"${install_files}"/crypto/*.dll
+)
+
+if [ "${#strip_targets[@]}" -gt 0 ]; then
+	"${strip_tool}" "${strip_targets[@]}"
+fi
 
 cp "${source_dir}/COPYING" "${install_files}"
 cp "${source_dir}/COPYING" "${install_files}/LICENSE.TXT"

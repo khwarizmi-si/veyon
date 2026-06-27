@@ -28,9 +28,9 @@ add_custom_target(windows-binaries
 )
 
 add_custom_target(create-windows-installer
-	COMMAND makensis ${WINDOWS_INSTALL_FILES}/veyon.nsi
-	COMMAND mv ${WINDOWS_INSTALL_FILES}/veyon-*setup.exe .
-	COMMAND rm -rf ${WINDOWS_INSTALL_FILES}
+	COMMAND bash ${CMAKE_SOURCE_DIR}/.ci/windows/create-base-installer.sh
+		${CMAKE_BINARY_DIR}
+		${WINDOWS_INSTALL_FILES}
 	DEPENDS windows-binaries
 )
 
@@ -40,17 +40,10 @@ add_custom_target(create-windows-installer
 # the staging folder. The Screen Recorder add-on additionally needs an LGPL
 # ffmpeg.exe placed at 3rdparty/ffmpeg/ffmpeg.exe (see nsis/README-addons.md).
 add_custom_target(create-addon-installers
-	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-chat.nsi ${WINDOWS_INSTALL_FILES}
-	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-internetaccesscontrol.nsi ${WINDOWS_INSTALL_FILES}
-	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-networkdiscovery.nsi ${WINDOWS_INSTALL_FILES}
-	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-auvidus.nsi ${WINDOWS_INSTALL_FILES}
-	COMMAND cp ${CMAKE_BINARY_DIR}/nsis/addon-screenrecorder.nsi ${WINDOWS_INSTALL_FILES}
-	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-chat.nsi
-	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-internetaccesscontrol.nsi
-	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-networkdiscovery.nsi
-	COMMAND makensis ${WINDOWS_INSTALL_FILES}/addon-auvidus.nsi
-	COMMAND sh -c "cp ${CMAKE_SOURCE_DIR}/3rdparty/ffmpeg/ffmpeg.exe ${WINDOWS_INSTALL_FILES}/ && makensis ${WINDOWS_INSTALL_FILES}/addon-screenrecorder.nsi || echo 'SKIP ScreenRecorder installer: place an LGPL ffmpeg.exe at 3rdparty/ffmpeg/ffmpeg.exe'"
-	COMMAND mv ${WINDOWS_INSTALL_FILES}/Sahid-*-Addon-*setup.exe .
+	COMMAND bash ${CMAKE_SOURCE_DIR}/.ci/windows/create-addon-installers.sh
+		${CMAKE_SOURCE_DIR}
+		${CMAKE_BINARY_DIR}
+		${WINDOWS_INSTALL_FILES}
 	DEPENDS windows-binaries
 )
 
