@@ -91,16 +91,16 @@ QList<QHostAddress> NetworkDiscoveryDirectory::localSubnetTargets() const
 	QSet<quint32> seen;
 
 	const auto interfaces = QNetworkInterface::allInterfaces();
-	for( const auto& interface : interfaces )
+	for( const auto& networkInterface : interfaces )
 	{
-		const auto flags = interface.flags();
+		const auto flags = networkInterface.flags();
 		if( flags.testFlag( QNetworkInterface::IsUp ) == false ||
 			flags.testFlag( QNetworkInterface::IsLoopBack ) )
 		{
 			continue;
 		}
 
-		const auto entries = interface.addressEntries();
+		const auto entries = networkInterface.addressEntries();
 		for( const auto& entry : entries )
 		{
 			const auto ip = entry.ip();
