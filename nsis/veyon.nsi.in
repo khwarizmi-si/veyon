@@ -171,7 +171,7 @@ File "LICENSE.TXT"
 File "README.TXT"
 # plugins
 SetOutPath "$INSTDIR\plugins"
-File "plugins/*.dll"
+File /nonfatal "plugins/*.dll"
 # commercial add-ons are sold and installed separately (Sahid "Plus"),
 # so the base ("Basic") installer must not ship them - remove if present
 Delete "$INSTDIR\plugins\chat.dll"
@@ -184,7 +184,7 @@ SetOutPath "$INSTDIR\translations"
 File "translations/*.qm"
 # QCA plugins
 SetOutPath "$INSTDIR\crypto"
-File "crypto/*.dll"
+File /nonfatal "crypto/*.dll"
 # Qt image format plugin
 SetOutPath "$INSTDIR\imageformats"
 File "imageformats/qjpeg.dll"
@@ -192,10 +192,10 @@ File "imageformats/qjpeg.dll"
 SetOutPath "$INSTDIR\platforms"
 File "platforms/qwindows.dll"
 SetOutPath "$INSTDIR\styles"
-File "styles/*.dll"
+File /nonfatal "styles/*.dll"
 # Qt TLS backend
 SetOutPath "$INSTDIR\tls"
-File "tls/qopensslbackend.dll"
+File /nonfatal "tls/qopensslbackend.dll"
 # configuration
 ExecWait '"$INSTDIR\veyon-wcli.exe" service register'
 ExecWait '"$INSTDIR\veyon-wcli.exe" config set Network/FirewallExceptionEnabled 1'
@@ -352,4 +352,3 @@ LangString DESC_SEC_INTERCEPTION ${LANG_GERMAN} "Spezieller Eingabegerätetreibe
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_MASTER} $(DESC_SEC_MASTER)
 !insertmacro MUI_DESCRIPTION_TEXT ${SEC_INTERCEPTION} $(DESC_SEC_INTERCEPTION)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
-
