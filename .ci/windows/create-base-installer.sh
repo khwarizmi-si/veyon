@@ -7,17 +7,18 @@ install_files="$2"
 
 cd "$binary_dir"
 
-mkdir -p nsis
-cp -ra "${install_files}/nsis/." "${binary_dir}/nsis/"
-
-for asset in nsis/welcome-page.bmp nsis/header.bmp nsis/installer.ico nsis/uninstaller.ico; do
+for asset in "${install_files}"/nsis/welcome-page.bmp "${install_files}"/nsis/header.bmp "${install_files}"/nsis/installer.ico "${install_files}"/nsis/uninstaller.ico; do
 	if [ ! -f "${asset}" ]; then
 		echo "ERROR: required NSIS asset is missing: ${asset}" >&2
 		exit 1
 	fi
 done
 
-makensis "${install_files}/veyon.nsi"
+pushd "${install_files}" > /dev/null
+
+makensis veyon.nsi
+
+popd > /dev/null
 
 installers=( "${install_files}"/veyon-*setup.exe veyon-*setup.exe )
 if [ "${#installers[@]}" -eq 0 ]; then
