@@ -17,11 +17,19 @@ done
 pushd "${install_files}" > /dev/null
 
 nsis_dir="$(cygpath -w "$(pwd)/nsis")"
+staging_dir="$(cygpath -w "$(pwd)")"
 export NSIS_DIR="${nsis_dir}"
+export STAGING_DIR="${staging_dir}"
 perl -0pi -e 's{"nsis/welcome-page\.bmp"}{qq{"$ENV{NSIS_DIR}\\welcome-page.bmp"}}ge;
               s{"nsis/header\.bmp"}{qq{"$ENV{NSIS_DIR}\\header.bmp"}}ge;
               s{"nsis/installer\.ico"}{qq{"$ENV{NSIS_DIR}\\installer.ico"}}ge;
-              s{"nsis/uninstaller\.ico"}{qq{"$ENV{NSIS_DIR}\\uninstaller.ico"}}ge;' veyon.nsi
+              s{"nsis/uninstaller\.ico"}{qq{"$ENV{NSIS_DIR}\\uninstaller.ico"}}ge;
+              s{!define LICENSE_TXT "COPYING"}{qq{!define LICENSE_TXT "$ENV{STAGING_DIR}\\COPYING"}}ge;
+              s{^([ \t]*File(?:[ \t]+/\S+)*[ \t]+)"([^"]+)"}{
+                  my ($prefix, $path) = ($1, $2);
+                  $path =~ tr{/}{\\};
+                  qq{$prefix"$ENV{STAGING_DIR}\\$path"}
+              }gem;' veyon.nsi
 
 makensis veyon.nsi
 
