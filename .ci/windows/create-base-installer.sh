@@ -16,6 +16,13 @@ done
 
 pushd "${install_files}" > /dev/null
 
+nsis_dir="$(cygpath -w "$(pwd)/nsis")"
+export NSIS_DIR="${nsis_dir}"
+perl -0pi -e 's{"nsis/welcome-page\.bmp"}{qq{"$ENV{NSIS_DIR}\\welcome-page.bmp"}}ge;
+              s{"nsis/header\.bmp"}{qq{"$ENV{NSIS_DIR}\\header.bmp"}}ge;
+              s{"nsis/installer\.ico"}{qq{"$ENV{NSIS_DIR}\\installer.ico"}}ge;
+              s{"nsis/uninstaller\.ico"}{qq{"$ENV{NSIS_DIR}\\uninstaller.ico"}}ge;' veyon.nsi
+
 makensis veyon.nsi
 
 popd > /dev/null
