@@ -8,11 +8,11 @@ install_files="$3"
 cd "$binary_dir"
 
 cp -ra "${install_files}/nsis/." "${binary_dir}/nsis/"
-nsis_dir="$(cygpath -m "${binary_dir}/nsis")"
+nsis_dir="$(cygpath -m "${binary_dir}/${install_files}/nsis")"
 sed -i \
 	-e "s#\"nsis/#\"${nsis_dir}/#g" \
 	-e "s#\"nsis\\\\#\"${nsis_dir}/#g" \
-	nsis/addon-common.nsh
+	"${install_files}/nsis/addon-common.nsh"
 cp nsis/addon-chat.nsi "${install_files}"
 cp nsis/addon-internetaccesscontrol.nsi "${install_files}"
 cp nsis/addon-networkdiscovery.nsi "${install_files}"
