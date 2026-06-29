@@ -16,6 +16,10 @@ cp nsis/addon-screenrecorder.nsi "${install_files}"
 
 pushd "${install_files}" > /dev/null
 
+staging_dir="$(cygpath -w "$(pwd)")"
+export STAGING_DIR="${staging_dir}"
+perl -0pi -e 's{File "plugins\\\\\$\{ADDON_DLL\}"}{qq{File "$ENV{STAGING_DIR}\\plugins\\\${ADDON_DLL}"}}ge;' nsis/addon-common.nsh
+
 makensis addon-chat.nsi
 makensis addon-internetaccesscontrol.nsi
 makensis addon-networkdiscovery.nsi
@@ -23,6 +27,7 @@ makensis addon-auvidus.nsi
 
 if [ -f "${source_dir}/3rdparty/ffmpeg/ffmpeg.exe" ]; then
 	cp "${source_dir}/3rdparty/ffmpeg/ffmpeg.exe" .
+	perl -0pi -e 's{!define ADDON_EXTRA_FILE "ffmpeg\.exe"}{qq{!define ADDON_EXTRA_FILE "$ENV{STAGING_DIR}\\ffmpeg.exe"}}ge;' addon-screenrecorder.nsi
 	makensis addon-screenrecorder.nsi
 else
 	echo "SKIP ScreenRecorder installer: place an LGPL ffmpeg.exe at 3rdparty/ffmpeg/ffmpeg.exe"
