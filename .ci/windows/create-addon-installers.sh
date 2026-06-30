@@ -18,7 +18,7 @@ pushd "${install_files}" > /dev/null
 
 staging_dir="$(cygpath -w "$(pwd)")"
 export STAGING_DIR="${staging_dir}"
-perl -0pi -e 's{File "plugins\\\\\$\{ADDON_DLL\}"}{qq{File "$ENV{STAGING_DIR}\\plugins\\\${ADDON_DLL}"}}ge;' nsis/addon-common.nsh
+perl -0pi -e 's{(!define ADDON_DLL "([^"]+)")}{qq{$1\n!define ADDON_DLL_PATH "$ENV{STAGING_DIR}\\plugins\\$2"}}ge;' addon-*.nsi
 
 makensis addon-chat.nsi
 makensis addon-internetaccesscontrol.nsi

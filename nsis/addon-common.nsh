@@ -83,7 +83,11 @@ Section "Install ${ADDON_NAME} add-on"
 
 	SetOverwrite on
 	SetOutPath "$KH_DIR\plugins"
-	File "plugins\${ADDON_DLL}"
+	!ifdef ADDON_DLL_PATH
+		File "${ADDON_DLL_PATH}"
+	!else
+		File "plugins\${ADDON_DLL}"
+	!endif
 
 	!ifdef ADDON_EXTRA_FILE
 		# extra helper next to the executables (Windows resolves it from the app dir)
