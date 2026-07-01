@@ -1,0 +1,12 @@
+; Standalone installer for the Khwarizmi Screen Recorder add-on.
+; Drops screenrecorder.dll into an existing Khwarizmi installation and bundles
+; ffmpeg.exe next to the executables (the recorder pipes frames to it).
+!define ADDON_NAME "ScreenRecorder"
+!define ADDON_DLL "screenrecorder.dll"
+!define ADDON_VERSION "1.0"
+!define KH_ARCH "@VEYON_WINDOWS_ARCH@"
+!define KH_SETREGVIEW "@VEYON_NSIS_SETREGVIEW@"
+; ffmpeg.exe must be staged next to this script (see WindowsInstaller.cmake / README-addons.md)
+!define ADDON_EXTRA_FILE "ffmpeg.exe"
+!define ADDON_EXTRA_FILE_NAME "ffmpeg.exe"
+!include "nsis\addon-common.nsh"
