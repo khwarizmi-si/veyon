@@ -12,6 +12,7 @@ cp nsis/addon-chat.nsi "${install_files}"
 cp nsis/addon-internetaccesscontrol.nsi "${install_files}"
 cp nsis/addon-networkdiscovery.nsi "${install_files}"
 cp nsis/addon-auvidus.nsi "${install_files}"
+cp nsis/addon-entraid.nsi "${install_files}"
 cp nsis/addon-screenrecorder.nsi "${install_files}"
 
 pushd "${install_files}" > /dev/null
@@ -36,6 +37,7 @@ build_addon addon-chat.nsi chat.dll
 build_addon addon-internetaccesscontrol.nsi internetaccesscontrol.dll
 build_addon addon-networkdiscovery.nsi networkdiscovery.dll
 build_addon addon-auvidus.nsi auvidus.dll
+build_addon addon-entraid.nsi entraid.dll
 
 if [ -f "plugins/screenrecorder.dll" ] && [ -f "${source_dir}/3rdparty/ffmpeg/ffmpeg.exe" ]; then
 	cp "${source_dir}/3rdparty/ffmpeg/ffmpeg.exe" .

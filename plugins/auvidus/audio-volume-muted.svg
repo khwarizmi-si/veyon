@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- speaker -->
+  <path d="M18 50 H38 L62 28 V100 L38 78 H18 Z" fill="#1d847a"/>
+  <!-- mute cross -->
+  <g stroke="#e56e2d" stroke-width="11" stroke-linecap="round">
+    <line x1="78" y1="46" x2="108" y2="82"/>
+    <line x1="108" y1="46" x2="78" y2="82"/>
+  </g>
+</svg>

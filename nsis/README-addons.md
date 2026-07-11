@@ -14,6 +14,7 @@ installed and removed independently of the base application.
 | **Add-on: Screen Recorder** | drops `screenrecorder.dll` **and** `ffmpeg.exe`. |
 | **Add-on: Network Discovery** | drops `networkdiscovery.dll`. After installing, select **Network Discovery** as the directory backend in the Configurator (Network settings) to activate it. |
 | **Add-on: Auvidus** | drops `auvidus.dll` (audio/webcam/USB control). Windows-only device control. |
+| **Add-on: Entra ID** | drops `entraid.dll`. Configure tenant, app credentials and device mapping in the Configurator, then select **Microsoft Entra ID** as the directory and/or user groups backend. |
 
 Sell Basic on its own; sell/deploy add-ons on top as "Plus". An add-on
 installer refuses to run unless the Basic application is already installed.

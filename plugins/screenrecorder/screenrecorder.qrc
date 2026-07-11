@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/screenrecorder" >
+        <file>media-record.png</file>
+    </qresource>
+</RCC>

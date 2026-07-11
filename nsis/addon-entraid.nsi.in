@@ -1,0 +1,9 @@
+; Standalone installer for the Khwarizmi Microsoft Entra ID connector add-on.
+; Drops entraid.dll into an existing Khwarizmi installation. After installing,
+; configure tenant, app credentials and mapping fields in Khwarizmi Configurator.
+!define ADDON_NAME "EntraID"
+!define ADDON_DLL "entraid.dll"
+!define ADDON_VERSION "0.1"
+!define KH_ARCH "@VEYON_WINDOWS_ARCH@"
+!define KH_SETREGVIEW "@VEYON_NSIS_SETREGVIEW@"
+!include "nsis\addon-common.nsh"

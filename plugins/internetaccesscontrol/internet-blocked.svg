@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- globe -->
+  <circle cx="60" cy="60" r="44" fill="#1d847a"/>
+  <!-- latitude / longitude grid -->
+  <g stroke="#ffffff" stroke-width="4.5" fill="none" stroke-linecap="round">
+    <line x1="18" y1="60" x2="102" y2="60"/>
+    <ellipse cx="60" cy="60" rx="18" ry="44"/>
+    <path d="M24 40 q36 16 72 0"/>
+    <path d="M24 80 q36 -16 72 0"/>
+  </g>
+  <!-- prohibition slash (orange, white-outlined for contrast) -->
+  <line x1="30" y1="30" x2="90" y2="90" stroke="#ffffff" stroke-width="20" stroke-linecap="round"/>
+  <line x1="30" y1="30" x2="90" y2="90" stroke="#e56e2d" stroke-width="12" stroke-linecap="round"/>
+</svg>
