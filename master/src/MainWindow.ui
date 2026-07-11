@@ -11,11 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">Khwarizmi Surveillance System</string>
+   <string notr="true">Sistem Pengawasan Khwarizmi</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../core/resources/core.qrc">
-    <normaloff>:/core/icon64.png</normaloff>:/core/icon64.png</iconset>
+   <iconset resource="../resources/master.qrc">
+    <normaloff>:/master/splash.png</normaloff>:/master/splash.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="centralLayout">
@@ -46,7 +46,7 @@
         </rect>
        </property>
        <property name="toolTip">
-        <string>Adjust size of computer icons automatically</string>
+        <string>Sesuaikan ukuran ikon komputer otomatis</string>
        </property>
        <property name="text">
         <string>Auto</string>
@@ -110,7 +110,7 @@
         </rect>
        </property>
        <property name="toolTip">
-        <string>About Khwarizmi Surveillance System</string>
+        <string>Tentang Sistem Pengawasan Khwarizmi</string>
        </property>
        <property name="text">
         <string>About</string>
@@ -140,7 +140,7 @@
         </rect>
        </property>
        <property name="placeholderText">
-        <string>Search users and computers</string>
+        <string>Cari pengguna dan komputer</string>
        </property>
       </widget>
       <widget class="QLabel" name="spacerLabel2">
@@ -169,7 +169,7 @@
         </rect>
        </property>
        <property name="toolTip">
-        <string>Align computers to grid</string>
+        <string>Rapikan komputer ke grid</string>
        </property>
        <property name="icon">
         <iconset resource="../resources/master.qrc">
@@ -186,9 +186,9 @@
         </rect>
        </property>
        <property name="toolTip">
-        <string>Use custom computer arrangement.
+        <string>Gunakan susunan komputer khusus.
 
-Press and hold to load arrangement from a file or save current arrangement to a file.</string>
+Tekan dan tahan untuk memuat susunan dari file atau menyimpan susunan saat ini.</string>
        </property>
        <property name="icon">
         <iconset resource="../resources/master.qrc">
@@ -218,7 +218,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
         </rect>
        </property>
        <property name="toolTip">
-        <string>Only show powered on computers</string>
+        <string>Hanya tampilkan komputer yang menyala</string>
        </property>
        <property name="icon">
         <iconset resource="../resources/master.qrc">
@@ -259,7 +259,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
         <item>
          <widget class="QToolButton" name="computerSelectPanelButton">
           <property name="text">
-           <string>Locations &amp;&amp; computers</string>
+           <string>Lokasi dan komputer</string>
           </property>
           <property name="icon">
            <iconset resource="../resources/master.qrc">
@@ -279,7 +279,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
         <item>
          <widget class="QToolButton" name="screenshotManagementPanelButton">
           <property name="text">
-           <string>Screenshots</string>
+           <string>Tangkapan</string>
           </property>
           <property name="icon">
            <iconset resource="../resources/master.qrc">
@@ -299,7 +299,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
         <item>
          <widget class="QToolButton" name="slideshowPanelButton">
           <property name="text">
-           <string>Slideshow</string>
+           <string>Tayangan</string>
           </property>
           <property name="icon">
            <iconset resource="../resources/master.qrc">
@@ -316,7 +316,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
         <item>
          <widget class="QToolButton" name="spotlightPanelButton">
           <property name="text">
-           <string>Spotlight</string>
+           <string>Sorotan</string>
           </property>
           <property name="icon">
            <iconset resource="../resources/master.qrc">
@@ -342,7 +342,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
         </rect>
        </property>
        <property name="toolTip">
-        <string>Only show computers with logged on users</string>
+        <string>Hanya tampilkan komputer dengan pengguna aktif</string>
        </property>
        <property name="icon">
         <iconset resource="../../core/resources/core.qrc">

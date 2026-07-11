@@ -24,6 +24,9 @@
 
 #include <QApplication>
 #include <QMenu>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QPixmap>
 #include <QScrollBar>
 #include <QShowEvent>
 #include <QTimer>
@@ -400,6 +403,43 @@ void ComputerMonitoringWidget::mouseMoveEvent( QMouseEvent* event )
 		m_ignoreNumberOfMouseEvents--;
 		event->accept();
 	}
+}
+
+
+
+void ComputerMonitoringWidget::paintEvent( QPaintEvent* event )
+{
+	FlexibleListView::paintEvent( event );
+
+	static const QPixmap watermark( QStringLiteral(":/master/splash.png") );
+	if( watermark.isNull() || viewport() == nullptr )
+	{
+		return;
+	}
+
+	const auto viewportRect = viewport()->rect();
+	const auto maxWatermarkSize = QSize( int(viewportRect.width() * 0.55),
+										 int(viewportRect.height() * 0.62) );
+	const auto scaledWatermark = watermark.scaled( maxWatermarkSize,
+												  Qt::KeepAspectRatio,
+												  Qt::SmoothTransformation );
+	const auto topLeft = QPoint( viewportRect.center().x() - scaledWatermark.width() / 2,
+								 viewportRect.center().y() - scaledWatermark.height() / 2 );
+
+	auto watermarkRegion = event->region();
+	for( int row = 0, rows = model() ? model()->rowCount() : 0; row < rows; ++row )
+	{
+		const auto itemRect = visualRect( model()->index( row, 0 ) );
+		if( itemRect.isValid() && itemRect.intersects( viewportRect ) )
+		{
+			watermarkRegion -= itemRect.adjusted( -8, -8, 8, 8 );
+		}
+	}
+
+	QPainter painter( viewport() );
+	painter.setClipRegion( watermarkRegion );
+	painter.setOpacity( VeyonCore::useDarkMode() ? 0.11 : 0.08 );
+	painter.drawPixmap( topLeft, scaledWatermark );
 }
 
 

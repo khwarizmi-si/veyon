@@ -6,7 +6,7 @@
    <item>
     <widget class="QListView" name="list">
      <property name="toolTip">
-      <string>All screenshots taken by you are listed here. You can take screenshots by clicking the &quot;Screenshot&quot; item in the context menu of a computer. The screenshots can be managed using the buttons below.</string>
+      <string>Semua screenshot yang Anda ambil akan tampil di sini. Screenshot dapat diambil dari menu konteks komputer, lalu dikelola dengan tombol di bawah.</string>
      </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -42,7 +42,7 @@
         </font>
        </property>
        <property name="text">
-        <string>User:</string>
+        <string>Pengguna:</string>
        </property>
       </widget>
      </item>
@@ -60,7 +60,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Computer:</string>
+        <string>Komputer:</string>
        </property>
       </widget>
      </item>
@@ -72,7 +72,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Date:</string>
+        <string>Tanggal:</string>
        </property>
       </widget>
      </item>
@@ -87,7 +87,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Time:</string>
+        <string>Waktu:</string>
        </property>
       </widget>
      </item>
@@ -98,7 +98,7 @@
      <item>
       <widget class="QPushButton" name="showBtn">
        <property name="text">
-        <string>Show</string>
+        <string>Tampilkan</string>
        </property>
        <property name="icon">
         <iconset resource="../../core/resources/core.qrc">
@@ -109,7 +109,7 @@
      <item>
       <widget class="QPushButton" name="deleteBtn">
        <property name="text">
-        <string>Delete</string>
+        <string>Hapus</string>
        </property>
        <property name="icon">
         <iconset resource="../../core/resources/core.qrc">

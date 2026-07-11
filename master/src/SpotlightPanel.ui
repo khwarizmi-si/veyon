@@ -85,7 +85,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Add computers by clicking with the middle mouse button or clicking the first button below.</string>
+          <string>Tambahkan komputer dengan klik tengah mouse atau klik tombol pertama di bawah.</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -133,7 +133,7 @@
       <item>
        <widget class="QToolButton" name="addButton">
         <property name="toolTip">
-         <string>Add selected computers</string>
+         <string>Tambahkan komputer yang dipilih</string>
         </property>
         <property name="icon">
          <iconset resource="../../core/resources/core.qrc">

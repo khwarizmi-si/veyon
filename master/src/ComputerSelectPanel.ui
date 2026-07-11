@@ -31,21 +31,21 @@
    <item>
     <widget class="QLineEdit" name="filterLineEdit">
      <property name="placeholderText">
-      <string>Search computers</string>
+      <string>Cari komputer</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPushButton" name="addLocationButton">
      <property name="text">
-      <string>Add location</string>
+      <string>Tambah lokasi</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPushButton" name="saveListButton">
      <property name="text">
-      <string>Save computer/user list</string>
+      <string>Simpan daftar komputer/pengguna</string>
      </property>
     </widget>
    </item>
