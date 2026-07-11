@@ -35,7 +35,7 @@ NetworkDiscoveryDirectory::NetworkDiscoveryDirectory( QObject* parent ) :
 	NetworkObjectDirectory( parent ),
 	m_scanner( new NetworkScanner( this ) ),
 	m_location( NetworkObject::Type::Location, NetworkDiscoveryDirectory::tr( "Discovered computers" ),
-				{}, {}, QStringLiteral("sahid-network-discovery") )
+				{}, {}, QStringLiteral("khwarizmi-network-discovery") )
 {
 	connect( m_scanner, &NetworkScanner::hostFound, this, &NetworkDiscoveryDirectory::onHostFound );
 	connect( m_scanner, &NetworkScanner::finished, this, &NetworkDiscoveryDirectory::onScanFinished );

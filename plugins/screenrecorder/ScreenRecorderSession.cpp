@@ -24,7 +24,9 @@
 
 #include <QDateTime>
 #include <QDebug>
+#include <QCoreApplication>
 #include <QDir>
+#include <QFileInfo>
 #include <QImage>
 #include <QProcess>
 #include <QRegularExpression>
@@ -48,6 +50,16 @@ QString buildOutputPath( const ComputerControlInterface::Pointer& computerContro
 
 	const auto timestamp = QDateTime::currentDateTime().toString( QStringLiteral("yyyyMMdd-HHmmss") );
 	return QStringLiteral("%1/%2_%3.mp4").arg( directory, safeName, timestamp );
+}
+
+QString ffmpegProgram()
+{
+#if defined(Q_OS_WIN)
+	const auto bundledFfmpeg = QCoreApplication::applicationDirPath() + QStringLiteral("/ffmpeg.exe");
+#else
+	const auto bundledFfmpeg = QCoreApplication::applicationDirPath() + QStringLiteral("/ffmpeg");
+#endif
+	return QFileInfo::exists( bundledFfmpeg ) ? bundledFfmpeg : QStringLiteral("ffmpeg");
 }
 }
 
@@ -165,7 +177,7 @@ void ScreenRecorderSession::startEncoder( QSize frameSize )
 
 	const auto encoder = new QProcess( this );
 	encoder->setProcessChannelMode( QProcess::ForwardedErrorChannel );
-	encoder->start( QStringLiteral("ffmpeg"),
+	encoder->start( ffmpegProgram(),
 					{
 						QStringLiteral("-y"),
 						QStringLiteral("-f"), QStringLiteral("rawvideo"),
