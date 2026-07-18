@@ -289,7 +289,25 @@ QJsonArray EntraIdGraphClient::requestPagedValues( const QUrl& url, QString* err
 		}
 
 		const auto nextLink = object.value( QStringLiteral("@odata.nextLink") ).toString();
-		nextUrl = nextLink.isEmpty() ? QUrl{} : QUrl( nextLink );
+		if( nextLink.isEmpty() )
+		{
+			nextUrl = QUrl();
+			continue;
+		}
+
+		const auto nextLinkUrl = QUrl( nextLink );
+		const auto graphBaseUrl = normalizedUrl( m_configuration.graphBaseUrl() );
+		if( nextLinkUrl.scheme() != QStringLiteral("https") ||
+			nextLinkUrl.host().compare( graphBaseUrl.host(), Qt::CaseInsensitive ) != 0 )
+		{
+			if( errorString )
+			{
+				*errorString = tr( "Microsoft Graph returned an unexpected paging URL." );
+			}
+			break;
+		}
+
+		nextUrl = nextLinkUrl;
 	}
 
 	return values;
