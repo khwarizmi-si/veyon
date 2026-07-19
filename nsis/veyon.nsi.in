@@ -148,7 +148,7 @@ Section "Khwarizmi Service" SEC_SERVICE
 SectionIn RO
 ${INSTALL_TYPE}
 ClearErrors
-ExecWait '"$INSTDIR\veyon-wcli.exe" service unregister'
+ExecWait '"$INSTDIR\veyon-wcli.exe" service unregister' $0
 ${If} $0 != 0
   ExecWait '"$INSTDIR\veyon-ctl.exe" service unregister'
 ${EndIf}
@@ -198,6 +198,14 @@ File /nonfatal "styles/*.dll"
 SetOutPath "$INSTDIR\tls"
 File /nonfatal "tls/qopensslbackend.dll"
 # configuration
+# The unregister above runs before the binaries are staged, so on a fresh
+# install it is a no-op. A previous installation may also live in a different
+# directory (an upstream Veyon install predating the rename), in which case
+# $INSTDIR never held veyon-wcli.exe at all. The service is registered by name,
+# so unregister it once more with the binary we just installed - otherwise
+# "service register" fails with the name still taken and the machine keeps
+# running the old service binary.
+ExecWait '"$INSTDIR\veyon-wcli.exe" service unregister'
 ExecWait '"$INSTDIR\veyon-wcli.exe" service register'
 ExecWait '"$INSTDIR\veyon-wcli.exe" config set Network/FirewallExceptionEnabled 1'
 ExecWait '"$INSTDIR\veyon-wcli.exe" config set Windows/SoftwareSASEnabled 1'
