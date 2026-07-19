@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- back bubble (teal) -->
+  <g fill="#1d847a">
+    <rect x="14" y="20" width="72" height="50" rx="13"/>
+    <path d="M30 64 L30 88 L54 66 Z"/>
+  </g>
+  <!-- front bubble (orange), overlapping bottom-right -->
+  <g fill="#e56e2d">
+    <rect x="56" y="50" width="58" height="44" rx="12"/>
+    <path d="M96 90 L96 112 L74 92 Z"/>
+  </g>
+  <!-- three dots on the front bubble -->
+  <g fill="#ffffff">
+    <circle cx="73" cy="72" r="5.5"/>
+    <circle cx="85" cy="72" r="5.5"/>
+    <circle cx="97" cy="72" r="5.5"/>
+  </g>
+</svg>

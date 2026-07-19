@@ -179,6 +179,7 @@ Delete "$INSTDIR\plugins\internetaccesscontrol.dll"
 Delete "$INSTDIR\plugins\screenrecorder.dll"
 Delete "$INSTDIR\plugins\networkdiscovery.dll"
 Delete "$INSTDIR\plugins\auvidus.dll"
+Delete "$INSTDIR\plugins\entraid.dll"
 # translations
 SetOutPath "$INSTDIR\translations"
 File "translations/*.qm"

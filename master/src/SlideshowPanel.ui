@@ -40,10 +40,10 @@
       <item>
        <widget class="QToolButton" name="showPreviousButton">
         <property name="toolTip">
-         <string>Previous</string>
+         <string>Sebelumnya</string>
         </property>
         <property name="text">
-         <string>Previous</string>
+         <string>Sebelumnya</string>
         </property>
         <property name="icon">
          <iconset resource="../../core/resources/core.qrc">
@@ -54,7 +54,7 @@
       <item>
        <widget class="QToolButton" name="startStopButton">
         <property name="toolTip">
-         <string>Start/pause</string>
+         <string>Mulai/jeda</string>
         </property>
         <property name="icon">
          <iconset resource="../../core/resources/core.qrc">
@@ -72,7 +72,7 @@
       <item>
        <widget class="QToolButton" name="showNextButton">
         <property name="toolTip">
-         <string>Next</string>
+         <string>Berikutnya</string>
         </property>
         <property name="icon">
          <iconset resource="../../core/resources/core.qrc">
@@ -96,7 +96,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Duration:</string>
+         <string>Durasi:</string>
         </property>
        </widget>
       </item>
@@ -132,7 +132,7 @@
       <item>
        <widget class="QToolButton" name="viewInSeparateWindowButton">
         <property name="toolTip">
-         <string>View in separate window</string>
+         <string>Lihat di jendela terpisah</string>
         </property>
         <property name="icon">
          <iconset resource="../../core/resources/core.qrc">

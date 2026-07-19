@@ -193,6 +193,44 @@ else
 	echo "WARNING: optional Qt styles plugin directory not found"
 fi
 
+# The explicit copies above only cover direct dependencies. Qt6Gui alone pulls
+# in freetype -> brotli/bz2/harfbuzz/graphite2, plus pcre2, zstd, icu,
+# double-conversion, libintl/iconv, md4c... Walk the import tables instead of
+# maintaining that list by hand. Anything not shipped by MSYS2 (kernel32 and
+# friends) is left to Windows.
+copy_transitive_deps()
+{
+	local -A seen=()
+	local queue=()
+	local binary dep
+
+	while IFS= read -r -d '' binary; do
+		queue+=( "${binary}" )
+	done < <(find "${install_files}" -type f \( -name '*.exe' -o -name '*.dll' \) -print0)
+
+	while [ "${#queue[@]}" -gt 0 ]; do
+		binary="${queue[0]}"
+		queue=( "${queue[@]:1}" )
+
+		while read -r dep; do
+			if [ -z "${dep}" ] || [ -n "${seen[${dep}]:-}" ]; then
+				continue
+			fi
+			seen[${dep}]=1
+
+			if [ ! -f "${dll_dir}/${dep}" ] || [ -f "${install_files}/${dep}" ]; then
+				continue
+			fi
+
+			echo "bundling transitive dependency: ${dep}"
+			cp "${dll_dir}/${dep}" "${install_files}"
+			queue+=( "${install_files}/${dep}" )
+		done < <(objdump -p "${binary}" 2>/dev/null | sed -n 's/^[[:space:]]*DLL Name:[[:space:]]*//p')
+	done
+}
+
+copy_transitive_deps
+
 strip_targets=(
 	"${install_files}"/*.dll
 	"${install_files}"/*.exe

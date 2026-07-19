@@ -8,12 +8,13 @@ installed and removed independently of the base application.
 
 | Package | Contents |
 |---------|----------|
-| **Khwarizmi Basic** | `veyon-*-setup.exe` — core + free built-in plugins. The base installer explicitly removes the add-on DLLs (`chat`, `internetaccesscontrol`, `screenrecorder`, `networkdiscovery`, `auvidus`). |
+| **Khwarizmi Basic** | `veyon-*-setup.exe` — core + free built-in plugins. The base installer explicitly removes the add-on DLLs (`chat`, `internetaccesscontrol`, `screenrecorder`, `networkdiscovery`, `auvidus`, `entraid`). |
 | **Add-on: Chat** | `Khwarizmi-Chat-Addon-*-setup.exe` — drops `chat.dll`. |
 | **Add-on: Internet Access Control** | drops `internetaccesscontrol.dll`. |
 | **Add-on: Screen Recorder** | drops `screenrecorder.dll` **and** `ffmpeg.exe`. |
 | **Add-on: Network Discovery** | drops `networkdiscovery.dll`. After installing, select **Network Discovery** as the directory backend in the Configurator (Network settings) to activate it. |
 | **Add-on: Auvidus** | drops `auvidus.dll` (audio/webcam/USB control). Windows-only device control. |
+| **Add-on: Entra ID** | drops `entraid.dll`. Configure tenant, app credentials and device mapping in the Configurator, then select **Microsoft Entra ID** as the directory and/or user groups backend. |
 
 Sell Basic on its own; sell/deploy add-ons on top as "Plus". An add-on
 installer refuses to run unless the Basic application is already installed.
@@ -28,7 +29,8 @@ Khwarizmi version it was built against**. Always:
 3. Re-build **all** add-ons whenever the core is updated.
 
 This is why the source for every add-on lives together on one branch — see
-`plugins/chat`, `plugins/internetaccesscontrol`, `plugins/screenrecorder`.
+`plugins/chat`, `plugins/internetaccesscontrol`, `plugins/screenrecorder`,
+`plugins/networkdiscovery`, `plugins/auvidus`, and `plugins/entraid`.
 
 ## Building the installers (Windows / MSYS2)
 
@@ -81,7 +83,7 @@ The add-on plugins are picked up automatically by the normal Windows build (the
 4. Build the Basic installer (this deletes the staging): `make create-windows-installer`.
 
 You get one Basic `.exe` plus one `.exe` per add-on (Chat, Internet Access
-Control, Screen Recorder, Network Discovery, Auvidus).
+Control, Screen Recorder, Network Discovery, Auvidus, Entra ID).
 
 ### Qt note
 
@@ -100,3 +102,4 @@ These paths can only be confirmed on Windows — verify each after deploying:
 | Screen Recorder | `ffmpeg.exe` is found next to the executables and produces a valid MP4 |
 | Network Discovery | the subnet scan lists the lab PCs (select it as the directory backend) |
 | **Auvidus** | the Windows-only device control — **untested off-Windows**: USB block (`USBSTOR\Start` registry), webcam consent registry, and the **Core Audio COM** mute path. Confirm it compiles under MinGW and each toggle works. |
+| Entra ID | test with a real Microsoft tenant: app credentials, admin consent, device sync, and security group access control |

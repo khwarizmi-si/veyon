@@ -28,6 +28,33 @@
 #include "BuiltinDirectoryConfiguration.h"
 #include "BuiltinDirectory.h"
 
+namespace
+{
+
+const auto DefaultSelfLocationUid = NetworkObject::Uid( QStringLiteral("4e6396c4-4f33-4bc2-b9be-337172b4fcb3") );
+const auto DefaultSelfComputerUid = NetworkObject::Uid( QStringLiteral("86e828ef-9134-4c61-8778-e6ae9e775a2f") );
+
+QJsonArray defaultSelfNetworkObjects()
+{
+	return {
+		NetworkObject( NetworkObject::Type::Location,
+					   QStringLiteral("Lab"),
+					   {},
+					   {},
+					   {},
+					   DefaultSelfLocationUid ).toJson(),
+		NetworkObject( NetworkObject::Type::Host,
+					   QStringLiteral("Self"),
+					   QStringLiteral("127.0.0.1"),
+					   {},
+					   {},
+					   DefaultSelfComputerUid,
+					   DefaultSelfLocationUid ).toJson()
+	};
+}
+
+}
+
 
 BuiltinDirectory::BuiltinDirectory( BuiltinDirectoryConfiguration& configuration, QObject* parent ) :
 	NetworkObjectDirectory( parent ),
@@ -41,7 +68,11 @@ void BuiltinDirectory::update()
 {
 	m_configuration.reloadFromStore();
 
-	const auto networkObjects = m_configuration.networkObjects();
+	auto networkObjects = m_configuration.networkObjects();
+	if( networkObjects.isEmpty() )
+	{
+		networkObjects = defaultSelfNetworkObjects();
+	}
 
 	NetworkObjectUidList groupUids;
 
