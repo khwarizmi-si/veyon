@@ -15,7 +15,9 @@ installed and removed independently of the base application.
 | **Add-on: Network Discovery** | drops `networkdiscovery.dll`. After installing, select **Network Discovery** as the directory backend in the Configurator (Network settings) to activate it. |
 | **Add-on: Auvidus** | drops `auvidus.dll` (audio/webcam/USB control). Windows-only device control. |
 
-Sell Basic on its own; sell/deploy add-ons on top as "Plus". An add-on
+Sell Basic on its own; sell/deploy add-ons on top as "Plus". Install every
+required add-on on both the teacher PC and each managed PC: the Master exposes
+the command while the Service on the managed PC executes it. An add-on
 installer refuses to run unless the Basic application is already installed.
 
 ## ⚠️ ABI lock (must read)
@@ -60,8 +62,9 @@ Per FFmpeg's LGPL terms, ship the corresponding source offer alongside.
 
 ## How an add-on installer works
 
-1. Reads the Sahid install path from the registry
-   (`HKLM\…\App Paths\veyon-master.exe`) and aborts if the base app is missing.
+1. Reads the Sahid install path from the registry, first via
+   `HKLM\…\App Paths\veyon-master.exe` and then via the base uninstaller entry.
+   The latter supports client-only installations without Sahid Master.
 2. Stops the Sahid service so the plugin DLL is not locked.
 3. Copies the DLL into `plugins\` (and `ffmpeg.exe` for Screen Recorder).
 4. Writes its own Add/Remove Programs entry + uninstaller.

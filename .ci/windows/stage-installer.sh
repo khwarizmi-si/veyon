@@ -193,6 +193,40 @@ else
 	echo "WARNING: optional Qt styles plugin directory not found"
 fi
 
+# Bundle DLLs referenced transitively by the staged executables and plugins.
+copy_transitive_deps()
+{
+	local -A seen=()
+	local queue=()
+	local binary dep
+
+	while IFS= read -r -d '' binary; do
+		queue+=( "${binary}" )
+	done < <(find "${install_files}" -type f \( -name '*.exe' -o -name '*.dll' \) -print0)
+
+	while [ "${#queue[@]}" -gt 0 ]; do
+		binary="${queue[0]}"
+		queue=( "${queue[@]:1}" )
+
+		while read -r dep; do
+			if [ -z "${dep}" ] || [ -n "${seen[${dep}]:-}" ]; then
+				continue
+			fi
+			seen[${dep}]=1
+
+			if [ ! -f "${dll_dir}/${dep}" ] || [ -f "${install_files}/${dep}" ]; then
+				continue
+			fi
+
+			echo "bundling transitive dependency: ${dep}"
+			cp "${dll_dir}/${dep}" "${install_files}"
+			queue+=( "${install_files}/${dep}" )
+		done < <(objdump -p "${binary}" 2>/dev/null | sed -n 's/^[[:space:]]*DLL Name:[[:space:]]*//p')
+	done
+}
+
+copy_transitive_deps
+
 strip_targets=(
 	"${install_files}"/*.dll
 	"${install_files}"/*.exe

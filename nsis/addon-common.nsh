@@ -17,6 +17,7 @@
 !define KH_MAIN_EXE   "veyon-master.exe"
 !define KH_CLI        "veyon-wcli.exe"
 !define KH_APP_PATH   "Software\Microsoft\Windows\CurrentVersion\App Paths\${KH_MAIN_EXE}"
+!define KH_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${KH_APP}"
 !define ADDON_UNINST  "Software\Microsoft\Windows\CurrentVersion\Uninstall\${KH_APP}-${ADDON_NAME}"
 
 Name "${KH_APP} ${ADDON_NAME} Add-on"
@@ -56,15 +57,21 @@ Function .onInit
 		Quit
 	${EndIf}
 
-	# the base installer stores the full path to veyon-master.exe here
+	# A client-only installation deliberately has no veyon-master.exe.
+	# In that case, derive the directory from the base uninstaller entry.
+	StrCpy $KH_DIR ""
 	ReadRegStr $0 HKLM "${KH_APP_PATH}" ""
-	${If} $0 == ""
-		MessageBox MB_ICONSTOP "Sahid is not installed.$\n$\nPlease install the Sahid base application before installing this add-on."
-		Quit
+	${If} $0 != ""
+		${GetParent} "$0" $KH_DIR
 	${EndIf}
-	${GetParent} "$0" $KH_DIR ; strip \veyon-master.exe -> installation directory
-	${IfNot} ${FileExists} "$KH_DIR\${KH_MAIN_EXE}"
-		MessageBox MB_ICONSTOP "Could not locate the Sahid installation directory."
+	${If} $KH_DIR == ""
+		ReadRegStr $0 HKLM "${KH_UNINSTALL_PATH}" "UninstallString"
+		${If} $0 != ""
+			${GetParent} "$0" $KH_DIR
+		${EndIf}
+	${EndIf}
+	${IfNot} ${FileExists} "$KH_DIR\${KH_CLI}"
+		MessageBox MB_ICONSTOP "Could not locate a compatible Sahid installation.$\n$\nPlease install the Sahid base application before installing this add-on."
 		Quit
 	${EndIf}
 
