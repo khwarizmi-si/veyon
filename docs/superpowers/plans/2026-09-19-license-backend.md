@@ -97,10 +97,13 @@ npm install -D wrangler typescript vitest @cloudflare/vitest-pool-workers @cloud
 
 - [ ] **Step 2: Tulis file konfigurasi**
 
-`package.json` — ganti bagian `scripts` menjadi:
+`package.json` — tambahkan `"type": "module"` dan ganti bagian `scripts`.
+`"type": "module"` wajib: `scripts/keygen.ts` di Task 7 memakai top-level `await`,
+yang gagal di bawah CommonJS default dari `npm init -y`.
 
 ```json
 {
+  "type": "module",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",

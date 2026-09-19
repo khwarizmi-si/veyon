@@ -351,19 +351,33 @@ ketegangan tersebut.
 | Database | **D1** (SQLite) | Data bersifat relasional (tenant → master → device) dan dedup §6 membutuhkan kueri SQL. KV tidak cocok untuk menghitung device unik. Ukuran data jauh di bawah batas (500 MB gratis / 10 GB berbayar). |
 | Penandatanganan token | **WebCrypto** `crypto.subtle` | `RSASSA-PKCS1-v1_5` + SHA-512 adalah RS512 (§5). Tersedia di runtime, tanpa library JWT untuk menandatangani. |
 | Private key | **Workers Secrets** | Tidak pernah masuk repo atau bundle. |
-| Pekerjaan harian | **Cron Triggers** | Recompute luruh device (§7) dan deteksi kelebihan kuota. |
+| Pekerjaan harian | **tidak ada** | Tidak diperlukan — lihat catatan di bawah. |
 
-### Dua batasan runtime yang membentuk desain
+### Cron Triggers tidak dipakai
 
-1. **Cron Triggers berjalan dalam UTC.** Sekolah target berada di WIB (UTC+7),
-   jadi jadwal harus dikonversi manual dan dipilih pada jam yang tidak
-   mengejutkan (mis. dini hari WIB).
-2. **Cron Triggers bersifat at-least-once — pekerjaan harian bisa berjalan dua
-   kali.** Karena itu pekerjaan harian **wajib idempoten**: dirancang sebagai
-   *menghitung ulang dari keadaan saat ini*, tidak pernah sebagai
-   *menambah/menggeser penghitung*. Menggeser tanggal atau menaikkan penghitung
-   di dalam cron akan rusak diam-diam saat eksekusi ganda, dan kerusakannya
-   berupa tagihan atau suspend yang salah.
+Rancangan awal mengasumsikan ada pekerjaan harian untuk meluruhkan device dan
+mendeteksi kelebihan kuota. Saat implementasi ternyata keduanya tidak
+membutuhkannya:
+
+- **Luruh 30 hari (§7) adalah klausa `WHERE` pada kueri**, bukan mutasi. Tidak
+  ada yang perlu dijalankan secara berkala; device lama cukup tidak ikut
+  terhitung.
+- **Kelebihan kuota dihitung ulang inline saat check-in**, yaitu tepat ketika
+  angkanya berubah.
+
+Menghapus cron sekaligus menghapus satu kelas bug: Cron Triggers bersifat
+*at-least-once*, sehingga pekerjaan harian bisa berjalan dua kali dan merusak
+data diam-diam bila ia menggeser tanggal atau menaikkan penghitung. Tanpa cron,
+risiko itu tidak pernah ada.
+
+Prinsip yang tetap berlaku: `recomputeOverage` **menghitung ulang dari keadaan
+saat ini**, tidak pernah menambah atau menggeser penghitung. Itulah yang membuat
+pemanggilan berulang aman.
+
+Batasan yang diterima: ketiga operasi di dalam `recomputeOverage` tidak atomik,
+jadi dua master yang check-in bersamaan bisa saling mendahului. Diterima karena
+flag dihitung ulang tiap check-in harian terhadap masa tenggang 14 hari, sehingga
+kesalahan sesaat pulih sendiri. Jalur upgrade-nya dicatat di `src/db.ts`.
 
 Perhitungan volume: 1.000 sekolah × 2 master × 40 device = 80.000 pembaruan baris
 per hari, sekitar 2,4 juta tulisan per bulan. Jauh di dalam wilayah biaya yang
