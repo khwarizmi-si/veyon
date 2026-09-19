@@ -320,6 +320,8 @@ Yang harus diuji:
 - Deteksi jam mundur
 - Aturan dedup device (§6), termasuk penggabungan hostname → MAC
 - Aturan luruh 30 hari (§7)
+- **Idempotensi pekerjaan harian** (§14): menjalankannya dua kali berturut-turut
+  harus menghasilkan keadaan yang sama persis
 
 ## 13. Dekomposisi & urutan
 
@@ -334,10 +336,49 @@ dapat dipakai pilot dengan tenant yang dibuat manual. Billing otomatis tidak
 diperlukan untuk menandatangani beberapa sekolah pertama, dan menunda tahap 3
 membuat keputusan payment gateway tidak memblokir apa pun.
 
-## 14. Keputusan terbuka
+## 14. Stack backend
+
+Target: TypeScript, dapat di-deploy ke Cloudflare.
+
+**Cloudflare Workers bukan Node.js.** Workers berjalan di isolate V8 dengan
+kompatibilitas Node yang parsial, sehingga framework Node konvensional
+(Express, Fastify) tidak cocok. Pemilihan di bawah ini menyelesaikan
+ketegangan tersebut.
+
+| Lapis | Pilihan | Alasan |
+|---|---|---|
+| Framework | **Hono** | Berjalan di Workers **dan** Node dari basis kode yang sama. Bila suatu saat backend perlu pindah dari Workers ke host Node biasa, kodenya ikut tanpa ditulis ulang. |
+| Database | **D1** (SQLite) | Data bersifat relasional (tenant → master → device) dan dedup §6 membutuhkan kueri SQL. KV tidak cocok untuk menghitung device unik. Ukuran data jauh di bawah batas (500 MB gratis / 10 GB berbayar). |
+| Penandatanganan token | **WebCrypto** `crypto.subtle` | `RSASSA-PKCS1-v1_5` + SHA-512 adalah RS512 (§5). Tersedia di runtime, tanpa library JWT untuk menandatangani. |
+| Private key | **Workers Secrets** | Tidak pernah masuk repo atau bundle. |
+| Pekerjaan harian | **Cron Triggers** | Recompute luruh device (§7) dan deteksi kelebihan kuota. |
+
+### Dua batasan runtime yang membentuk desain
+
+1. **Cron Triggers berjalan dalam UTC.** Sekolah target berada di WIB (UTC+7),
+   jadi jadwal harus dikonversi manual dan dipilih pada jam yang tidak
+   mengejutkan (mis. dini hari WIB).
+2. **Cron Triggers bersifat at-least-once — pekerjaan harian bisa berjalan dua
+   kali.** Karena itu pekerjaan harian **wajib idempoten**: dirancang sebagai
+   *menghitung ulang dari keadaan saat ini*, tidak pernah sebagai
+   *menambah/menggeser penghitung*. Menggeser tanggal atau menaikkan penghitung
+   di dalam cron akan rusak diam-diam saat eksekusi ganda, dan kerusakannya
+   berupa tagihan atau suspend yang salah.
+
+Perhitungan volume: 1.000 sekolah × 2 master × 40 device = 80.000 pembaruan baris
+per hari, sekitar 2,4 juta tulisan per bulan. Jauh di dalam wilayah biaya yang
+dapat diabaikan untuk D1.
+
+**Pengujian backend:** Vitest, dengan `app.request()` milik Hono untuk menguji
+endpoint tanpa menjalankan server.
+
+**Catatan verifikasi:** dukungan persis `RSASSA-PKCS1-v1_5` SHA-512 di runtime
+Workers perlu dikonfirmasi ke dokumentasi Cloudflare saat implementasi, sebelum
+format token dikunci.
+
+## 15. Keputusan terbuka
 
 | Hal | Status |
 |---|---|
 | Payment gateway | Akan ditentukan pemilik produk. Kandidat lokal: Midtrans, Xendit (VA, QRIS, e-wallet). Hanya menyentuh `POST /v1/webhooks/payment`. |
-| Bahasa/stack backend | Belum ditentukan; harus punya library JWT RS512 yang matang. |
 | Harga per slot, bulanan vs tahunan | Keputusan bisnis, tidak memengaruhi desain teknis. |
