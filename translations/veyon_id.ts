@@ -2998,11 +2998,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>We could not verify the subscription and the service is suspended. Check the internet connection, then check again.</source>
-        <translation>Kami tidak dapat memverifikasi langganan/pembayaran dan layanan ditangguhkan. Periksa koneksi internet, lalu periksa lagi.</translation>
+        <translation>Kami tidak dapat memverifikasi pembayaran langganan dan layanan ditangguhkan. Periksa koneksi internet, lalu periksa lagi.</translation>
     </message>
     <message>
         <source>We could not verify the subscription. Check the internet connection. The service will be suspended on %1 if this continues.</source>
-        <translation>Kami tidak dapat memverifikasi langganan/pembayaran. Periksa koneksi internet. Layanan akan ditangguhkan pada %1 jika ini berlanjut.</translation>
+        <translation>Kami tidak dapat memverifikasi pembayaran langganan. Periksa koneksi internet. Layanan akan ditangguhkan pada %1 jika ini berlanjut.</translation>
     </message>
     <message>
         <source>The school is using more devices than its licence allows, and the service is suspended.</source>
