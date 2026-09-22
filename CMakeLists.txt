@@ -200,12 +200,16 @@ if(WITH_BUNDLED_LIBVNC)
 	set(WITH_SASL OFF)
 	set(WITH_SDL OFF)
 	set(WITH_SYSTEMD OFF)
+	# bundled libvncserver needs its own tests off, but a plain set() below would
+	# shadow Veyon's cached WITH_TESTS for the rest of this configure run — save and restore it
+	set(VEYON_WITH_TESTS ${WITH_TESTS})
 	set(WITH_TESTS OFF)
 	set(WITH_TIGHTVNC_FILETRANSFER OFF)
 	set(WITH_XCB OFF)
 	set(LIBVNCSERVER_INSTALL OFF)
 
 	add_subdirectory(${libvncserver_SOURCE_DIR})
+	set(WITH_TESTS ${VEYON_WITH_TESTS})
 
 	set_default_target_properties(vncclient)
 	set_default_target_properties(vncserver)
