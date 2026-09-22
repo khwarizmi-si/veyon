@@ -10,6 +10,7 @@
  */
 
 #include <cmath>
+#include <limits>
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -62,6 +63,10 @@ static QDateTime parseIsoUtc(const QJsonValue& value)
 	return dateTime.isValid() ? dateTime.toUTC() : QDateTime{};
 }
 
+// 9999-12-31T23:59:59Z: far beyond any sane licence expiry, and comfortably
+// inside qint64's range so the cast below is never UB.
+static constexpr double MaxUnixSeconds = 253402300799.0;
+
 static QDateTime parseUnixSeconds(const QJsonValue& value)
 {
 	if (value.isDouble() == false)
@@ -69,16 +74,21 @@ static QDateTime parseUnixSeconds(const QJsonValue& value)
 		return {};
 	}
 	const auto seconds = value.toDouble();
-	if (seconds < 0 || seconds != std::floor(seconds))
+	if (seconds < 0 || seconds > MaxUnixSeconds || seconds != std::floor(seconds))
 	{
 		return {};
 	}
 	return QDateTime::fromSecsSinceEpoch(qint64(seconds)).toUTC();
 }
 
-static bool isWholeNonNegative(const QJsonValue& value)
+static bool isWholeNonNegative(const QJsonValue& value, double maxValue)
 {
-	return value.isDouble() && value.toDouble() >= 0 && value.toDouble() == std::floor(value.toDouble());
+	if (value.isDouble() == false)
+	{
+		return false;
+	}
+	const auto number = value.toDouble();
+	return number >= 0 && number <= maxValue && number == std::floor(number);
 }
 
 }
@@ -144,7 +154,7 @@ std::optional<LicenseClaims> LicenseToken::verify(const QString& token,
 		claims.masterId.isEmpty() || claims.tenantId.isEmpty() ||
 		(claims.plan != QStringLiteral("trial") && claims.plan != QStringLiteral("paid")) ||
 		p.value(QStringLiteral("tenant_name")).isString() == false ||
-		isWholeNonNegative(p.value(QStringLiteral("max_devices"))) == false ||
+		isWholeNonNegative(p.value(QStringLiteral("max_devices")), double(std::numeric_limits<int>::max())) == false ||
 		p.contains(QStringLiteral("overage_since")) == false)
 	{
 		return std::nullopt;

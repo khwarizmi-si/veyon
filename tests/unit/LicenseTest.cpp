@@ -133,6 +133,36 @@ private Q_SLOTS:
 		QVERIFY(!LicenseToken::verify(QStringLiteral("a.b.c.d"), keys).has_value());
 	}
 
+	// max_devices is a whole, non-negative JSON number, but far too big to
+	// cast to int without UB. verify() must reject it with an explicit upper
+	// bound, not just "is a whole non-negative number".
+	void rejectsHugeMaxDevices()
+	{
+		QVERIFY(!LicenseToken::verify(fixture(QStringLiteral("huge-max-devices.jwt")), testKeys()).has_value());
+	}
+
+	// exp is a whole, non-negative JSON number, but far too big to cast to
+	// qint64 without UB. Same bounds-checking requirement as max_devices.
+	void rejectsHugeExpiry()
+	{
+		QVERIFY(!LicenseToken::verify(fixture(QStringLiteral("huge-exp.jwt")), testKeys()).has_value());
+	}
+
+	// The payload segment is valid JSON, just not an object.
+	void rejectsArrayPayload()
+	{
+		QVERIFY(!LicenseToken::verify(fixture(QStringLiteral("array-payload.jwt")), testKeys()).has_value());
+	}
+
+	// A caller can hand verify() a kid that resolves to a default-constructed
+	// (null) key, e.g. a partially loaded key set. No fixture needed: this
+	// exercises the null-key guard directly against a genuinely-signed token.
+	void rejectsNullPublicKeyForKnownKid()
+	{
+		const QMap<QString, CryptoCore::PublicKey> keys = { { QStringLiteral("test-k1"), CryptoCore::PublicKey() } };
+		QVERIFY(!LicenseToken::verify(fixture(QStringLiteral("valid.jwt")), keys).has_value());
+	}
+
 	// Expiry is the connection axis of LicenseEvaluator, not a verification
 	// failure. expired.jwt's exp is in 2023, so it is in the past on any real
 	// clock, yet verify() must still accept it.
