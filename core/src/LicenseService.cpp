@@ -16,6 +16,17 @@
 #include "LicenseService.h"
 #include "LicenseStorage.h"
 
+// M4: acceptToken() refuses a token whose iat is more than MaxFutureIssueSecs
+// ahead of `now` (see the comment there). LicenseEvaluator treats a
+// lastServerTime more than ClockRollbackToleranceSecs ahead of `now` as a
+// rolled-back clock. If MaxFutureIssueSecs were ever larger than
+// ClockRollbackToleranceSecs, a token acceptToken() lets through as "not from
+// the future" could still exceed the evaluator's tolerance once stored,
+// locking the school in ClockRolledBack until the token expires.
+static_assert(LicenseService::MaxFutureIssueSecs == LicenseEvaluator::ClockRollbackToleranceSecs,
+			 "MaxFutureIssueSecs must match ClockRollbackToleranceSecs, or an accepted token's iat "
+			 "can exceed the evaluator's own tolerance and lock the school in ClockRolledBack");
+
 namespace LicenseServiceDetail
 {
 
@@ -37,6 +48,26 @@ static LicenseActionResult fromCallStatus(LicenseCallStatus status)
 	case LicenseCallStatus::InvalidResponse: return LicenseActionResult::InvalidResponse;
 	}
 	return LicenseActionResult::ServerError;
+}
+
+// I2: JsonStore::flush() returns void and swallows write errors. Reloading a
+// fresh instance (which re-reads from disk) and comparing against what we
+// meant to write is the only way this layer can detect a failed save.
+static bool flushAndVerify(LicenseActivation& store)
+{
+	store.flushStore();
+	const LicenseActivation reloaded;
+	return reloaded.masterId() == store.masterId()
+		&& reloaded.secret() == store.secret()
+		&& reloaded.activationToken() == store.activationToken();
+}
+
+static bool flushAndVerify(LicenseCache& store)
+{
+	store.flushStore();
+	const LicenseCache reloaded;
+	return reloaded.refreshedToken() == store.refreshedToken()
+		&& reloaded.lastServerTime() == store.lastServerTime();
 }
 
 }
@@ -87,6 +118,8 @@ LicenseSnapshot LicenseService::snapshot()
 
 LicenseActionResult LicenseService::activate(const QString& code)
 {
+	using namespace LicenseServiceDetail;
+
 	LicenseActivation activation;
 	// Check before touching the network: the code is single-use, so failing
 	// to store its result would burn it for nothing.
@@ -99,26 +132,51 @@ LicenseActionResult LicenseService::activate(const QString& code)
 	const auto response = client.activate(code.trimmed(), QHostInfo::localHostName(), VeyonCore::versionString());
 	if (response.status != LicenseCallStatus::Ok)
 	{
-		return LicenseServiceDetail::fromCallStatus(response.status);
+		auto result = fromCallStatus(response.status);
+		// M6: at this point in the flow there are no credentials to reject
+		// yet, so a 401/403 here is a WAF or rate limit, not a credentials
+		// rejection - reporting it as such would be misleading.
+		if (result == LicenseActionResult::Unauthorized)
+		{
+			result = LicenseActionResult::ServerError;
+		}
+		return result;
 	}
+
+	// I1: the server has already consumed the single-use code. Persist
+	// masterId/secret unconditionally so a retry (e.g. after fixing a wrong
+	// clock) can finish the job via checkIn(), which only needs these two.
+	activation.setMasterId(response.masterId);
+	activation.setSecret(response.secret);
 
 	const auto accepted = acceptToken(response.token, {}, response.masterId, QDateTime::currentDateTimeUtc(),
 									  LicenseToken::productionKeys());
+	if (accepted == LicenseActionResult::Ok)
+	{
+		activation.setActivationToken(response.token);
+	}
+
+	if (flushAndVerify(activation) == false)
+	{
+		return LicenseActionResult::NotWritable;
+	}
+
 	if (accepted != LicenseActionResult::Ok)
 	{
 		return accepted;
 	}
 
-	activation.setMasterId(response.masterId);
-	activation.setSecret(response.secret);
-	activation.setActivationToken(response.token);
-	activation.flushStore();
-
 	LicenseCache cache;
-	cache.setRefreshedToken({});
-	cache.setLastServerTime(LicenseToken::verify(response.token, LicenseToken::productionKeys())
-								->issuedAt.toString(Qt::ISODateWithMs));
-	cache.flushStore();
+	const auto issuedAt = LicenseToken::verify(response.token, LicenseToken::productionKeys())->issuedAt;
+	const auto stored = parseStoredTime(cache.lastServerTime());
+	if (stored.isValid() == false || issuedAt > stored)
+	{
+		cache.setLastServerTime(issuedAt.toString(Qt::ISODateWithMs));
+	}
+	if (flushAndVerify(cache) == false)
+	{
+		return LicenseActionResult::NotWritable;
+	}
 
 	return LicenseActionResult::Ok;
 }
@@ -127,7 +185,7 @@ LicenseActionResult LicenseService::checkIn(const QList<LicenseDevice>& devices)
 {
 	using namespace LicenseServiceDetail;
 
-	const LicenseActivation activation;
+	LicenseActivation activation;
 	if (activation.masterId().isEmpty() || activation.secret().isEmpty())
 	{
 		return LicenseActionResult::NotActivated;
@@ -154,14 +212,39 @@ LicenseActionResult LicenseService::checkIn(const QList<LicenseDevice>& devices)
 		return accepted;
 	}
 
+	// I4: lastServerTime is a per-profile rollback reference and always lives
+	// in the user cache. Where the refreshed token itself goes depends on who
+	// is running: if the system store is writable (the Configurator, running
+	// elevated as the administrator), store it there so the administrator's
+	// own page and every teacher's master pick it up. Otherwise (the master,
+	// running as the teacher) store it in the user cache as before.
 	const auto issuedAt = LicenseToken::verify(response.token, keys)->issuedAt;
 	const auto stored = parseStoredTime(cache.lastServerTime());
-	cache.setRefreshedToken(response.token);
-	if (!stored.isValid() || issuedAt > stored)
+	if (stored.isValid() == false || issuedAt > stored)
 	{
 		cache.setLastServerTime(issuedAt.toString(Qt::ISODateWithMs));
 	}
-	cache.flushStore();
+
+	const bool activationWritable = activation.isStoreWritable();
+	if (activationWritable == false)
+	{
+		cache.setRefreshedToken(response.token);
+	}
+
+	if (flushAndVerify(cache) == false)
+	{
+		return LicenseActionResult::NotWritable;
+	}
+
+	if (activationWritable)
+	{
+		activation.setActivationToken(response.token);
+		if (flushAndVerify(activation) == false)
+		{
+			return LicenseActionResult::NotWritable;
+		}
+	}
+
 	return LicenseActionResult::Ok;
 }
 
@@ -175,7 +258,7 @@ QString LicenseService::describe(const LicenseState& state)
 	case LicenseReason::None:
 		return tr("The licence is active.");
 	case LicenseReason::NotActivated:
-		return tr("This computer has not been activated. Enter an activation code in the Veyon Configurator.");
+		return tr("This computer has not been activated. Enter an activation code in the Khwarizmi Configurator.");
 	case LicenseReason::ClockRolledBack:
 		return tr("This computer's clock is behind the licence server's time. Correct the date and time, then check again.");
 	case LicenseReason::Subscription:
@@ -211,7 +294,7 @@ QString LicenseService::describe(LicenseActionResult result)
 	case LicenseActionResult::NotActivated: return tr("This computer has not been activated.");
 	case LicenseActionResult::ClockSkew: return tr("This computer's clock appears to be wrong. Correct the date and time, then try again.");
 	case LicenseActionResult::StaleToken: return tr("The licence server returned an older licence than the one already stored.");
-	case LicenseActionResult::NotWritable: return tr("The licence could not be saved. Run the Veyon Configurator as an administrator.");
+	case LicenseActionResult::NotWritable: return tr("The licence could not be saved. Run the Khwarizmi Configurator as an administrator.");
 	case LicenseActionResult::TokenRejected: return tr("The licence returned by the server could not be verified.");
 	}
 	return {};
