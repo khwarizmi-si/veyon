@@ -13,6 +13,8 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkRequest>
+#include <QRegularExpression>
 #include <QTest>
 #include <QtCrypto>
 
@@ -45,6 +47,47 @@ private:
 	{
 		return { { QStringLiteral("test-k1"),
 				   CryptoCore::PublicKey::fromPEM(fixture(QStringLiteral("test-public.pem"))) } };
+	}
+
+	struct TsMessage
+	{
+		QString source;
+		QString translation;
+	};
+
+	static QString readWholeFile(const QString& path)
+	{
+		QFile file(path);
+		if (!file.open(QFile::ReadOnly)) {
+			qFatal("missing file %s", qPrintable(path));
+		}
+		return QString::fromUtf8(file.readAll());
+	}
+
+	// Simple XML scan (no QDomDocument dependency): pulls out one <context>
+	// block by <name>, then every <source>/<translation> pair inside it.
+	static QList<TsMessage> messagesInContext(const QString& ts, const QString& contextName)
+	{
+		const QRegularExpression contextRe(
+			QStringLiteral(R"(<context>\s*<name>%1</name>(.*?)</context>)").arg(QRegularExpression::escape(contextName)),
+			QRegularExpression::DotMatchesEverythingOption);
+		const auto contextMatch = contextRe.match(ts);
+		if (!contextMatch.hasMatch())
+		{
+			return {};
+		}
+
+		QList<TsMessage> messages;
+		const QRegularExpression messageRe(
+			QStringLiteral(R"(<source>(.*?)</source>.*?<translation[^>]*>(.*?)</translation>)"),
+			QRegularExpression::DotMatchesEverythingOption);
+		auto it = messageRe.globalMatch(contextMatch.captured(1));
+		while (it.hasNext())
+		{
+			const auto match = it.next();
+			messages.append({ match.captured(1), match.captured(2) });
+		}
+		return messages;
 	}
 
 	// A school that paid through T0 + 30d, fresh token issued at T0.
@@ -531,6 +574,8 @@ private Q_SLOTS:
 		QTest::newRow("no status")       << 0   << QByteArray() << LicenseCallStatus::NetworkError;
 		QTest::newRow("200 not json")    << 200 << QByteArray("<html>") << LicenseCallStatus::InvalidResponse;
 		QTest::newRow("200 missing key") << 200 << QByteArray(R"({"master_id":"mst_1","token":"a.b.c"})") << LicenseCallStatus::InvalidResponse;
+		// I3: a redirect must never be followed; it is surfaced as a server error.
+		QTest::newRow("redirect")        << 302 << QByteArray() << LicenseCallStatus::ServerError;
 	}
 
 	void mapsActivationErrors()
@@ -553,6 +598,7 @@ private Q_SLOTS:
 		QTest::newRow("gateway")      << 502 << QByteArray() << LicenseCallStatus::ServerError;
 		QTest::newRow("no status")    << 0   << QByteArray() << LicenseCallStatus::NetworkError;
 		QTest::newRow("no token")     << 200 << QByteArray(R"({})") << LicenseCallStatus::InvalidResponse;
+		QTest::newRow("redirect")     << 302 << QByteArray() << LicenseCallStatus::ServerError;
 	}
 
 	void mapsCheckInStatuses()
@@ -568,6 +614,35 @@ private Q_SLOTS:
 		QVERIFY(!LicenseClient::endpoint(QStringLiteral("http://license.khwarizmi.co.id"), QStringLiteral("/v1/activate")).isValid());
 		QCOMPARE(LicenseClient::endpoint(QStringLiteral("https://license.khwarizmi.co.id/"), QStringLiteral("/v1/activate")),
 				 QUrl(QStringLiteral("https://license.khwarizmi.co.id/v1/activate")));
+	}
+
+	// I3: a redirect must never carry the bearer secret to another host.
+	void buildRequestSetsBearerHeaderWithSpace()
+	{
+		const auto request = LicenseClient::buildRequest(
+			QUrl(QStringLiteral("https://license.khwarizmi.co.id/v1/checkin")), QByteArrayLiteral("abc"));
+		QCOMPARE(request.rawHeader("Authorization"), QByteArray("Bearer abc"));
+	}
+
+	void buildRequestOmitsAuthorizationForEmptyBearer()
+	{
+		const auto request = LicenseClient::buildRequest(
+			QUrl(QStringLiteral("https://license.khwarizmi.co.id/v1/activate")), QByteArray());
+		QVERIFY(!request.hasRawHeader("Authorization"));
+	}
+
+	// Bite-proof: remove the RedirectPolicyAttribute line in buildRequest()
+	// and this fails.
+	void buildRequestNeverFollowsRedirects()
+	{
+		const auto request = LicenseClient::buildRequest(
+			QUrl(QStringLiteral("https://license.khwarizmi.co.id/v1/activate")), QByteArray());
+		const auto attribute = request.attribute(QNetworkRequest::RedirectPolicyAttribute);
+		// An absent attribute reads back as an invalid QVariant whose toInt()
+		// coincidentally equals ManualRedirectPolicy's value (0) - checking
+		// isValid() first is what actually makes this bite-proof.
+		QVERIFY2(attribute.isValid(), "RedirectPolicyAttribute was never set");
+		QCOMPARE(attribute.toInt(), static_cast<int>(QNetworkRequest::ManualRedirectPolicy));
 	}
 
 	void acceptsFirstValidToken()
@@ -602,6 +677,36 @@ private Q_SLOTS:
 				 LicenseActionResult::ClockSkew);
 	}
 
+	// Boundary: iat exactly now + MaxFutureIssueSecs must still be accepted.
+	// Bite-proof: change the acceptToken() comparison from `>` to `>=` and
+	// this fails.
+	void acceptsTokenAtExactFutureBoundary()
+	{
+		const auto now = QDateTime::fromSecsSinceEpoch(1790000000 - LicenseService::MaxFutureIssueSecs).toUTC();
+		QCOMPARE(LicenseService::acceptToken(fixture(QStringLiteral("valid.jwt")), {}, QStringLiteral("mst_fixture"), now, testKeys()),
+				 LicenseActionResult::Ok);
+	}
+
+	// Re-delivery of the same token the caller already holds must not be
+	// treated as stale.
+	void reDeliveryOfTheSameTokenIsOk()
+	{
+		const auto now = QDateTime::fromSecsSinceEpoch(1790000000 + 60).toUTC();
+		const auto token = fixture(QStringLiteral("valid.jwt"));
+		QCOMPARE(LicenseService::acceptToken(token, token, QStringLiteral("mst_fixture"), now, testKeys()),
+				 LicenseActionResult::Ok);
+	}
+
+	// A currentToken belonging to another master (e.g. a stale cache from a
+	// previous activation) must never make a genuine candidate look stale.
+	void currentTokenForAnotherMasterIsIgnored()
+	{
+		const auto now = QDateTime::fromSecsSinceEpoch(1790000000 + 60).toUTC();
+		QCOMPARE(LicenseService::acceptToken(fixture(QStringLiteral("valid.jwt")), fixture(QStringLiteral("other-master.jwt")),
+											 QStringLiteral("mst_fixture"), now, testKeys()),
+				 LicenseActionResult::Ok);
+	}
+
 	void describesEveryReason()
 	{
 		const QList<LicenseReason> reasons{ LicenseReason::None, LicenseReason::NotActivated, LicenseReason::ClockRolledBack,
@@ -625,6 +730,45 @@ private Q_SLOTS:
 		const auto message = LicenseService::describe(state).toLower();
 		QVERIFY(message.contains(QStringLiteral("verify")));
 		QVERIFY(!message.contains(QStringLiteral("has not been paid")));
+
+		// Same invariant for the Indonesian translation, loaded straight from
+		// the source tree so a bad translation cannot slip past review.
+		const auto ts = readWholeFile(QStringLiteral(VEYON_ID_TS_PATH));
+		const auto messages = messagesInContext(ts, QStringLiteral("LicenseService"));
+		QVERIFY2(!messages.isEmpty(), "LicenseService context missing or empty in veyon_id.ts");
+
+		bool checkedAny = false;
+		for (const auto& message : messages)
+		{
+			if (!message.source.contains(QStringLiteral("verify the subscription")))
+			{
+				continue;
+			}
+			checkedAny = true;
+			const auto translation = message.translation.toLower();
+			QVERIFY2(!translation.contains(QStringLiteral("belum membayar")),
+					 qPrintable(QStringLiteral("translation claims non-payment: ") + message.translation));
+			QVERIFY2(!translation.contains(QStringLiteral("belum bayar")),
+					 qPrintable(QStringLiteral("translation claims non-payment: ") + message.translation));
+		}
+		QVERIFY2(checkedAny, "no LicenseService source mentions 'verify the subscription'");
+	}
+
+	// Every source string actually used by these two contexts must have a
+	// translation, so the UI never falls back to raw English by accident.
+	void everyLicenseSourceHasATranslation()
+	{
+		const auto ts = readWholeFile(QStringLiteral(VEYON_ID_TS_PATH));
+		for (const auto& contextName : { QStringLiteral("LicenseService"), QStringLiteral("LicensePage") })
+		{
+			const auto messages = messagesInContext(ts, contextName);
+			QVERIFY2(!messages.isEmpty(), qPrintable(QStringLiteral("context missing or empty: ") + contextName));
+			for (const auto& message : messages)
+			{
+				QVERIFY2(!message.translation.trimmed().isEmpty(),
+						 qPrintable(QStringLiteral("empty translation for: ") + message.source));
+			}
+		}
 	}
 };
 
