@@ -19,6 +19,8 @@ build_veyon_application(veyon-configurator
 	src/GeneralConfigurationPage.cpp
 	src/GeneralConfigurationPage.h
 	src/GeneralConfigurationPage.ui
+	src/LicensePage.cpp
+	src/LicensePage.h
 	src/main.cpp
 	src/MainWindow.cpp
 	src/MainWindow.h

@@ -39,6 +39,7 @@
 #include "AboutDialog.h"
 #include "ConfigurationPagePluginInterface.h"
 #include "ConfigurationManager.h"
+#include "LicensePage.h"
 #include "VeyonConfiguration.h"
 #include "MainWindow.h"
 #include "PluginManager.h"
@@ -360,6 +361,15 @@ void MainWindow::loadConfigurationPagePlugins()
 			}
 		}
 	}
+
+	// The licence page is built in, not a plugin: deleting a plugin must not
+	// be a way to hide the licence state.
+	auto licensePage = new LicensePage;
+	ui->configPages->addWidget( licensePage );
+	auto licenseItem = new QListWidgetItem( licensePage->windowIcon(), licensePage->windowTitle() );
+	licenseItem->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
+	licenseItem->setData( Qt::UserRole, QVariant::fromValue( static_cast<ConfigurationPage *>( licensePage ) ) );
+	ui->pageSelector->addItem( licenseItem );
 
 	// adjust minimum size
 	ui->pageSelector->setMinimumSize( ui->pageSelector->sizeHintForColumn(0) + 3 * ui->pageSelector->spacing(),

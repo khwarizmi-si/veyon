@@ -2928,6 +2928,144 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
 </context>
 <context>
+    <name>LicensePage</name>
+    <message>
+        <source>Licence</source>
+        <translation>Lisensi</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation>Status</translation>
+    </message>
+    <message>
+        <source>Check now</source>
+        <translation>Periksa sekarang</translation>
+    </message>
+    <message>
+        <source>Activation</source>
+        <translation>Aktivasi</translation>
+    </message>
+    <message>
+        <source>Activation code</source>
+        <translation>Kode aktivasi</translation>
+    </message>
+    <message>
+        <source>Activate</source>
+        <translation>Aktifkan</translation>
+    </message>
+    <message>
+        <source>School: %1</source>
+        <translation>Sekolah: %1</translation>
+    </message>
+    <message>
+        <source>Device quota: %1</source>
+        <translation>Kuota perangkat: %1</translation>
+    </message>
+    <message>
+        <source>Subscription until: %1</source>
+        <translation>Langganan sampai: %1</translation>
+    </message>
+    <message>
+        <source>Licence renewal due: %1</source>
+        <translation>Perpanjangan lisensi jatuh tempo: %1</translation>
+    </message>
+    <message>
+        <source>Computer ID: %1</source>
+        <translation>ID komputer: %1</translation>
+    </message>
+</context>
+<context>
+    <name>LicenseService</name>
+    <message>
+        <source>The licence is active.</source>
+        <translation>Lisensi aktif.</translation>
+    </message>
+    <message>
+        <source>This computer has not been activated. Enter an activation code in the Veyon Configurator.</source>
+        <translation>Komputer ini belum diaktivasi. Masukkan kode aktivasi di Veyon Configurator.</translation>
+    </message>
+    <message>
+        <source>This computer's clock is behind the licence server's time. Correct the date and time, then check again.</source>
+        <translation>Jam komputer ini tertinggal dari waktu server lisensi. Perbaiki tanggal dan waktu, lalu periksa lagi.</translation>
+    </message>
+    <message>
+        <source>The subscription has ended and the service is suspended. Please contact your school administrator.</source>
+        <translation>Langganan telah berakhir dan layanan ditangguhkan. Silakan hubungi administrator sekolah Anda.</translation>
+    </message>
+    <message>
+        <source>The subscription has ended. The service will be suspended on %1 unless it is renewed.</source>
+        <translation>Langganan telah berakhir. Layanan akan ditangguhkan pada %1 kecuali diperpanjang.</translation>
+    </message>
+    <message>
+        <source>We could not verify the subscription and the service is suspended. Check the internet connection, then check again.</source>
+        <translation>Kami tidak dapat memverifikasi langganan/pembayaran dan layanan ditangguhkan. Periksa koneksi internet, lalu periksa lagi.</translation>
+    </message>
+    <message>
+        <source>We could not verify the subscription. Check the internet connection. The service will be suspended on %1 if this continues.</source>
+        <translation>Kami tidak dapat memverifikasi langganan/pembayaran. Periksa koneksi internet. Layanan akan ditangguhkan pada %1 jika ini berlanjut.</translation>
+    </message>
+    <message>
+        <source>The school is using more devices than its licence allows, and the service is suspended.</source>
+        <translation>Sekolah menggunakan lebih banyak perangkat daripada yang diizinkan lisensi, dan layanan ditangguhkan.</translation>
+    </message>
+    <message>
+        <source>The school is using more devices than its licence allows. The service will be suspended on %1 unless the quota is raised.</source>
+        <translation>Sekolah menggunakan lebih banyak perangkat daripada yang diizinkan lisensi. Layanan akan ditangguhkan pada %1 kecuali kuota dinaikkan.</translation>
+    </message>
+    <message>
+        <source>The licence server could not be reached for too long, and the service is suspended. Check the internet connection.</source>
+        <translation>Server lisensi tidak dapat dihubungi terlalu lama, dan layanan ditangguhkan. Periksa koneksi internet.</translation>
+    </message>
+    <message>
+        <source>The licence server cannot be reached. Check the internet connection. The service will be suspended on %1 if this continues.</source>
+        <translation>Server lisensi tidak dapat dihubungi. Periksa koneksi internet. Layanan akan ditangguhkan pada %1 jika ini berlanjut.</translation>
+    </message>
+    <message>
+        <source>Done.</source>
+        <translation>Selesai.</translation>
+    </message>
+    <message>
+        <source>The activation code is invalid, expired or already used.</source>
+        <translation>Kode aktivasi tidak valid, sudah kedaluwarsa, atau sudah dipakai.</translation>
+    </message>
+    <message>
+        <source>The licence server could not be reached. Check the internet connection.</source>
+        <translation>Server lisensi tidak dapat dihubungi. Periksa koneksi internet.</translation>
+    </message>
+    <message>
+        <source>The licence server reported an error. Please try again later.</source>
+        <translation>Server lisensi melaporkan kesalahan. Silakan coba lagi nanti.</translation>
+    </message>
+    <message>
+        <source>The licence server sent an unexpected response.</source>
+        <translation>Server lisensi mengirim respons yang tidak terduga.</translation>
+    </message>
+    <message>
+        <source>The licence server did not accept this computer's credentials.</source>
+        <translation>Server lisensi tidak menerima kredensial komputer ini.</translation>
+    </message>
+    <message>
+        <source>This computer has not been activated.</source>
+        <translation>Komputer ini belum diaktivasi.</translation>
+    </message>
+    <message>
+        <source>This computer's clock appears to be wrong. Correct the date and time, then try again.</source>
+        <translation>Jam komputer ini tampaknya salah. Perbaiki tanggal dan waktu, lalu coba lagi.</translation>
+    </message>
+    <message>
+        <source>The licence server returned an older licence than the one already stored.</source>
+        <translation>Server lisensi mengembalikan lisensi yang lebih lama daripada yang sudah tersimpan.</translation>
+    </message>
+    <message>
+        <source>The licence could not be saved. Run the Veyon Configurator as an administrator.</source>
+        <translation>Lisensi tidak dapat disimpan. Jalankan Veyon Configurator sebagai administrator.</translation>
+    </message>
+    <message>
+        <source>The licence returned by the server could not be verified.</source>
+        <translation>Lisensi yang dikembalikan oleh server tidak dapat diverifikasi.</translation>
+    </message>
+</context>
+<context>
     <name>LinuxPlatformConfigurationPage</name>
     <message>
         <source>Linux</source>
