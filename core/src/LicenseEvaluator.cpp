@@ -38,6 +38,27 @@ static Axis evaluateAxis(const QDateTime& now, const QDateTime& start, int grace
 	return { LicenseLevel::Suspended, {} };
 }
 
+// The overall result is only Warning when every axis reported is Normal or
+// Warning, but several axes can be in Warning at once with different
+// deadlines. The school must be told the earliest one, or a banner naming a
+// later date could outlive the actual suspension.
+static QDateTime earliestWarningLimit(std::initializer_list<Axis> axes)
+{
+	QDateTime earliest;
+	for (const auto& axis : axes)
+	{
+		if (axis.level != LicenseLevel::Warning)
+		{
+			continue;
+		}
+		if (!earliest.isValid() || axis.escalatesAt < earliest)
+		{
+			earliest = axis.escalatesAt;
+		}
+	}
+	return earliest;
+}
+
 }
 
 LicenseState LicenseEvaluator::evaluate(const std::optional<LicenseClaims>& claims,
@@ -46,7 +67,23 @@ LicenseState LicenseEvaluator::evaluate(const std::optional<LicenseClaims>& clai
 {
 	using namespace LicenseEvaluatorDetail;
 
+	// An invalid `now` is a caller bug, not a licence problem: fail closed
+	// instead of reporting a misleading reason such as ClockRolledBack.
+	if (!now.isValid())
+	{
+		return { LicenseLevel::Suspended, LicenseReason::NotActivated, {} };
+	}
+
 	if (!claims)
+	{
+		return { LicenseLevel::Suspended, LicenseReason::NotActivated, {} };
+	}
+
+	// verify() never produces claims with invalid required dates, but the
+	// struct is public, so a hand-built (e.g. default-constructed) instance
+	// must still fail closed rather than feed invalid QDateTimes into the
+	// comparisons below.
+	if (!claims->subscriptionEnd.isValid() || !claims->issuedAt.isValid() || !claims->expiresAt.isValid())
 	{
 		return { LicenseLevel::Suspended, LicenseReason::NotActivated, {} };
 	}
@@ -67,25 +104,39 @@ LicenseState LicenseEvaluator::evaluate(const std::optional<LicenseClaims>& clai
 						   ? evaluateAxis(now, claims->overageSince, OverageGraceDays)
 						   : Axis{};
 
+	// std::max() over LicenseLevel relies on Normal < Warning < Suspended.
+	static_assert(LicenseLevel::Normal < LicenseLevel::Warning && LicenseLevel::Warning < LicenseLevel::Suspended,
+				 "evaluate() picks the worst axis via std::max(), which needs this declaration order");
 	const auto worst = std::max({ subscription.level, connection.level, quota.level });
 	if (worst == LicenseLevel::Normal)
 	{
 		return {};
 	}
 
+	// A Warning result may still have other axes also in Warning with an
+	// earlier deadline; the school must hear the soonest one, not just the
+	// winning axis's own.
+	const auto escalatesAt = worst == LicenseLevel::Warning
+								  ? earliestWarningLimit({ subscription, connection, quota })
+								  : QDateTime{};
+
 	// Ties go to the reason the school can act on first: billing, then quota,
 	// then connectivity.
 	if (subscription.level == worst)
 	{
-		// Offline too: we cannot tell whether they paid, so never accuse them.
-		const auto reason = connection.level == LicenseLevel::Normal
+		// The token's iat is when the backend last looked at sub_end. If iat
+		// is after sub_end, the backend saw the lapse and signed anyway: the
+		// school really is unpaid. Otherwise this token predates the lapse
+		// and cannot know about a payment made since, so we must not accuse
+		// them of not paying - regardless of whether we are currently online.
+		const auto reason = claims->issuedAt > claims->subscriptionEnd
 								? LicenseReason::Subscription
 								: LicenseReason::SubscriptionUnverified;
-		return { worst, reason, subscription.escalatesAt };
+		return { worst, reason, escalatesAt };
 	}
 	if (quota.level == worst)
 	{
-		return { worst, LicenseReason::Quota, quota.escalatesAt };
+		return { worst, LicenseReason::Quota, escalatesAt };
 	}
-	return { worst, LicenseReason::Connection, connection.escalatesAt };
+	return { worst, LicenseReason::Connection, escalatesAt };
 }

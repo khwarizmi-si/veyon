@@ -13,6 +13,9 @@
 
 #include "LicenseToken.h"
 
+// Declaration order is load-bearing: LicenseEvaluator::evaluate() picks the
+// worst axis with std::max() over this enum, which relies on
+// Normal < Warning < Suspended.
 enum class LicenseLevel
 {
 	Normal,
@@ -26,7 +29,7 @@ enum class LicenseReason
 	NotActivated,
 	ClockRolledBack,
 	Subscription,
-	SubscriptionUnverified, // unpaid as far as we know, but we are also offline
+	SubscriptionUnverified, // the token predates the lapse, so we cannot know whether they paid
 	Quota,
 	Connection,
 };

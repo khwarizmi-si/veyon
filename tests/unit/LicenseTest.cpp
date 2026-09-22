@@ -212,34 +212,45 @@ private Q_SLOTS:
 	{
 		QTest::addColumn<qint64>("subEndOffsetSecs");   // sub_end relative to now
 		QTest::addColumn<qint64>("expOffsetSecs");      // exp relative to now
+		QTest::addColumn<qint64>("iatOffsetSecs");      // iat relative to now: iat vs sub_end decides Subscription vs SubscriptionUnverified
 		QTest::addColumn<qint64>("overageAgeSecs");     // -1 = no overage; else seconds since overage_since
 		QTest::addColumn<LicenseLevel>("level");
 		QTest::addColumn<LicenseReason>("reason");
 
 		const qint64 day = 86400;
 		const qint64 none = -1;
+		const qint64 staleIat = -20 * day; // well before any sub_end used below: "the token predates the lapse"
 
-		QTest::newRow("healthy")                    << 10 * day << 3 * day << none << LicenseLevel::Normal << LicenseReason::None;
-		QTest::newRow("sub ends exactly now")       << 0ll      << 3 * day << none << LicenseLevel::Normal << LicenseReason::None;
-		QTest::newRow("sub lapsed 1d")              << -1 * day << 3 * day << none << LicenseLevel::Warning << LicenseReason::Subscription;
-		QTest::newRow("sub lapsed exactly 7d")      << -7 * day << 3 * day << none << LicenseLevel::Warning << LicenseReason::Subscription;
-		QTest::newRow("sub lapsed 7d + 1s")         << -7 * day - 1 << 3 * day << none << LicenseLevel::Suspended << LicenseReason::Subscription;
-		QTest::newRow("token expired 1d")           << 10 * day << -1 * day << none << LicenseLevel::Warning << LicenseReason::Connection;
-		QTest::newRow("token expired exactly 14d")  << 10 * day << -14 * day << none << LicenseLevel::Warning << LicenseReason::Connection;
-		QTest::newRow("token expired 14d + 1s")     << 10 * day << -14 * day - 1 << none << LicenseLevel::Suspended << LicenseReason::Connection;
-		QTest::newRow("overage 1d")                 << 10 * day << 3 * day << 1 * day << LicenseLevel::Warning << LicenseReason::Quota;
-		QTest::newRow("overage 14d + 1s")           << 10 * day << 3 * day << 14 * day + 1 << LicenseLevel::Suspended << LicenseReason::Quota;
-		QTest::newRow("unpaid AND offline")         << -1 * day << -1 * day << none << LicenseLevel::Warning << LicenseReason::SubscriptionUnverified;
-		QTest::newRow("unpaid long AND offline")    << -8 * day << -1 * day << none << LicenseLevel::Suspended << LicenseReason::SubscriptionUnverified;
-		QTest::newRow("quota beats connection")     << 10 * day << -1 * day << 1 * day << LicenseLevel::Warning << LicenseReason::Quota;
-		QTest::newRow("sub beats quota on a tie")   << -1 * day << 3 * day << 1 * day << LicenseLevel::Warning << LicenseReason::Subscription;
-		QTest::newRow("worst level wins")           << -1 * day << 3 * day << 15 * day << LicenseLevel::Suspended << LicenseReason::Quota;
+		QTest::newRow("healthy")                    << 10 * day << 3 * day << staleIat        << none << LicenseLevel::Normal << LicenseReason::None;
+		QTest::newRow("sub ends exactly now")       << 0ll      << 3 * day << staleIat        << none << LicenseLevel::Normal << LicenseReason::None;
+		// iat after sub_end: backend signed this token after seeing the lapse, so it really is unpaid.
+		QTest::newRow("sub lapsed 1d")              << -1 * day << 3 * day << -12 * 3600ll      << none << LicenseLevel::Warning << LicenseReason::Subscription;
+		QTest::newRow("sub lapsed exactly 7d")      << -7 * day << 3 * day << -1 * day        << none << LicenseLevel::Warning << LicenseReason::Subscription;
+		QTest::newRow("sub lapsed 7d + 1s")         << -7 * day - 1 << 3 * day << -1 * day    << none << LicenseLevel::Suspended << LicenseReason::Subscription;
+		QTest::newRow("token expired 1d")           << 10 * day << -1 * day << staleIat        << none << LicenseLevel::Warning << LicenseReason::Connection;
+		QTest::newRow("token expired exactly 14d")  << 10 * day << -14 * day << staleIat       << none << LicenseLevel::Warning << LicenseReason::Connection;
+		QTest::newRow("token expired 14d + 1s")     << 10 * day << -14 * day - 1 << staleIat   << none << LicenseLevel::Suspended << LicenseReason::Connection;
+		QTest::newRow("overage 1d")                 << 10 * day << 3 * day << staleIat        << 1 * day << LicenseLevel::Warning << LicenseReason::Quota;
+		QTest::newRow("overage exactly 14d")        << 10 * day << 3 * day << staleIat        << 14 * day << LicenseLevel::Warning << LicenseReason::Quota;
+		QTest::newRow("overage age 0")              << 10 * day << 3 * day << staleIat        << 0ll << LicenseLevel::Normal << LicenseReason::None;
+		QTest::newRow("overage 14d + 1s")           << 10 * day << 3 * day << staleIat        << 14 * day + 1 << LicenseLevel::Suspended << LicenseReason::Quota;
+		// iat before sub_end (stale token): cannot tell whether they paid since, regardless of connection.
+		QTest::newRow("unpaid AND offline")         << -1 * day << -1 * day << staleIat        << none << LicenseLevel::Warning << LicenseReason::SubscriptionUnverified;
+		QTest::newRow("unpaid long AND offline")    << -8 * day << -1 * day << staleIat        << none << LicenseLevel::Suspended << LicenseReason::SubscriptionUnverified;
+		QTest::newRow("quota beats connection")     << 10 * day << -1 * day << staleIat        << 1 * day << LicenseLevel::Warning << LicenseReason::Quota;
+		QTest::newRow("sub beats quota on a tie")   << -1 * day << 3 * day << -12 * 3600ll       << 1 * day << LicenseLevel::Warning << LicenseReason::Subscription;
+		QTest::newRow("worst level wins")           << -1 * day << 3 * day << staleIat        << 15 * day << LicenseLevel::Suspended << LicenseReason::Quota;
+		// sub and connection both Suspended, stale token: still SubscriptionUnverified, not Subscription.
+		QTest::newRow("both suspended, stale token") << -10 * day << -20 * day << -15 * day   << none << LicenseLevel::Suspended << LicenseReason::SubscriptionUnverified;
+		// sub only Warning but connection Suspended: level follows the worst axis, reason is Connection.
+		QTest::newRow("sub warning, conn suspended") << -1 * day << -20 * day << staleIat      << none << LicenseLevel::Suspended << LicenseReason::Connection;
 	}
 
 	void evaluatesStatusMatrix()
 	{
 		QFETCH(qint64, subEndOffsetSecs);
 		QFETCH(qint64, expOffsetSecs);
+		QFETCH(qint64, iatOffsetSecs);
 		QFETCH(qint64, overageAgeSecs);
 		QFETCH(LicenseLevel, level);
 		QFETCH(LicenseReason, reason);
@@ -248,7 +259,7 @@ private Q_SLOTS:
 		auto claims = healthyClaims();
 		claims.subscriptionEnd = now.addSecs(subEndOffsetSecs);
 		claims.expiresAt = now.addSecs(expOffsetSecs);
-		claims.issuedAt = claims.expiresAt.addDays(-7);
+		claims.issuedAt = now.addSecs(iatOffsetSecs);
 		if (overageAgeSecs >= 0)
 		{
 			claims.overageSince = now.addSecs(-overageAgeSecs);
@@ -265,6 +276,30 @@ private Q_SLOTS:
 		const auto state = LicenseEvaluator::evaluate(std::nullopt, t0(), QDateTime());
 		QCOMPARE(state.level, LicenseLevel::Suspended);
 		QCOMPARE(state.reason, LicenseReason::NotActivated);
+		QVERIFY(!state.escalatesAt.isValid());
+	}
+
+	// An invalid `now` is a caller bug: it must fail closed rather than being
+	// reported as ClockRolledBack, which would imply the licence itself is
+	// the problem.
+	void reportsNotActivatedWithInvalidNow()
+	{
+		const auto state = LicenseEvaluator::evaluate(healthyClaims(), QDateTime(), QDateTime());
+		QCOMPARE(state.level, LicenseLevel::Suspended);
+		QCOMPARE(state.reason, LicenseReason::NotActivated);
+		QVERIFY(!state.escalatesAt.isValid());
+	}
+
+	// verify() never produces claims with invalid required dates, but
+	// LicenseClaims is a public struct, so a hand-built (here: default
+	// constructed) instance must still fail closed.
+	void reportsNotActivatedWithInvalidClaimDates()
+	{
+		const LicenseClaims claims; // subscriptionEnd/issuedAt/expiresAt are all default-invalid
+		const auto state = LicenseEvaluator::evaluate(claims, t0(), QDateTime());
+		QCOMPARE(state.level, LicenseLevel::Suspended);
+		QCOMPARE(state.reason, LicenseReason::NotActivated);
+		QVERIFY(!state.escalatesAt.isValid());
 	}
 
 	void reportsWhenWarningEscalates()
@@ -273,10 +308,51 @@ private Q_SLOTS:
 		auto claims = healthyClaims();
 		claims.subscriptionEnd = now.addDays(-2);
 		claims.expiresAt = now.addDays(3);
-		claims.issuedAt = now.addDays(-4);
+		claims.issuedAt = now.addDays(-1); // after sub_end: backend confirmed the lapse
 		const auto state = LicenseEvaluator::evaluate(claims, now, QDateTime());
 		QCOMPARE(state.reason, LicenseReason::Subscription);
 		QCOMPARE(state.escalatesAt, claims.subscriptionEnd.addDays(LicenseEvaluator::SubscriptionWarningDays));
+	}
+
+	// Reviewer's exact probe: a token issued before a lapse that hasn't yet
+	// hit the connection axis at all. Even though the connection is fully
+	// healthy (exp is still 4 days away), the token predates sub_end, so we
+	// still cannot tell whether the school has paid since.
+	void reportsSubscriptionUnverifiedWhenTokenPredatesLapseEvenIfOnline()
+	{
+		const auto issuedAt = t0();
+		const auto subscriptionEnd = issuedAt.addDays(2);
+		const auto expiresAt = issuedAt.addDays(7);
+		const auto now = issuedAt.addDays(3);
+
+		auto claims = healthyClaims();
+		claims.issuedAt = issuedAt;
+		claims.subscriptionEnd = subscriptionEnd;
+		claims.expiresAt = expiresAt;
+
+		const auto state = LicenseEvaluator::evaluate(claims, now, QDateTime());
+		QCOMPARE(state.level, LicenseLevel::Warning);
+		QCOMPARE(state.reason, LicenseReason::SubscriptionUnverified);
+	}
+
+	// The bug this fix removes: subscription lapsed 1 day ago (Warning, its
+	// own deadline 6 days out) while the token itself expired 13 days ago
+	// (also Warning under the 14-day tolerance, deadline only 1 day out).
+	// Subscription wins the reason tie, but escalatesAt must reflect the
+	// soonest suspension across every Warning axis, not just the winner's.
+	void escalatesAtIsEarliestAmongWarningAxes()
+	{
+		const auto now = t0().addDays(20);
+		auto claims = healthyClaims();
+		claims.subscriptionEnd = now.addDays(-1);
+		claims.expiresAt = now.addDays(-13);
+		claims.issuedAt = now.addSecs(-LicenseEvaluator::ClockRollbackToleranceSecs); // after sub_end and exp: confirmed lapse
+
+		const auto state = LicenseEvaluator::evaluate(claims, now, QDateTime());
+		QCOMPARE(state.level, LicenseLevel::Warning);
+		QCOMPARE(state.reason, LicenseReason::Subscription);
+		QCOMPARE(state.escalatesAt, claims.expiresAt.addDays(LicenseEvaluator::OfflineGraceDays));
+		QVERIFY(state.escalatesAt < claims.subscriptionEnd.addDays(LicenseEvaluator::SubscriptionWarningDays));
 	}
 
 	void detectsClockRolledBackAgainstLastServerTime()
@@ -287,6 +363,7 @@ private Q_SLOTS:
 		const auto state = LicenseEvaluator::evaluate(claims, rolledBack, lastServerTime);
 		QCOMPARE(state.level, LicenseLevel::Suspended);
 		QCOMPARE(state.reason, LicenseReason::ClockRolledBack);
+		QVERIFY(!state.escalatesAt.isValid());
 	}
 
 	void toleratesSmallClockDrift()
@@ -304,6 +381,19 @@ private Q_SLOTS:
 		const auto claims = healthyClaims();
 		const auto beforeIssue = claims.issuedAt.addSecs(-LicenseEvaluator::ClockRollbackToleranceSecs - 1);
 		QCOMPARE(LicenseEvaluator::evaluate(claims, beforeIssue, QDateTime()).reason, LicenseReason::ClockRolledBack);
+	}
+
+	// lastServerTime older than iat must not relax the check: the reference
+	// stays iat, so a `now` just over the tolerance before iat is rolled back
+	// even though it is comfortably after lastServerTime.
+	void usesIssuedAtAsReferenceWhenLastServerTimeIsOlder()
+	{
+		const auto claims = healthyClaims();
+		const auto lastServerTime = claims.issuedAt.addDays(-5);
+		const auto now = claims.issuedAt.addSecs(-LicenseEvaluator::ClockRollbackToleranceSecs - 1);
+		QVERIFY(now > lastServerTime);
+		const auto state = LicenseEvaluator::evaluate(claims, now, lastServerTime);
+		QCOMPARE(state.reason, LicenseReason::ClockRolledBack);
 	}
 };
 
