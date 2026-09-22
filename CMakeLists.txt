@@ -201,16 +201,17 @@ if(WITH_BUNDLED_LIBVNC)
 	set(WITH_SDL OFF)
 	set(WITH_SYSTEMD OFF)
 	# bundled libvncserver needs its own tests off, but a plain set() below would
-	# shadow Veyon's cached WITH_TESTS for the rest of this configure run — save and restore it
-	set(VEYON_WITH_TESTS ${WITH_TESTS})
+	# shadow Veyon's cached WITH_TESTS for the rest of this configure run — save and restore it.
+	# Not named VEYON_WITH_TESTS: that name feeds #cmakedefine in veyonconfig.h.in.
+	set(_KHWARIZMI_SAVED_WITH_TESTS ${WITH_TESTS})
 	set(WITH_TESTS OFF)
 	set(WITH_TIGHTVNC_FILETRANSFER OFF)
 	set(WITH_XCB OFF)
 	set(LIBVNCSERVER_INSTALL OFF)
 
 	add_subdirectory(${libvncserver_SOURCE_DIR})
-	set(WITH_TESTS ${VEYON_WITH_TESTS})
-	unset(VEYON_WITH_TESTS)
+	set(WITH_TESTS ${_KHWARIZMI_SAVED_WITH_TESTS})
+	unset(_KHWARIZMI_SAVED_WITH_TESTS)
 
 	set_default_target_properties(vncclient)
 	set_default_target_properties(vncserver)
@@ -284,6 +285,10 @@ endif()
 if(NOT VEYON_DEBUG AND NOT CMAKE_C_FLAGS MATCHES "FORTIFY_SOURCE" AND NOT CMAKE_CXX_FLAGS MATCHES "FORTIFY_SOURCE")
 	add_definitions(-D_FORTIFY_SOURCE=2)
 endif()
+
+# Feeds `#cmakedefine VEYON_WITH_TESTS` in veyonconfig.h.in, which lets a test
+# build find plugins in the build tree (PluginManager::initPluginSearchPath).
+set(VEYON_WITH_TESTS ${WITH_TESTS})
 
 if(WITH_TESTS)
 	enable_testing(TRUE)
