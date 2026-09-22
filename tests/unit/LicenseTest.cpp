@@ -13,7 +13,11 @@
 #include <QTest>
 #include <QtCrypto>
 
+#include "LicenseEvaluator.h"
 #include "LicenseToken.h"
+
+Q_DECLARE_METATYPE(LicenseLevel)
+Q_DECLARE_METATYPE(LicenseReason)
 
 class LicenseTest : public QObject
 {
@@ -34,6 +38,27 @@ private:
 	{
 		return { { QStringLiteral("test-k1"),
 				   CryptoCore::PublicKey::fromPEM(fixture(QStringLiteral("test-public.pem"))) } };
+	}
+
+	// A school that paid through T0 + 30d, fresh token issued at T0.
+	static QDateTime t0()
+	{
+		return QDateTime::fromString(QStringLiteral("2026-09-21T00:00:00.000Z"), Qt::ISODateWithMs);
+	}
+
+	static LicenseClaims healthyClaims()
+	{
+		LicenseClaims c;
+		c.issuer = QStringLiteral("license.khwarizmi.co.id");
+		c.masterId = QStringLiteral("mst_x");
+		c.tenantId = QStringLiteral("sch_x");
+		c.tenantName = QStringLiteral("X");
+		c.plan = QStringLiteral("paid");
+		c.maxDevices = 40;
+		c.subscriptionEnd = t0().addDays(30);
+		c.issuedAt = t0();
+		c.expiresAt = t0().addDays(7);
+		return c;
 	}
 
 private Q_SLOTS:
@@ -181,6 +206,104 @@ private Q_SLOTS:
 		QVERIFY(!key.isNull());
 		QVERIFY(key.isRSA());
 		QCOMPARE(key.bitSize(), 4096);
+	}
+
+	void evaluatesStatusMatrix_data()
+	{
+		QTest::addColumn<qint64>("subEndOffsetSecs");   // sub_end relative to now
+		QTest::addColumn<qint64>("expOffsetSecs");      // exp relative to now
+		QTest::addColumn<qint64>("overageAgeSecs");     // -1 = no overage; else seconds since overage_since
+		QTest::addColumn<LicenseLevel>("level");
+		QTest::addColumn<LicenseReason>("reason");
+
+		const qint64 day = 86400;
+		const qint64 none = -1;
+
+		QTest::newRow("healthy")                    << 10 * day << 3 * day << none << LicenseLevel::Normal << LicenseReason::None;
+		QTest::newRow("sub ends exactly now")       << 0ll      << 3 * day << none << LicenseLevel::Normal << LicenseReason::None;
+		QTest::newRow("sub lapsed 1d")              << -1 * day << 3 * day << none << LicenseLevel::Warning << LicenseReason::Subscription;
+		QTest::newRow("sub lapsed exactly 7d")      << -7 * day << 3 * day << none << LicenseLevel::Warning << LicenseReason::Subscription;
+		QTest::newRow("sub lapsed 7d + 1s")         << -7 * day - 1 << 3 * day << none << LicenseLevel::Suspended << LicenseReason::Subscription;
+		QTest::newRow("token expired 1d")           << 10 * day << -1 * day << none << LicenseLevel::Warning << LicenseReason::Connection;
+		QTest::newRow("token expired exactly 14d")  << 10 * day << -14 * day << none << LicenseLevel::Warning << LicenseReason::Connection;
+		QTest::newRow("token expired 14d + 1s")     << 10 * day << -14 * day - 1 << none << LicenseLevel::Suspended << LicenseReason::Connection;
+		QTest::newRow("overage 1d")                 << 10 * day << 3 * day << 1 * day << LicenseLevel::Warning << LicenseReason::Quota;
+		QTest::newRow("overage 14d + 1s")           << 10 * day << 3 * day << 14 * day + 1 << LicenseLevel::Suspended << LicenseReason::Quota;
+		QTest::newRow("unpaid AND offline")         << -1 * day << -1 * day << none << LicenseLevel::Warning << LicenseReason::SubscriptionUnverified;
+		QTest::newRow("unpaid long AND offline")    << -8 * day << -1 * day << none << LicenseLevel::Suspended << LicenseReason::SubscriptionUnverified;
+		QTest::newRow("quota beats connection")     << 10 * day << -1 * day << 1 * day << LicenseLevel::Warning << LicenseReason::Quota;
+		QTest::newRow("sub beats quota on a tie")   << -1 * day << 3 * day << 1 * day << LicenseLevel::Warning << LicenseReason::Subscription;
+		QTest::newRow("worst level wins")           << -1 * day << 3 * day << 15 * day << LicenseLevel::Suspended << LicenseReason::Quota;
+	}
+
+	void evaluatesStatusMatrix()
+	{
+		QFETCH(qint64, subEndOffsetSecs);
+		QFETCH(qint64, expOffsetSecs);
+		QFETCH(qint64, overageAgeSecs);
+		QFETCH(LicenseLevel, level);
+		QFETCH(LicenseReason, reason);
+
+		const auto now = t0().addDays(20);
+		auto claims = healthyClaims();
+		claims.subscriptionEnd = now.addSecs(subEndOffsetSecs);
+		claims.expiresAt = now.addSecs(expOffsetSecs);
+		claims.issuedAt = claims.expiresAt.addDays(-7);
+		if (overageAgeSecs >= 0)
+		{
+			claims.overageSince = now.addSecs(-overageAgeSecs);
+		}
+
+		const auto state = LicenseEvaluator::evaluate(claims, now, QDateTime());
+		QCOMPARE(state.level, level);
+		QCOMPARE(state.reason, reason);
+		QCOMPARE(state.escalatesAt.isValid(), level == LicenseLevel::Warning);
+	}
+
+	void reportsNotActivatedWithoutClaims()
+	{
+		const auto state = LicenseEvaluator::evaluate(std::nullopt, t0(), QDateTime());
+		QCOMPARE(state.level, LicenseLevel::Suspended);
+		QCOMPARE(state.reason, LicenseReason::NotActivated);
+	}
+
+	void reportsWhenWarningEscalates()
+	{
+		const auto now = t0().addDays(20);
+		auto claims = healthyClaims();
+		claims.subscriptionEnd = now.addDays(-2);
+		claims.expiresAt = now.addDays(3);
+		claims.issuedAt = now.addDays(-4);
+		const auto state = LicenseEvaluator::evaluate(claims, now, QDateTime());
+		QCOMPARE(state.reason, LicenseReason::Subscription);
+		QCOMPARE(state.escalatesAt, claims.subscriptionEnd.addDays(LicenseEvaluator::SubscriptionWarningDays));
+	}
+
+	void detectsClockRolledBackAgainstLastServerTime()
+	{
+		const auto claims = healthyClaims();
+		const auto lastServerTime = t0().addDays(5);
+		const auto rolledBack = lastServerTime.addSecs(-LicenseEvaluator::ClockRollbackToleranceSecs - 1);
+		const auto state = LicenseEvaluator::evaluate(claims, rolledBack, lastServerTime);
+		QCOMPARE(state.level, LicenseLevel::Suspended);
+		QCOMPARE(state.reason, LicenseReason::ClockRolledBack);
+	}
+
+	void toleratesSmallClockDrift()
+	{
+		const auto claims = healthyClaims();
+		const auto lastServerTime = t0().addDays(1);
+		const auto drifted = lastServerTime.addSecs(-LicenseEvaluator::ClockRollbackToleranceSecs);
+		QCOMPARE(LicenseEvaluator::evaluate(claims, drifted, lastServerTime).reason, LicenseReason::None);
+	}
+
+	// A token's iat is the server's clock at issue time, so a clock set before
+	// it is rolled back even when nothing was stored yet.
+	void detectsClockRolledBackAgainstTokenIssueTime()
+	{
+		const auto claims = healthyClaims();
+		const auto beforeIssue = claims.issuedAt.addSecs(-LicenseEvaluator::ClockRollbackToleranceSecs - 1);
+		QCOMPARE(LicenseEvaluator::evaluate(claims, beforeIssue, QDateTime()).reason, LicenseReason::ClockRolledBack);
 	}
 };
 
