@@ -10,15 +10,20 @@
  */
 
 #include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QTest>
 #include <QtCrypto>
 
+#include "LicenseClient.h"
 #include "LicenseEvaluator.h"
 #include "LicenseSelector.h"
 #include "LicenseToken.h"
 
 Q_DECLARE_METATYPE(LicenseLevel)
 Q_DECLARE_METATYPE(LicenseReason)
+Q_DECLARE_METATYPE(LicenseCallStatus)
 
 class LicenseTest : public QObject
 {
@@ -464,6 +469,104 @@ private Q_SLOTS:
 	{
 		QVERIFY(!LicenseSelector::select(fixture(QStringLiteral("wrong-key.jwt")), QStringLiteral("x.y.z"),
 										 QStringLiteral("mst_fixture"), testKeys()).has_value());
+	}
+
+	void checkInBodyCarriesOnlyLicenceFields()
+	{
+		const QByteArray body = LicenseClient::buildCheckInBody(
+			QStringLiteral("mst_1"),
+			{ { QStringLiteral("aa:bb:cc:dd:ee:ff"), QStringLiteral("LAB1-PC01") } },
+			QStringLiteral("guru-pc"), QStringLiteral("4.11.0"));
+		const auto object = QJsonDocument::fromJson(body).object();
+
+		auto keys = object.keys();
+		keys.sort();
+		// INVARIANT: the licence path is sterile - never monitoring data.
+		QCOMPARE(keys, QStringList({ QStringLiteral("devices"), QStringLiteral("hostname"),
+									 QStringLiteral("master_id"), QStringLiteral("version") }));
+
+		const auto device = object.value(QStringLiteral("devices")).toArray().at(0).toObject();
+		auto deviceKeys = device.keys();
+		deviceKeys.sort();
+		QCOMPARE(deviceKeys, QStringList({ QStringLiteral("hostname"), QStringLiteral("mac") }));
+		QCOMPARE(object.value(QStringLiteral("master_id")).toString(), QStringLiteral("mst_1"));
+	}
+
+	void checkInBodyNeverContainsTheSecret()
+	{
+		const QByteArray body = LicenseClient::buildCheckInBody(QStringLiteral("mst_1"), {},
+																QStringLiteral("h"), QStringLiteral("v"));
+		QVERIFY(!body.contains("secret"));
+	}
+
+	void activateBodyHasCodeHostnameVersion()
+	{
+		const auto object = QJsonDocument::fromJson(
+			LicenseClient::buildActivateBody(QStringLiteral("KHW-ABC"), QStringLiteral("guru-pc"), QStringLiteral("4.11.0"))).object();
+		auto keys = object.keys();
+		keys.sort();
+		QCOMPARE(keys, QStringList({ QStringLiteral("code"), QStringLiteral("hostname"), QStringLiteral("version") }));
+	}
+
+	void parsesSuccessfulActivation()
+	{
+		const auto response = LicenseClient::parseActivateResponse(
+			200, R"({"master_id":"mst_1","secret":"s3cr3t","token":"a.b.c"})");
+		QCOMPARE(response.status, LicenseCallStatus::Ok);
+		QCOMPARE(response.masterId, QStringLiteral("mst_1"));
+		QCOMPARE(response.secret, QStringLiteral("s3cr3t"));
+		QCOMPARE(response.token, QStringLiteral("a.b.c"));
+	}
+
+	void mapsActivationErrors_data()
+	{
+		QTest::addColumn<int>("httpStatus");
+		QTest::addColumn<QByteArray>("body");
+		QTest::addColumn<LicenseCallStatus>("expected");
+
+		QTest::newRow("used code")       << 400 << QByteArray(R"({"error":"invalid_or_used_code"})") << LicenseCallStatus::InvalidCode;
+		QTest::newRow("bad request")     << 400 << QByteArray(R"({"error":"invalid_request"})") << LicenseCallStatus::ServerError;
+		QTest::newRow("server error")    << 500 << QByteArray(R"({"error":"internal_error"})") << LicenseCallStatus::ServerError;
+		QTest::newRow("no status")       << 0   << QByteArray() << LicenseCallStatus::NetworkError;
+		QTest::newRow("200 not json")    << 200 << QByteArray("<html>") << LicenseCallStatus::InvalidResponse;
+		QTest::newRow("200 missing key") << 200 << QByteArray(R"({"master_id":"mst_1","token":"a.b.c"})") << LicenseCallStatus::InvalidResponse;
+	}
+
+	void mapsActivationErrors()
+	{
+		QFETCH(int, httpStatus);
+		QFETCH(QByteArray, body);
+		QFETCH(LicenseCallStatus, expected);
+		QCOMPARE(LicenseClient::parseActivateResponse(httpStatus, body).status, expected);
+	}
+
+	void mapsCheckInStatuses_data()
+	{
+		QTest::addColumn<int>("httpStatus");
+		QTest::addColumn<QByteArray>("body");
+		QTest::addColumn<LicenseCallStatus>("expected");
+
+		QTest::newRow("ok")           << 200 << QByteArray(R"({"token":"a.b.c"})") << LicenseCallStatus::Ok;
+		QTest::newRow("unauthorized") << 401 << QByteArray(R"({"error":"unauthorized"})") << LicenseCallStatus::Unauthorized;
+		QTest::newRow("forbidden")    << 403 << QByteArray() << LicenseCallStatus::Unauthorized;
+		QTest::newRow("gateway")      << 502 << QByteArray() << LicenseCallStatus::ServerError;
+		QTest::newRow("no status")    << 0   << QByteArray() << LicenseCallStatus::NetworkError;
+		QTest::newRow("no token")     << 200 << QByteArray(R"({})") << LicenseCallStatus::InvalidResponse;
+	}
+
+	void mapsCheckInStatuses()
+	{
+		QFETCH(int, httpStatus);
+		QFETCH(QByteArray, body);
+		QFETCH(LicenseCallStatus, expected);
+		QCOMPARE(LicenseClient::parseCheckInResponse(httpStatus, body).status, expected);
+	}
+
+	void refusesNonHttpsEndpoint()
+	{
+		QVERIFY(!LicenseClient::endpoint(QStringLiteral("http://license.khwarizmi.co.id"), QStringLiteral("/v1/activate")).isValid());
+		QCOMPARE(LicenseClient::endpoint(QStringLiteral("https://license.khwarizmi.co.id/"), QStringLiteral("/v1/activate")),
+				 QUrl(QStringLiteral("https://license.khwarizmi.co.id/v1/activate")));
 	}
 };
 
