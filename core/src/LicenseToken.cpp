@@ -60,7 +60,14 @@ static QDateTime parseIsoUtc(const QJsonValue& value)
 		return {};
 	}
 	const auto dateTime = QDateTime::fromString(value.toString(), Qt::ISODateWithMs);
-	return dateTime.isValid() ? dateTime.toUTC() : QDateTime{};
+	// A string without a "Z" or explicit offset parses as local time, which
+	// would make licence dates depend on the machine's timezone. The backend
+	// always emits an offset, so reject anything that didn't carry one.
+	if (!dateTime.isValid() || dateTime.timeSpec() == Qt::LocalTime)
+	{
+		return {};
+	}
+	return dateTime.toUTC();
 }
 
 // 9999-12-31T23:59:59Z: far beyond any sane licence expiry, and comfortably

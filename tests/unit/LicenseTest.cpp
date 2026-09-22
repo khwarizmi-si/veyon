@@ -198,6 +198,14 @@ private Q_SLOTS:
 		QVERIFY(claims->expiresAt < QDateTime::currentDateTimeUtc());
 	}
 
+	// sub_end without a "Z" or explicit offset would parse as local time,
+	// making licence dates depend on the machine's timezone. The backend
+	// always emits an offset, so this must be rejected outright.
+	void rejectsSubscriptionEndWithoutTimezoneOffset()
+	{
+		QVERIFY(!LicenseToken::verify(fixture(QStringLiteral("no-offset-date.jwt")), testKeys()).has_value());
+	}
+
 	void productionKeyIsEmbedded()
 	{
 		const auto keys = LicenseToken::productionKeys();
