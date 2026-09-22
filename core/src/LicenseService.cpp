@@ -1,0 +1,218 @@
+/*
+ * LicenseService.cpp - licence activation, check-in and status
+ *
+ * This file is part of Veyon - https://veyon.io
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ */
+
+#include <QHostInfo>
+#include <QLocale>
+
+#include "LicenseSelector.h"
+#include "LicenseService.h"
+#include "LicenseStorage.h"
+
+namespace LicenseServiceDetail
+{
+
+static QDateTime parseStoredTime(const QString& value)
+{
+	const auto dateTime = QDateTime::fromString(value, Qt::ISODateWithMs);
+	return dateTime.isValid() ? dateTime.toUTC() : QDateTime{};
+}
+
+static LicenseActionResult fromCallStatus(LicenseCallStatus status)
+{
+	switch (status)
+	{
+	case LicenseCallStatus::Ok: return LicenseActionResult::Ok;
+	case LicenseCallStatus::InvalidCode: return LicenseActionResult::InvalidCode;
+	case LicenseCallStatus::Unauthorized: return LicenseActionResult::Unauthorized;
+	case LicenseCallStatus::NetworkError: return LicenseActionResult::NetworkError;
+	case LicenseCallStatus::ServerError: return LicenseActionResult::ServerError;
+	case LicenseCallStatus::InvalidResponse: return LicenseActionResult::InvalidResponse;
+	}
+	return LicenseActionResult::ServerError;
+}
+
+}
+
+LicenseActionResult LicenseService::acceptToken(const QString& candidate, const QString& currentToken,
+												const QString& masterId, const QDateTime& now,
+												const QMap<QString, CryptoCore::PublicKey>& keys)
+{
+	const auto claims = LicenseToken::verify(candidate, keys);
+	if (!claims || masterId.isEmpty() || claims->masterId != masterId)
+	{
+		return LicenseActionResult::TokenRejected;
+	}
+	// Storing it would raise lastServerTime for good and lock the school in
+	// ClockRolledBack, whichever clock is actually wrong.
+	if (claims->issuedAt > now.addSecs(MaxFutureIssueSecs))
+	{
+		return LicenseActionResult::ClockSkew;
+	}
+	const auto current = LicenseToken::verify(currentToken, keys);
+	if (current && current->masterId == masterId && claims->issuedAt < current->issuedAt)
+	{
+		return LicenseActionResult::StaleToken;
+	}
+	return LicenseActionResult::Ok;
+}
+
+LicenseSnapshot LicenseService::snapshot()
+{
+	using namespace LicenseServiceDetail;
+
+	const LicenseActivation activation;
+	const LicenseCache cache;
+
+	LicenseSnapshot result;
+	result.masterId = activation.masterId();
+
+	const auto selected = LicenseSelector::select(activation.activationToken(), cache.refreshedToken(),
+												  result.masterId, LicenseToken::productionKeys());
+	if (selected)
+	{
+		result.claims = selected->claims;
+	}
+	result.state = LicenseEvaluator::evaluate(result.claims, QDateTime::currentDateTimeUtc(),
+											  parseStoredTime(cache.lastServerTime()));
+	return result;
+}
+
+LicenseActionResult LicenseService::activate(const QString& code)
+{
+	LicenseActivation activation;
+	// Check before touching the network: the code is single-use, so failing
+	// to store its result would burn it for nothing.
+	if (activation.isStoreWritable() == false)
+	{
+		return LicenseActionResult::NotWritable;
+	}
+
+	LicenseClient client(activation.serverUrl());
+	const auto response = client.activate(code.trimmed(), QHostInfo::localHostName(), VeyonCore::versionString());
+	if (response.status != LicenseCallStatus::Ok)
+	{
+		return LicenseServiceDetail::fromCallStatus(response.status);
+	}
+
+	const auto accepted = acceptToken(response.token, {}, response.masterId, QDateTime::currentDateTimeUtc(),
+									  LicenseToken::productionKeys());
+	if (accepted != LicenseActionResult::Ok)
+	{
+		return accepted;
+	}
+
+	activation.setMasterId(response.masterId);
+	activation.setSecret(response.secret);
+	activation.setActivationToken(response.token);
+	activation.flushStore();
+
+	LicenseCache cache;
+	cache.setRefreshedToken({});
+	cache.setLastServerTime(LicenseToken::verify(response.token, LicenseToken::productionKeys())
+								->issuedAt.toString(Qt::ISODateWithMs));
+	cache.flushStore();
+
+	return LicenseActionResult::Ok;
+}
+
+LicenseActionResult LicenseService::checkIn(const QList<LicenseDevice>& devices)
+{
+	using namespace LicenseServiceDetail;
+
+	const LicenseActivation activation;
+	if (activation.masterId().isEmpty() || activation.secret().isEmpty())
+	{
+		return LicenseActionResult::NotActivated;
+	}
+
+	LicenseClient client(activation.serverUrl());
+	const auto response = client.checkIn(activation.masterId(), activation.secret(), devices,
+										 QHostInfo::localHostName(), VeyonCore::versionString());
+	// Unauthorized and network failures change nothing: the stored token keeps
+	// working and the connection axis takes its course (spec section 11).
+	if (response.status != LicenseCallStatus::Ok)
+	{
+		return fromCallStatus(response.status);
+	}
+
+	LicenseCache cache;
+	const auto keys = LicenseToken::productionKeys();
+	const auto current = LicenseSelector::select(activation.activationToken(), cache.refreshedToken(),
+												 activation.masterId(), keys);
+	const auto accepted = acceptToken(response.token, current ? current->token : QString(),
+									  activation.masterId(), QDateTime::currentDateTimeUtc(), keys);
+	if (accepted != LicenseActionResult::Ok)
+	{
+		return accepted;
+	}
+
+	const auto issuedAt = LicenseToken::verify(response.token, keys)->issuedAt;
+	const auto stored = parseStoredTime(cache.lastServerTime());
+	cache.setRefreshedToken(response.token);
+	if (!stored.isValid() || issuedAt > stored)
+	{
+		cache.setLastServerTime(issuedAt.toString(Qt::ISODateWithMs));
+	}
+	cache.flushStore();
+	return LicenseActionResult::Ok;
+}
+
+QString LicenseService::describe(const LicenseState& state)
+{
+	const QString deadline = state.escalatesAt.isValid()
+								 ? QLocale().toString(state.escalatesAt.toLocalTime(), QLocale::ShortFormat)
+								 : QString();
+	switch (state.reason)
+	{
+	case LicenseReason::None:
+		return tr("The licence is active.");
+	case LicenseReason::NotActivated:
+		return tr("This computer has not been activated. Enter an activation code in the Veyon Configurator.");
+	case LicenseReason::ClockRolledBack:
+		return tr("This computer's clock is behind the licence server's time. Correct the date and time, then check again.");
+	case LicenseReason::Subscription:
+		return state.level == LicenseLevel::Suspended
+				   ? tr("The subscription has ended and the service is suspended. Please contact your school administrator.")
+				   : tr("The subscription has ended. The service will be suspended on %1 unless it is renewed.").arg(deadline);
+	case LicenseReason::SubscriptionUnverified:
+		return state.level == LicenseLevel::Suspended
+				   ? tr("We could not verify the subscription and the service is suspended. Check the internet connection, then check again.")
+				   : tr("We could not verify the subscription. Check the internet connection. The service will be suspended on %1 if this continues.").arg(deadline);
+	case LicenseReason::Quota:
+		return state.level == LicenseLevel::Suspended
+				   ? tr("The school is using more devices than its licence allows, and the service is suspended.")
+				   : tr("The school is using more devices than its licence allows. The service will be suspended on %1 unless the quota is raised.").arg(deadline);
+	case LicenseReason::Connection:
+		return state.level == LicenseLevel::Suspended
+				   ? tr("The licence server could not be reached for too long, and the service is suspended. Check the internet connection.")
+				   : tr("The licence server cannot be reached. Check the internet connection. The service will be suspended on %1 if this continues.").arg(deadline);
+	}
+	return {};
+}
+
+QString LicenseService::describe(LicenseActionResult result)
+{
+	switch (result)
+	{
+	case LicenseActionResult::Ok: return tr("Done.");
+	case LicenseActionResult::InvalidCode: return tr("The activation code is invalid, expired or already used.");
+	case LicenseActionResult::NetworkError: return tr("The licence server could not be reached. Check the internet connection.");
+	case LicenseActionResult::ServerError: return tr("The licence server reported an error. Please try again later.");
+	case LicenseActionResult::InvalidResponse: return tr("The licence server sent an unexpected response.");
+	case LicenseActionResult::Unauthorized: return tr("The licence server did not accept this computer's credentials.");
+	case LicenseActionResult::NotActivated: return tr("This computer has not been activated.");
+	case LicenseActionResult::ClockSkew: return tr("This computer's clock appears to be wrong. Correct the date and time, then try again.");
+	case LicenseActionResult::StaleToken: return tr("The licence server returned an older licence than the one already stored.");
+	case LicenseActionResult::NotWritable: return tr("The licence could not be saved. Run the Veyon Configurator as an administrator.");
+	case LicenseActionResult::TokenRejected: return tr("The licence returned by the server could not be verified.");
+	}
+	return {};
+}

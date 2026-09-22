@@ -19,6 +19,7 @@
 #include "LicenseClient.h"
 #include "LicenseEvaluator.h"
 #include "LicenseSelector.h"
+#include "LicenseService.h"
 #include "LicenseToken.h"
 
 Q_DECLARE_METATYPE(LicenseLevel)
@@ -567,6 +568,63 @@ private Q_SLOTS:
 		QVERIFY(!LicenseClient::endpoint(QStringLiteral("http://license.khwarizmi.co.id"), QStringLiteral("/v1/activate")).isValid());
 		QCOMPARE(LicenseClient::endpoint(QStringLiteral("https://license.khwarizmi.co.id/"), QStringLiteral("/v1/activate")),
 				 QUrl(QStringLiteral("https://license.khwarizmi.co.id/v1/activate")));
+	}
+
+	void acceptsFirstValidToken()
+	{
+		const auto now = QDateTime::fromSecsSinceEpoch(1790000000 + 60).toUTC();
+		QCOMPARE(LicenseService::acceptToken(fixture(QStringLiteral("valid.jwt")), {}, QStringLiteral("mst_fixture"), now, testKeys()),
+				 LicenseActionResult::Ok);
+	}
+
+	void rejectsTokenForAnotherInstallation()
+	{
+		const auto now = QDateTime::fromSecsSinceEpoch(1790000000 + 86400 + 60).toUTC();
+		QCOMPARE(LicenseService::acceptToken(fixture(QStringLiteral("other-master.jwt")), {}, QStringLiteral("mst_fixture"), now, testKeys()),
+				 LicenseActionResult::TokenRejected);
+	}
+
+	void rejectsReplayOfOlderToken()
+	{
+		const auto now = QDateTime::fromSecsSinceEpoch(1790000000 + 86400 + 60).toUTC();
+		QCOMPARE(LicenseService::acceptToken(fixture(QStringLiteral("valid.jwt")), fixture(QStringLiteral("newer.jwt")),
+											 QStringLiteral("mst_fixture"), now, testKeys()),
+				 LicenseActionResult::StaleToken);
+	}
+
+	// A token issued more than an hour "in the future" must not be stored:
+	// its iat would permanently raise lastServerTime and lock the school
+	// in ClockRolledBack.
+	void refusesTokenFromTheFuture()
+	{
+		const auto now = QDateTime::fromSecsSinceEpoch(1790000000 - 3601).toUTC();
+		QCOMPARE(LicenseService::acceptToken(fixture(QStringLiteral("valid.jwt")), {}, QStringLiteral("mst_fixture"), now, testKeys()),
+				 LicenseActionResult::ClockSkew);
+	}
+
+	void describesEveryReason()
+	{
+		const QList<LicenseReason> reasons{ LicenseReason::None, LicenseReason::NotActivated, LicenseReason::ClockRolledBack,
+											LicenseReason::Subscription, LicenseReason::SubscriptionUnverified,
+											LicenseReason::Quota, LicenseReason::Connection };
+		for (const auto reason : reasons)
+		{
+			LicenseState state;
+			state.reason = reason;
+			state.level = reason == LicenseReason::None ? LicenseLevel::Normal : LicenseLevel::Warning;
+			QVERIFY2(!LicenseService::describe(state).isEmpty(), "every reason needs a message");
+		}
+	}
+
+	// SubscriptionUnverified must never read like an accusation.
+	void unverifiedMessageDoesNotClaimNonPayment()
+	{
+		LicenseState state;
+		state.level = LicenseLevel::Warning;
+		state.reason = LicenseReason::SubscriptionUnverified;
+		const auto message = LicenseService::describe(state).toLower();
+		QVERIFY(message.contains(QStringLiteral("verify")));
+		QVERIFY(!message.contains(QStringLiteral("has not been paid")));
 	}
 };
 
