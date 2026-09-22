@@ -14,6 +14,7 @@
 #include <QtCrypto>
 
 #include "LicenseEvaluator.h"
+#include "LicenseSelector.h"
 #include "LicenseToken.h"
 
 Q_DECLARE_METATYPE(LicenseLevel)
@@ -402,6 +403,67 @@ private Q_SLOTS:
 		QVERIFY(now > lastServerTime);
 		const auto state = LicenseEvaluator::evaluate(claims, now, lastServerTime);
 		QCOMPARE(state.reason, LicenseReason::ClockRolledBack);
+	}
+
+	void selectsNothingWithoutMasterId()
+	{
+		QVERIFY(!LicenseSelector::select(fixture(QStringLiteral("valid.jwt")), {}, QString(), testKeys()).has_value());
+	}
+
+	void selectsActivationTokenWhenCacheIsEmpty()
+	{
+		const auto selected = LicenseSelector::select(fixture(QStringLiteral("valid.jwt")), {},
+													  QStringLiteral("mst_fixture"), testKeys());
+		QVERIFY(selected.has_value());
+		QCOMPARE(selected->claims.issuedAt.toSecsSinceEpoch(), qint64(1790000000));
+	}
+
+	void prefersNewerCachedToken()
+	{
+		const auto selected = LicenseSelector::select(fixture(QStringLiteral("valid.jwt")),
+													  fixture(QStringLiteral("newer.jwt")),
+													  QStringLiteral("mst_fixture"), testKeys());
+		QVERIFY(selected.has_value());
+		QCOMPARE(selected->token, fixture(QStringLiteral("newer.jwt")));
+	}
+
+	void keepsNewerActivationOverOlderCache()
+	{
+		const auto selected = LicenseSelector::select(fixture(QStringLiteral("newer.jwt")),
+													  fixture(QStringLiteral("valid.jwt")),
+													  QStringLiteral("mst_fixture"), testKeys());
+		QCOMPARE(selected->token, fixture(QStringLiteral("newer.jwt")));
+	}
+
+	void rejectsTokenForAnotherMaster()
+	{
+		const auto selected = LicenseSelector::select(fixture(QStringLiteral("valid.jwt")),
+													  fixture(QStringLiteral("other-master.jwt")),
+													  QStringLiteral("mst_fixture"), testKeys());
+		QCOMPARE(selected->token, fixture(QStringLiteral("valid.jwt")));
+	}
+
+	void rejectsCacheFromAnotherTenant()
+	{
+		const auto selected = LicenseSelector::select(fixture(QStringLiteral("valid.jwt")),
+													  fixture(QStringLiteral("other-tenant.jwt")),
+													  QStringLiteral("mst_fixture"), testKeys());
+		QCOMPARE(selected->token, fixture(QStringLiteral("valid.jwt")));
+	}
+
+	void fallsBackToCacheWhenActivationTokenIsCorrupt()
+	{
+		const auto selected = LicenseSelector::select(QStringLiteral("garbage"),
+													  fixture(QStringLiteral("newer.jwt")),
+													  QStringLiteral("mst_fixture"), testKeys());
+		QVERIFY(selected.has_value());
+		QCOMPARE(selected->token, fixture(QStringLiteral("newer.jwt")));
+	}
+
+	void selectsNothingWhenNoTokenVerifies()
+	{
+		QVERIFY(!LicenseSelector::select(fixture(QStringLiteral("wrong-key.jwt")), QStringLiteral("x.y.z"),
+										 QStringLiteral("mst_fixture"), testKeys()).has_value());
 	}
 };
 
