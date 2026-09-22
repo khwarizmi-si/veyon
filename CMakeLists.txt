@@ -210,6 +210,7 @@ if(WITH_BUNDLED_LIBVNC)
 
 	add_subdirectory(${libvncserver_SOURCE_DIR})
 	set(WITH_TESTS ${VEYON_WITH_TESTS})
+	unset(VEYON_WITH_TESTS)
 
 	set_default_target_properties(vncclient)
 	set_default_target_properties(vncserver)
