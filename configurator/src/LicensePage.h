@@ -35,6 +35,7 @@ private:
 
 	QLabel* m_statusLabel{nullptr};
 	QLabel* m_detailsLabel{nullptr};
+	QLabel* m_hintLabel{nullptr};
 	QLabel* m_resultLabel{nullptr};
 	QLineEdit* m_codeEdit{nullptr};
 	QPushButton* m_activateButton{nullptr};

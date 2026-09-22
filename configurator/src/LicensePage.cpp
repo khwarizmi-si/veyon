@@ -35,9 +35,14 @@ LicensePage::LicensePage(QWidget* parent) :
 	m_detailsLabel = new QLabel(statusBox);
 	m_detailsLabel->setWordWrap(true);
 	m_detailsLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+	// I4: the Configurator runs elevated as the administrator, so this page
+	// can only ever show status as of the last check-in, not live.
+	m_hintLabel = new QLabel(tr("Status shown as of the last check. Click Check now for the latest status."), statusBox);
+	m_hintLabel->setWordWrap(true);
 	m_checkButton = new QPushButton(tr("Check now"), statusBox);
 	statusLayout->addWidget(m_statusLabel);
 	statusLayout->addWidget(m_detailsLabel);
+	statusLayout->addWidget(m_hintLabel);
 	statusLayout->addWidget(m_checkButton, 0, Qt::AlignLeft);
 
 	auto activationBox = new QGroupBox(tr("Activation"), this);
@@ -96,7 +101,7 @@ void LicensePage::refresh()
 	details += QLatin1Char('\n');
 	details += tr("Subscription until: %1").arg(format(c.subscriptionEnd));
 	details += QLatin1Char('\n');
-	details += tr("Licence renewal due: %1").arg(format(c.expiresAt));
+	details += tr("Next online check needed by: %1").arg(format(c.expiresAt));
 	details += QLatin1Char('\n');
 	details += tr("Computer ID: %1").arg(snapshot.masterId);
 	m_detailsLabel->setText(details);

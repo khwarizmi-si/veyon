@@ -2966,12 +2966,16 @@ Make sure that the names of the keys belonging to each other are identical on al
         <translation>Langganan sampai: %1</translation>
     </message>
     <message>
-        <source>Licence renewal due: %1</source>
-        <translation>Perpanjangan lisensi jatuh tempo: %1</translation>
+        <source>Next online check needed by: %1</source>
+        <translation>Pemeriksaan online berikutnya paling lambat: %1</translation>
     </message>
     <message>
         <source>Computer ID: %1</source>
         <translation>ID komputer: %1</translation>
+    </message>
+    <message>
+        <source>Status shown as of the last check. Click Check now for the latest status.</source>
+        <translation>Status ditampilkan sesuai pemeriksaan terakhir. Klik Periksa sekarang untuk status terkini.</translation>
     </message>
 </context>
 <context>
@@ -2981,8 +2985,8 @@ Make sure that the names of the keys belonging to each other are identical on al
         <translation>Lisensi aktif.</translation>
     </message>
     <message>
-        <source>This computer has not been activated. Enter an activation code in the Veyon Configurator.</source>
-        <translation>Komputer ini belum diaktivasi. Masukkan kode aktivasi di Veyon Configurator.</translation>
+        <source>This computer has not been activated. Enter an activation code in the Khwarizmi Configurator.</source>
+        <translation>Komputer ini belum diaktivasi. Masukkan kode aktivasi di Khwarizmi Configurator.</translation>
     </message>
     <message>
         <source>This computer's clock is behind the licence server's time. Correct the date and time, then check again.</source>
@@ -3057,8 +3061,8 @@ Make sure that the names of the keys belonging to each other are identical on al
         <translation>Server lisensi mengembalikan lisensi yang lebih lama daripada yang sudah tersimpan.</translation>
     </message>
     <message>
-        <source>The licence could not be saved. Run the Veyon Configurator as an administrator.</source>
-        <translation>Lisensi tidak dapat disimpan. Jalankan Veyon Configurator sebagai administrator.</translation>
+        <source>The licence could not be saved. Run the Khwarizmi Configurator as an administrator.</source>
+        <translation>Lisensi tidak dapat disimpan. Jalankan Khwarizmi Configurator sebagai administrator.</translation>
     </message>
     <message>
         <source>The licence returned by the server could not be verified.</source>
