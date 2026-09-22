@@ -23,5 +23,5 @@ else
 	ninja ${@:2}
 fi
 
-mv veyon-*win* $BASEDIR
+mv Khwarizmi-[0-9]*-win*-setup.exe $BASEDIR
 
