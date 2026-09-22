@@ -12,6 +12,7 @@
 #pragma once
 
 #include <QList>
+#include <QNetworkRequest>
 #include <QUrl>
 
 #include "VeyonCore.h"
@@ -64,6 +65,10 @@ public:
 									   const QString& hostname, const QString& version);
 	static ActivationResponse parseActivateResponse(int httpStatus, const QByteArray& body);
 	static CheckInResponse parseCheckInResponse(int httpStatus, const QByteArray& body);
+	// Sets the JSON content type, an Authorization header only when `bearer`
+	// is non-empty, and a manual redirect policy: a redirect at a CDN/proxy
+	// must never carry the bearer secret to another host.
+	static QNetworkRequest buildRequest(const QUrl& url, const QByteArray& bearer);
 
 private:
 	// Returns the HTTP status (0 when no response arrived) and fills `body`.

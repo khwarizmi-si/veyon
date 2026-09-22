@@ -172,6 +172,21 @@ CheckInResponse LicenseClient::checkIn(const QString& masterId, const QString& s
 	return parseCheckInResponse(httpStatus, body);
 }
 
+QNetworkRequest LicenseClient::buildRequest(const QUrl& url, const QByteArray& bearer)
+{
+	QNetworkRequest request(url);
+	request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+	if (bearer.isEmpty() == false)
+	{
+		request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer ") + bearer);
+	}
+	// I3: Qt 6 follows redirects by default (NoLessSafeRedirectPolicy) and the
+	// request may carry the master secret in the Authorization header. Never
+	// follow a redirect; a 3xx response is then mapped to ServerError.
+	request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
+	return request;
+}
+
 int LicenseClient::post(const QString& path, const QByteArray& payload, const QByteArray& bearer, QByteArray& body)
 {
 	const auto url = endpoint(m_serverUrl, path);
@@ -180,12 +195,7 @@ int LicenseClient::post(const QString& path, const QByteArray& payload, const QB
 		return 0;
 	}
 
-	QNetworkRequest request(url);
-	request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
-	if (bearer.isEmpty() == false)
-	{
-		request.setRawHeader(QByteArrayLiteral("Authorization"), QByteArrayLiteral("Bearer ") + bearer);
-	}
+	const auto request = buildRequest(url, bearer);
 
 	QNetworkAccessManager networkAccessManager;
 	auto reply = networkAccessManager.post(request, payload);
