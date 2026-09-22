@@ -171,11 +171,12 @@ copy_found_required "${install_files}" "${dll_gcc}"
 
 mkdir -p "${install_files}/crypto"
 qca_ossl_plugin="$(find "${mingw_prefix}" -path '*/crypto/libqca-ossl.dll' -print -quit)"
-if [ -n "${qca_ossl_plugin}" ]; then
-	cp "${qca_ossl_plugin}" "${install_files}/crypto"
-else
-	echo "WARNING: libqca-ossl.dll not found under ${mingw_prefix}; continuing without QCA OpenSSL plugin"
+if [ -z "${qca_ossl_plugin}" ]; then
+	# Without it QCA has no RSA provider, so every licence token fails verification.
+	echo "ERROR: libqca-ossl.dll not found under ${mingw_prefix}" >&2
+	exit 1
 fi
+cp "${qca_ossl_plugin}" "${install_files}/crypto"
 
 for qt_dll in Qt6Core.dll Qt6Core5Compat.dll Qt6Gui.dll Qt6Widgets.dll Qt6Network.dll Qt6Concurrent.dll Qt6HttpServer.dll Qt6WebSockets.dll; do
 	copy_found_required "${install_files}" "${qt_dll}"
@@ -183,7 +184,8 @@ done
 
 copy_qt_plugin_optional imageformats qjpeg.dll
 copy_qt_plugin_required platforms qwindows.dll
-copy_qt_plugin_optional tls qopensslbackend.dll
+# Without a TLS backend Qt 6 cannot use HTTPS, so licence activation is impossible.
+copy_qt_plugin_required tls qopensslbackend.dll
 
 styles_dir="$(qt_plugin_dir styles)"
 mkdir -p "${install_files}/styles"

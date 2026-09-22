@@ -185,7 +185,7 @@ SetOutPath "$INSTDIR\translations"
 File "translations/*.qm"
 # QCA plugins
 SetOutPath "$INSTDIR\crypto"
-File /nonfatal "crypto/*.dll"
+File "crypto/libqca-ossl.dll"
 # Qt image format plugin
 SetOutPath "$INSTDIR\imageformats"
 File "imageformats/qjpeg.dll"
@@ -196,7 +196,7 @@ SetOutPath "$INSTDIR\styles"
 File /nonfatal "styles/*.dll"
 # Qt TLS backend
 SetOutPath "$INSTDIR\tls"
-File /nonfatal "tls/qopensslbackend.dll"
+File "tls/qopensslbackend.dll"
 # configuration
 ExecWait '"$INSTDIR\veyon-wcli.exe" service register'
 ExecWait '"$INSTDIR\veyon-wcli.exe" config set Network/FirewallExceptionEnabled 1'
