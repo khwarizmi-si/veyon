@@ -35,7 +35,9 @@ makensis veyon.nsi
 
 popd > /dev/null
 
-installers=( "${install_files}"/veyon-*setup.exe veyon-*setup.exe )
+# The base installer name starts with the version number; add-ons start with a
+# name (Khwarizmi-Chat-Addon-...), so the digit keeps them out of this match.
+installers=( "${install_files}"/Khwarizmi-[0-9]*-setup.exe Khwarizmi-[0-9]*-setup.exe )
 if [ "${#installers[@]}" -eq 0 ]; then
 	echo "ERROR: base installer was not produced by NSIS" >&2
 	exit 1

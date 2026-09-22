@@ -8,7 +8,7 @@ installed and removed independently of the base application.
 
 | Package | Contents |
 |---------|----------|
-| **Khwarizmi Basic** | `veyon-*-setup.exe` — core + free built-in plugins. The base installer explicitly removes the add-on DLLs (`chat`, `internetaccesscontrol`, `screenrecorder`, `networkdiscovery`, `auvidus`, `entraid`). |
+| **Khwarizmi Basic** | `Khwarizmi-<version>-win64-setup.exe` — core + free built-in plugins. The base installer explicitly removes the add-on DLLs (`chat`, `internetaccesscontrol`, `screenrecorder`, `networkdiscovery`, `auvidus`, `entraid`). |
 | **Add-on: Chat** | `Khwarizmi-Chat-Addon-*-setup.exe` — drops `chat.dll`. |
 | **Add-on: Internet Access Control** | drops `internetaccesscontrol.dll`. |
 | **Add-on: Screen Recorder** | drops `screenrecorder.dll` **and** `ffmpeg.exe`. |
