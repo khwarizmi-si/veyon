@@ -41,10 +41,9 @@ public:
 	void flush( const Object *obj ) override;
 	bool isWritable() const override;
 	void clear() override;
-
-private:
 	QString configurationFilePath() const;
 
+private:
 	QString m_file;
 
 } ;

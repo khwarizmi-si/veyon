@@ -74,13 +74,16 @@ public:
 
 	bool controlFeature( Feature::Uid featureUid, Operation operation, const QVariantMap& arguments,
 						const ComputerControlInterfaceList& computerControlInterfaces ) override;
+	bool startFeature( VeyonMasterInterface& master, const Feature& feature,
+					   const ComputerControlInterfaceList& computerControlInterfaces ) override;
 
 private:
-	void startRecording( const ComputerControlInterfaceList& computerControlInterfaces );
+	bool startRecording( const ComputerControlInterfaceList& computerControlInterfaces );
 	void stopAllSessions();
 
 	const Feature m_screenRecorderFeature;
 	const FeatureList m_features;
+	QString m_outputDirectory;
 
 	// one active recording session per computer being recorded
 	QHash<ComputerControlInterface*, ScreenRecorderSession*> m_sessions;

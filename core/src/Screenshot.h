@@ -46,7 +46,7 @@ public:
 
 	explicit Screenshot( const QString &fileName = {}, QObject* parent = nullptr );
 
-	void take( const ComputerControlInterface::Pointer& computerControlInterface );
+	bool take( const ComputerControlInterface::Pointer& computerControlInterface );
 
 	bool isValid() const
 	{
@@ -87,4 +87,3 @@ private:
 	QImage m_image;
 
 } ;
-

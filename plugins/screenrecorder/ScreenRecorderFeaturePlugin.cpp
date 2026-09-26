@@ -23,11 +23,15 @@
  */
 
 #include <QDir>
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QMessageBox>
 #include <QStandardPaths>
 
 #include "ScreenRecorderFeaturePlugin.h"
 #include "ScreenRecorderSession.h"
 #include "ComputerControlInterface.h"
+#include "VeyonMasterInterface.h"
 
 
 ScreenRecorderFeaturePlugin::ScreenRecorderFeaturePlugin( QObject* parent ) :
@@ -74,8 +78,7 @@ bool ScreenRecorderFeaturePlugin::controlFeature( Feature::Uid featureUid, Opera
 
 	if( operation == Operation::Start )
 	{
-		startRecording( computerControlInterfaces );
-		return true;
+		return startRecording( computerControlInterfaces );
 	}
 
 	if( operation == Operation::Stop )
@@ -89,22 +92,71 @@ bool ScreenRecorderFeaturePlugin::controlFeature( Feature::Uid featureUid, Opera
 
 
 
-void ScreenRecorderFeaturePlugin::startRecording( const ComputerControlInterfaceList& computerControlInterfaces )
+bool ScreenRecorderFeaturePlugin::startFeature( VeyonMasterInterface& master, const Feature& feature,
+													  const ComputerControlInterfaceList& computerControlInterfaces )
 {
+	if( feature.uid() != m_screenRecorderFeature.uid() )
+	{
+		return false;
+	}
+	if( !startRecording( computerControlInterfaces ) )
+	{
+		QMessageBox::warning( master.mainWindow(), tr("Screen recording"),
+							  tr("Recording could not start. Select a connected computer and check that FFmpeg and the Videos folder are available.") );
+		return false;
+	}
+	QMessageBox::information( master.mainWindow(), tr("Screen recording"),
+						  tr("Recording requested. After stopping, look for MP4 files in %1 on this computer.").arg(m_outputDirectory) );
+	return true;
+}
+
+
+
+bool ScreenRecorderFeaturePlugin::startRecording( const ComputerControlInterfaceList& computerControlInterfaces )
+{
+	const auto bundledEncoder = QCoreApplication::applicationDirPath()
+#if defined(Q_OS_WIN)
+									+ QStringLiteral("/ffmpeg.exe");
+#else
+									+ QStringLiteral("/ffmpeg");
+#endif
+	if( !QFileInfo::exists( bundledEncoder ) && QStandardPaths::findExecutable( QStringLiteral("ffmpeg") ).isEmpty() )
+	{
+		return false;
+	}
 	auto outputDirectory = QStandardPaths::writableLocation( QStandardPaths::MoviesLocation );
 	if( outputDirectory.isEmpty() )
 	{
 		outputDirectory = QStandardPaths::writableLocation( QStandardPaths::HomeLocation );
 	}
+	if( outputDirectory.isEmpty() )
+	{
+		return false;
+	}
 	outputDirectory += QStringLiteral("/VeyonRecordings");
-	QDir().mkpath( outputDirectory );
+	if( !QDir().mkpath( outputDirectory ) )
+	{
+		return false;
+	}
+	m_outputDirectory = outputDirectory;
 
 	// recording our own screen is pointless and would only capture Veyon Master itself
 	auto targets = computerControlInterfaces;
 	targets.removeLocalHostInterfaces();
+	if( targets.isEmpty() )
+	{
+		return false;
+	}
 
+	bool foundTarget = false;
 	for( const auto& computerControlInterface : targets )
 	{
+		if( computerControlInterface.isNull() ||
+			computerControlInterface->state() != ComputerControlInterface::State::Connected )
+		{
+			continue;
+		}
+		foundTarget = true;
 		if( m_sessions.contains( computerControlInterface.data() ) )
 		{
 			continue;
@@ -113,6 +165,7 @@ void ScreenRecorderFeaturePlugin::startRecording( const ComputerControlInterface
 		m_sessions.insert( computerControlInterface.data(),
 						   new ScreenRecorderSession( computerControlInterface, outputDirectory, this ) );
 	}
+	return foundTarget;
 }
 
 

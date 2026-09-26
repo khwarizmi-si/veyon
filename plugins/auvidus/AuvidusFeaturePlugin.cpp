@@ -25,7 +25,9 @@
 #include "AuvidusFeaturePlugin.h"
 #include "DeviceController.h"
 #include "ComputerControlInterface.h"
+#include "FeatureWorkerManager.h"
 #include "VeyonServerInterface.h"
+#include <QDebug>
 
 
 AuvidusFeaturePlugin::AuvidusFeaturePlugin( QObject* parent ) :
@@ -100,7 +102,6 @@ bool AuvidusFeaturePlugin::handleFeatureMessage( VeyonServerInterface& server,
 												 const MessageContext& messageContext,
 												 const FeatureMessage& message )
 {
-	Q_UNUSED(server)
 	Q_UNUSED(messageContext)
 
 	const auto featureUid = message.featureUid();
@@ -111,21 +112,40 @@ bool AuvidusFeaturePlugin::handleFeatureMessage( VeyonServerInterface& server,
 		return false;
 	}
 
-	// the Khwarizmi Service runs with system privileges, so the change happens here
 	const bool active = ( message.command<FeatureCommand>() == FeatureCommand::Activate );
 
 	if( featureUid == m_muteAudioFeature.uid() )
 	{
-		DeviceController::setAudioMuted( active );
+		server.featureWorkerManager().sendMessageToUnmanagedSessionWorker( message );
 	}
 	else if( featureUid == m_blockUsbStorageFeature.uid() )
 	{
-		DeviceController::setUsbStorageBlocked( active );
+		if( !DeviceController::setUsbStorageBlocked( active ) )
+		{
+			qWarning() << "Auvidus: failed to change USB storage policy";
+		}
 	}
 	else if( featureUid == m_disableWebcamFeature.uid() )
 	{
-		DeviceController::setWebcamDisabled( active );
+		if( !DeviceController::setWebcamDisabled( active ) )
+		{
+			qWarning() << "Auvidus: failed to change webcam consent";
+		}
 	}
 
+	return true;
+}
+
+bool AuvidusFeaturePlugin::handleFeatureMessage( VeyonWorkerInterface& worker, const FeatureMessage& message )
+{
+	Q_UNUSED(worker)
+	if( message.featureUid() != m_muteAudioFeature.uid() )
+	{
+		return false;
+	}
+	if( !DeviceController::setAudioMuted( message.command<FeatureCommand>() == FeatureCommand::Activate ) )
+	{
+		qWarning() << "Auvidus: failed to change audio endpoint mute state";
+	}
 	return true;
 }

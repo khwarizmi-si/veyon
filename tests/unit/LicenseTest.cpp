@@ -22,6 +22,7 @@
 #include "LicenseEvaluator.h"
 #include "LicenseSelector.h"
 #include "LicenseService.h"
+#include "LicenseSyncFeature.h"
 #include "LicenseToken.h"
 
 Q_DECLARE_METATYPE(LicenseLevel)
@@ -112,6 +113,57 @@ private:
 	}
 
 private Q_SLOTS:
+	void licenceDeviceListRoundTrips()
+	{
+		const QList<LicenseDevice> devices{{QStringLiteral("aa:bb"), QStringLiteral("lab-01")},
+										 {QStringLiteral("cc:dd"), QStringLiteral("lab-02")}};
+		const auto decoded = LicenseSyncFeature::decodeDevices(LicenseSyncFeature::encodeDevices(devices));
+		QCOMPARE(decoded.size(), 2);
+		QCOMPARE(decoded.at(0).mac, QStringLiteral("aa:bb"));
+		QCOMPARE(decoded.at(1).hostname, QStringLiteral("lab-02"));
+		QVERIFY(LicenseSyncFeature::decodeDevices(QStringLiteral("bad")).isEmpty());
+	}
+
+	void licenceDevicesDeduplicateByMac()
+	{
+		const QList<LicenseDevice> devices{{QStringLiteral("AA:BB"), QStringLiteral("one")},
+										 {QStringLiteral("aa:bb"), QStringLiteral("duplicate")},
+										 {QStringLiteral("cc:dd"), QStringLiteral("two")}};
+		const auto unique = LicenseSyncFeature::deduplicate(devices);
+		QCOMPARE(unique.size(), 2);
+		QCOMPARE(unique.at(0).mac, QStringLiteral("aa:bb"));
+	}
+
+	void checkInDueAfterOneDayOrClockRollback()
+	{
+		const auto now = QDateTime::fromString(QStringLiteral("2026-09-26T09:00:00Z"), Qt::ISODate);
+		QVERIFY(licenseCheckInDue({}, now));
+		QVERIFY(licenseCheckInDue(now.addSecs(-86400), now));
+		QVERIFY(!licenseCheckInDue(now.addSecs(-3600), now));
+		QVERIFY(licenseCheckInDue(now.addDays(1), now));
+	}
+
+	void licenceGatePreservesQuotaWarnings()
+	{
+		QVERIFY(licenseBlocksNewSessions({LicenseLevel::Suspended, LicenseReason::Subscription, {}}));
+		QVERIFY(licenseBlocksNewSessions({LicenseLevel::Suspended, LicenseReason::NotActivated, {}}));
+		QVERIFY(!licenseBlocksNewSessions({LicenseLevel::Suspended, LicenseReason::Quota, {}}));
+		QVERIFY(!licenseBlocksNewSessions({LicenseLevel::Warning, LicenseReason::Connection, {}}));
+		QVERIFY(licenseNeedsBanner({LicenseLevel::Warning, LicenseReason::Quota, {}}));
+		QVERIFY(!licenseNeedsBanner({}));
+	}
+
+	void quotaSelectionIsStableAcrossDiscoveryOrder()
+	{
+		const QStringList one{QStringLiteral("CC"), QStringLiteral("aa"), QStringLiteral("BB"), QStringLiteral("aa")};
+		const QStringList two{QStringLiteral("bb"), QStringLiteral("cc"), QStringLiteral("AA")};
+		const QStringList expected{QStringLiteral("aa"), QStringLiteral("bb")};
+		QCOMPARE(licenseDevicesWithinQuota(one, 2), expected);
+		QCOMPARE(licenseDevicesWithinQuota(two, 2), expected);
+		QVERIFY(licenseDevicesWithinQuota(one, 0).isEmpty());
+		QVERIFY(licenseDevicesWithinQuota(one, -1).isEmpty());
+	}
+
 	void qcaSupportsRsa()
 	{
 		QVERIFY(QCA::isSupported("pkey"));

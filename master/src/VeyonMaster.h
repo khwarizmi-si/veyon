@@ -24,7 +24,10 @@
 
 #pragma once
 
+#include <QTimer>
+
 #include "Feature.h"
+#include "LicenseEvaluator.h"
 #include "Computer.h"
 #include "ComputerControlInterface.h"
 #include "VeyonMasterInterface.h"
@@ -88,6 +91,8 @@ public:
 		return m_localSessionControlInterface;
 	}
 
+	const LicenseState& licenseState() const { return m_licenseState; }
+
 	const ComputerControlInterfaceList& allComputerControlInterfaces() const override;
 
 	ComputerControlInterfaceList selectedComputerControlInterfaces() const override;
@@ -99,14 +104,21 @@ public Q_SLOTS:
 	void enforceDesignatedMode( const QModelIndex& index );
 	void stopAllFeatures( const ComputerControlInterfaceList& computerControlInterfaces );
 
+Q_SIGNALS:
+	void licenseStateChanged(const LicenseState& state);
+
 private:
 	void shutdown();
+	void refreshLicenseState();
+	void startCheckInIfDue();
 
 	FeatureList featureList() const;
 
 	UserConfig* m_userConfig;
 	const FeatureList m_features;
 	ComputerManager* m_computerManager;
+	LicenseState m_licenseState;
+	QDateTime m_lastLicenseAttempt;
 	ComputerControlListModel* m_computerControlListModel;
 	ComputerMonitoringModel* m_computerMonitoringModel;
 
@@ -115,5 +127,6 @@ private:
 	MainWindow* m_mainWindow;
 
 	Feature::Uid m_currentMode;
+	QTimer m_licenseTimer;
 
 } ;

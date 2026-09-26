@@ -28,6 +28,10 @@
 	OP(LicenseCache, LicenseCache(), QString, refreshedToken, setRefreshedToken, "RefreshedToken", "License", QString(), Configuration::Property::Flag::Hidden) \
 	OP(LicenseCache, LicenseCache(), QString, lastServerTime, setLastServerTime, "LastServerTime", "License", QString(), Configuration::Property::Flag::Hidden)
 
+#define FOREACH_LICENSE_PUBLIC_PROPERTY(OP) \
+	OP(LicensePublic, LicensePublic(), QString, masterId, setMasterId, "MasterId", "License", QString(), Configuration::Property::Flag::Hidden) \
+	OP(LicensePublic, LicensePublic(), QString, signedToken, setSignedToken, "SignedToken", "License", QString(), Configuration::Property::Flag::Hidden)
+
 // clazy:excludeall=ctor-missing-parent-argument,copyable-polymorphic
 
 // System scope: written by the Configurator (administrator) at activation.
@@ -36,7 +40,18 @@ class VEYON_CORE_EXPORT LicenseActivation : public Configuration::Object
 	Q_OBJECT
 public:
 	LicenseActivation();
+	bool flushAndProtect();
 	FOREACH_LICENSE_ACTIVATION_PROPERTY(DECLARE_CONFIG_PROPERTY)
+};
+
+// Readable by teachers; contains no secret. The token is signed and is
+// verified before its claims can affect the licence state.
+class VEYON_CORE_EXPORT LicensePublic : public Configuration::Object
+{
+	Q_OBJECT
+public:
+	LicensePublic();
+	FOREACH_LICENSE_PUBLIC_PROPERTY(DECLARE_CONFIG_PROPERTY)
 };
 
 // User scope: the master runs as the teacher and cannot write system config,

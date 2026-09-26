@@ -76,12 +76,23 @@ bool ScreenshotFeaturePlugin::controlFeature( Feature::Uid featureUid,
 bool ScreenshotFeaturePlugin::startFeature( VeyonMasterInterface& master, const Feature& feature,
 											const ComputerControlInterfaceList& computerControlInterfaces )
 {
-	if( controlFeature( feature.uid(), Operation::Start, {}, computerControlInterfaces ) )
+	if( feature.uid() == m_screenshotFeature.uid() )
 	{
+		int saved = 0;
+		for (const auto& controlInterface : computerControlInterfaces)
+		{
+			saved += Screenshot().take(controlInterface) ? 1 : 0;
+		}
+		if (saved == 0)
+		{
+			QMessageBox::warning(master.mainWindow(), tr("Screenshot"),
+								tr("No screenshot was saved. Check the connection and screenshot directory."));
+			return false;
+		}
 		QMessageBox::information( master.mainWindow(),
 								  tr( "Screenshots taken" ),
 								  tr( "Screenshot of %1 computer have been taken successfully." ).
-								  arg( computerControlInterfaces.count() ) );
+								  arg( saved ) );
 
 		return true;
 	}

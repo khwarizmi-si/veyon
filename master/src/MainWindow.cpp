@@ -23,13 +23,16 @@
  */
 
 #include <QCloseEvent>
+#include <QComboBox>
 #include <QFileDialog>
 #include <QJsonDocument>
 #include <QKeyEvent>
+#include <QLabel>
 #include <QHostAddress>
 #include <QMenu>
 #include <QMessageBox>
 #include <QSplitter>
+#include <QStatusBar>
 
 #include "AboutDialog.h"
 #include "AccessControlProvider.h"
@@ -37,11 +40,13 @@
 #include "BuiltinFeatures.h"
 #include "AuthenticationCredentials.h"
 #include "ComputerControlListModel.h"
+#include "ComputerMonitoringModel.h"
 #include "ComputerManager.h"
 #include "ComputerSelectPanel.h"
 #include "ScreenshotManagementPanel.h"
 #include "FeatureManager.h"
 #include "MonitoringMode.h"
+#include "LicenseService.h"
 #include "NetworkObjectDirectory.h"
 #include "NetworkObjectDirectoryManager.h"
 #include "PlatformUserFunctions.h"
@@ -235,6 +240,32 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	m_modeGroup( new QButtonGroup( this ) )
 {
 	ui->setupUi( this );
+	m_licenseBanner = new QLabel(ui->centralWidget);
+	m_licenseBanner->setWordWrap(true);
+	m_licenseBanner->setContentsMargins(12, 8, 12, 8);
+	m_licenseBanner->setStyleSheet(QStringLiteral("background: #fff4d6; color: #35312a; border-bottom: 1px solid #e3cf91;"));
+	ui->centralLayout->insertWidget(0, m_licenseBanner);
+	connect(&m_master, &VeyonMaster::licenseStateChanged, this, &MainWindow::updateLicenseBanner);
+	updateLicenseBanner(m_master.licenseState());
+	connect(&m_master.computerControlListModel(), &ComputerControlListModel::modelAboutToBeReset,
+			this, [this]() { m_connectedComputers.clear(); });
+	connect(&m_master.computerControlListModel(), &ComputerControlListModel::stateChanged,
+			this, [this](const QModelIndex& index) {
+				const auto controlInterface = m_master.computerControlListModel().computerControlInterface(index);
+				if (controlInterface.isNull())
+				{
+					return;
+				}
+				auto* computer = controlInterface.data();
+				if (controlInterface->state() == ComputerControlInterface::State::Connected)
+				{
+					m_connectedComputers.insert(computer);
+				}
+				else if (m_connectedComputers.remove(computer))
+				{
+					ui->statusBar->showMessage(tr("Komputer %1 terputus").arg(controlInterface->computerName()), 15000);
+				}
+			});
 
 	restoreState( QByteArray::fromBase64( m_master.userConfig().windowState().toUtf8() ) );
 	restoreGeometry( QByteArray::fromBase64( m_master.userConfig().windowGeometry().toUtf8() ) );
@@ -243,7 +274,11 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	ui->statusBar->addWidget( ui->panelButtons );
 	ui->statusBar->addWidget( ui->spacerLabel1 );
 	ui->statusBar->addWidget( ui->filterLineEdit, 2 );
-	ui->statusBar->addWidget( ui->filterPoweredOnComputersButton );
+	ui->filterPoweredOnComputersButton->hide();
+	auto* connectionFilter = new QComboBox(ui->statusBar);
+	connectionFilter->addItems({tr("Semua PC"), tr("Aktif"), tr("Tidak aktif")});
+	connectionFilter->setToolTip(tr("Filter berdasarkan koneksi komputer"));
+	ui->statusBar->addWidget(connectionFilter);
 	ui->statusBar->addWidget( ui->filterComputersWithLoggedOnUsersButton );
 	ui->statusBar->addWidget( ui->spacerLabel2, 1 );
 	ui->statusBar->addWidget( ui->gridSizeSlider, 2 );
@@ -380,11 +415,20 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	// initialize filter controls
 	connect( ui->filterLineEdit, &QLineEdit::textChanged,
 			 this, [this]( const QString& filter ) { ui->computerMonitoringWidget->setSearchFilter( filter ); } );
-	connect( ui->filterPoweredOnComputersButton, &QToolButton::toggled,
-			 this, [this]( bool enabled ) { ui->computerMonitoringWidget->setFilterPoweredOnComputers( enabled ); } );
+	connect(connectionFilter, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+			[this](int index) {
+				auto* model = m_master.computerMonitoringModel();
+				model->setStateFilter(index == 1 ? ComputerControlInterface::State::Connected
+											   : ComputerControlInterface::State::None);
+				model->setHideConnectedComputers(index == 2);
+				if(index == 2)
+				{
+					ui->filterComputersWithLoggedOnUsersButton->setChecked(false);
+				}
+			});
 	connect( ui->filterComputersWithLoggedOnUsersButton, &QToolButton::toggled,
 			 this, [this]( bool enabled ) { ui->computerMonitoringWidget->setFilterComputersWithLoggedOnUsers( enabled ); } );
-	ui->filterPoweredOnComputersButton->setChecked(m_master.userConfig().filterPoweredOnComputers());
+	connectionFilter->setCurrentIndex(m_master.userConfig().filterPoweredOnComputers() ? 1 : 0);
 	ui->filterComputersWithLoggedOnUsersButton->setChecked(m_master.userConfig().filterComputersWithLoggedOnUsers());
 
 	// initialize monitoring screen size slider
@@ -789,5 +833,15 @@ void MainWindow::saveComputerPositions()
 			config[computerPositionsProperty.parentKey()] = uiConfig;
 			file.write(QJsonDocument(config).toJson());
 		}
+	}
+}
+
+void MainWindow::updateLicenseBanner(const LicenseState& state)
+{
+	const bool visible = licenseNeedsBanner(state);
+	m_licenseBanner->setVisible(visible);
+	if (visible)
+	{
+		m_licenseBanner->setText(LicenseService::describe(state));
 	}
 }

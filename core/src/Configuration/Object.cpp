@@ -67,6 +67,12 @@ Object::~Object()
 }
 
 
+QString Object::storeFilePath() const
+{
+	const auto* jsonStore = dynamic_cast<const JsonStore*>(m_store);
+	return jsonStore ? jsonStore->configurationFilePath() : QString{};
+}
+
 
 Object& Object::operator=( const Object& ref )
 {

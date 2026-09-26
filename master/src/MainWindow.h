@@ -25,10 +25,13 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QSet>
 
 #include "ComputerControlInterface.h"
+#include "LicenseEvaluator.h"
 
 class QButtonGroup;
+class QLabel;
 class QToolButton;
 
 class VeyonMaster;
@@ -84,11 +87,14 @@ private:
 
 	void loadComputerPositions();
 	void saveComputerPositions();
+	void updateLicenseBanner(const LicenseState& state);
 
 	Ui::MainWindow* ui;
 
 	VeyonMaster& m_master;
 
 	QButtonGroup* m_modeGroup;
+	QLabel* m_licenseBanner;
+	QSet<ComputerControlInterface*> m_connectedComputers;
 
 } ;

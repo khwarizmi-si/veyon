@@ -1023,6 +1023,10 @@ Make sure that the names of the keys belonging to each other are identical on al
 <context>
     <name>ComputerControlListModel</name>
     <message>
+        <source>Di luar kuota lisensi</source>
+        <translation>Di luar kuota lisensi</translation>
+    </message>
+    <message>
         <source>Name: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3009,12 +3013,12 @@ Make sure that the names of the keys belonging to each other are identical on al
         <translation>Kami tidak dapat memverifikasi pembayaran langganan. Periksa koneksi internet. Layanan akan ditangguhkan pada %1 jika ini berlanjut.</translation>
     </message>
     <message>
-        <source>The school is using more devices than its licence allows, and the service is suspended.</source>
-        <translation>Sekolah menggunakan lebih banyak perangkat daripada yang diizinkan lisensi, dan layanan ditangguhkan.</translation>
+        <source>The school is using more devices than its licence allows. Devices outside the licensed quota cannot start new sessions.</source>
+        <translation>Sekolah menggunakan lebih banyak perangkat daripada kuota lisensi. Perangkat di luar kuota tidak dapat memulai sesi baru.</translation>
     </message>
     <message>
-        <source>The school is using more devices than its licence allows. The service will be suspended on %1 unless the quota is raised.</source>
-        <translation>Sekolah menggunakan lebih banyak perangkat daripada yang diizinkan lisensi. Layanan akan ditangguhkan pada %1 kecuali kuota dinaikkan.</translation>
+        <source>The school is using more devices than its licence allows. Raise the quota before %1 to avoid limiting new sessions.</source>
+        <translation>Sekolah menggunakan lebih banyak perangkat daripada kuota lisensi. Naikkan kuota sebelum %1 agar sesi baru tidak dibatasi.</translation>
     </message>
     <message>
         <source>The licence server could not be reached for too long, and the service is suspended. Check the internet connection.</source>
@@ -3067,6 +3071,13 @@ Make sure that the names of the keys belonging to each other are identical on al
     <message>
         <source>The licence returned by the server could not be verified.</source>
         <translation>Lisensi yang dikembalikan oleh server tidak dapat diverifikasi.</translation>
+    </message>
+</context>
+<context>
+    <name>LicenseSyncFeature</name>
+    <message>
+        <source>Licence check-in</source>
+        <translation>Pemeriksaan lisensi</translation>
     </message>
 </context>
 <context>

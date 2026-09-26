@@ -64,6 +64,7 @@ ChatClientWindow::ChatClientWindow( QWidget* parent ) :
 
 void ChatClientWindow::appendFromTeacher( const QString& text )
 {
+	m_replySent = false;
 	appendLine( tr( "Teacher" ), text );
 
 	show();
@@ -75,8 +76,15 @@ void ChatClientWindow::appendFromTeacher( const QString& text )
 
 void ChatClientWindow::closeEvent( QCloseEvent* event )
 {
-	// the chat must remain available in the background, so hide instead of close
-	hide();
+	if (m_replySent)
+	{
+		hide();
+	}
+	else
+	{
+		show();
+		raise();
+	}
 	event->ignore();
 }
 
@@ -91,6 +99,7 @@ void ChatClientWindow::onSend()
 	}
 
 	appendLine( tr( "You" ), text );
+	m_replySent = true;
 	m_input->clear();
 
 	Q_EMIT messageSubmitted( text );

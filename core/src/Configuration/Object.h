@@ -73,6 +73,8 @@ public:
 		}
 	}
 
+	QString storeFilePath() const;
+
 	bool isStoreWritable() const
 	{
 		return m_store->isWritable();

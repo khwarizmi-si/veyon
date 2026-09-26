@@ -34,6 +34,9 @@
 #include "MainWindow.h"
 #include "ComputerManager.h"
 #include "MonitoringMode.h"
+#include "LicenseService.h"
+#include "LicenseStorage.h"
+#include "LicenseSyncFeature.h"
 #include "UserConfig.h"
 #include "PluginManager.h"
 
@@ -43,6 +46,7 @@ VeyonMaster::VeyonMaster( QObject* parent ) :
 	m_userConfig(new UserConfig(QStringLiteral("AlKhwarizmiMaster"))),
 	m_features( featureList() ),
 	m_computerManager( new ComputerManager( *m_userConfig, this ) ),
+	m_licenseState(LicenseService::snapshot().state),
 	m_computerControlListModel( new ComputerControlListModel( this, this ) ),
 	m_computerMonitoringModel( new ComputerMonitoringModel( this ) ),
 	m_localSessionControlInterface( Computer( NetworkObject::Uid::createUuid(),
@@ -73,7 +77,26 @@ VeyonMaster::VeyonMaster( QObject* parent ) :
 				this, &VeyonMaster::enforceDesignatedMode);
 	}
 
+	connect(&m_localSessionControlInterface, &ComputerControlInterface::stateChanged, this, [this]() {
+		if (m_localSessionControlInterface.state() == ComputerControlInterface::State::Connected)
+		{
+			startCheckInIfDue();
+		}
+	});
 	m_localSessionControlInterface.start({}, ComputerControlInterface::UpdateMode::Disabled);
+	refreshLicenseState();
+	connect(&VeyonCore::builtinFeatures().licenseSyncFeature(), &LicenseSyncFeature::tokenReceived,
+			this, [this](LicenseActionResult result) {
+				if (result != LicenseActionResult::Ok)
+				{
+					vWarning() << "licence check-in failed:" << LicenseService::describe(result);
+				}
+				refreshLicenseState();
+			});
+	m_licenseTimer.setInterval(60 * 60 * 1000);
+	connect(&m_licenseTimer, &QTimer::timeout, this, &VeyonMaster::startCheckInIfDue);
+	m_licenseTimer.start();
+	startCheckInIfDue();
 
 	// attach computer list model to proxy model
 	m_computerMonitoringModel->setSourceModel( m_computerControlListModel );
@@ -96,6 +119,48 @@ VeyonMaster::~VeyonMaster()
 
 	m_userConfig->flushStore();
 	delete m_userConfig;
+}
+
+void VeyonMaster::refreshLicenseState()
+{
+	const auto state = LicenseService::snapshot().state;
+	if (state.level == m_licenseState.level && state.reason == m_licenseState.reason &&
+		state.escalatesAt == m_licenseState.escalatesAt)
+	{
+		return;
+	}
+	const bool wasBlocked = licenseBlocksNewSessions(m_licenseState);
+	m_licenseState = state;
+	if (wasBlocked && !licenseBlocksNewSessions(m_licenseState))
+	{
+		m_computerControlListModel->reload();
+	}
+	Q_EMIT licenseStateChanged(m_licenseState);
+}
+
+void VeyonMaster::startCheckInIfDue()
+{
+	refreshLicenseState();
+	if (m_localSessionControlInterface.state() != ComputerControlInterface::State::Connected)
+	{
+		return;
+	}
+	LicenseCache cache;
+	const auto lastCheckIn = QDateTime::fromString(cache.lastServerTime(), Qt::ISODateWithMs);
+	const auto now = QDateTime::currentDateTimeUtc();
+	if (!licenseCheckInDue(lastCheckIn, now))
+	{
+		return;
+	}
+	const auto secondsSinceAttempt = m_lastLicenseAttempt.secsTo(now);
+	if (m_lastLicenseAttempt.isValid() && secondsSinceAttempt >= 0 && secondsSinceAttempt < 60)
+	{
+		return;
+	}
+	m_lastLicenseAttempt = now;
+	VeyonCore::builtinFeatures().licenseSyncFeature().requestCheckIn(
+		m_localSessionControlInterface.weakPointer(),
+		LicenseSyncFeature::devicesFrom(m_computerControlListModel->computerControlInterfaces()));
 }
 
 
@@ -203,6 +268,10 @@ ComputerControlInterfaceList VeyonMaster::filteredComputerControlInterfaces() co
 
 void VeyonMaster::runFeature( const Feature& feature )
 {
+	if (licenseBlocksNewSessions(m_licenseState))
+	{
+		return;
+	}
 	const auto computerControlInterfaces = filteredComputerControlInterfaces();
 
 	if( feature.testFlag( Feature::Flag::Mode ) )

@@ -57,3 +57,8 @@ public:
 								 const QDateTime& now,
 								 const QDateTime& lastServerTime);
 };
+
+VEYON_CORE_EXPORT bool licenseCheckInDue(const QDateTime& lastCheckIn, const QDateTime& now);
+VEYON_CORE_EXPORT bool licenseBlocksNewSessions(const LicenseState& state);
+VEYON_CORE_EXPORT bool licenseNeedsBanner(const LicenseState& state);
+VEYON_CORE_EXPORT QStringList licenseDevicesWithinQuota(QStringList macAddresses, int maxDevices);

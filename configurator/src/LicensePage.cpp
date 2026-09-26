@@ -10,12 +10,14 @@
  */
 
 #include <QFormLayout>
+#include <QFutureWatcher>
 #include <QGroupBox>
 #include <QIcon>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QtConcurrent>
 
 #include "LicensePage.h"
 #include "LicenseService.h"
@@ -115,23 +117,32 @@ void LicensePage::activate()
 		return;
 	}
 	setBusy(true);
-	const auto result = LicenseService::activate(code);
-	setBusy(false);
-	m_resultLabel->setText(LicenseService::describe(result));
-	if (result == LicenseActionResult::Ok)
-	{
-		m_codeEdit->clear();
-	}
-	refresh();
+	auto* watcher = new QFutureWatcher<LicenseActionResult>(this);
+	connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
+		const auto result = watcher->result();
+		setBusy(false);
+		m_resultLabel->setText(LicenseService::describe(result));
+		if (result == LicenseActionResult::Ok)
+		{
+			m_codeEdit->clear();
+		}
+		refresh();
+		watcher->deleteLater();
+	});
+	watcher->setFuture(QtConcurrent::run([code]() { return LicenseService::activate(code); }));
 }
 
 void LicensePage::checkNow()
 {
 	setBusy(true);
-	const auto result = LicenseService::checkIn({});
-	setBusy(false);
-	m_resultLabel->setText(LicenseService::describe(result));
-	refresh();
+	auto* watcher = new QFutureWatcher<LicenseActionResult>(this);
+	connect(watcher, &QFutureWatcherBase::finished, this, [this, watcher]() {
+		setBusy(false);
+		m_resultLabel->setText(LicenseService::describe(watcher->result()));
+		refresh();
+		watcher->deleteLater();
+	});
+	watcher->setFuture(QtConcurrent::run([]() { return LicenseService::checkIn({}); }));
 }
 
 void LicensePage::setBusy(bool busy)

@@ -55,7 +55,10 @@ static LicenseActionResult fromCallStatus(LicenseCallStatus status)
 // meant to write is the only way this layer can detect a failed save.
 static bool flushAndVerify(LicenseActivation& store)
 {
-	store.flushStore();
+	if (store.flushAndProtect() == false)
+	{
+		return false;
+	}
 	const LicenseActivation reloaded;
 	return reloaded.masterId() == store.masterId()
 		&& reloaded.secret() == store.secret()
@@ -68,6 +71,14 @@ static bool flushAndVerify(LicenseCache& store)
 	const LicenseCache reloaded;
 	return reloaded.refreshedToken() == store.refreshedToken()
 		&& reloaded.lastServerTime() == store.lastServerTime();
+}
+
+static bool flushAndVerify(LicensePublic& store)
+{
+	store.flushStore();
+	const LicensePublic reloaded;
+	return reloaded.masterId() == store.masterId()
+		&& reloaded.signedToken() == store.signedToken();
 }
 
 }
@@ -99,13 +110,22 @@ LicenseSnapshot LicenseService::snapshot()
 {
 	using namespace LicenseServiceDetail;
 
-	const LicenseActivation activation;
+	const LicensePublic publicStore;
 	const LicenseCache cache;
 
 	LicenseSnapshot result;
-	result.masterId = activation.masterId();
+	result.masterId = publicStore.masterId();
+	QString activationToken = publicStore.signedToken();
+	if (result.masterId.isEmpty())
+	{
+		// Existing installations can have a protected activation file but no
+		// public token yet. The server will publish one at its next check-in.
+		const LicenseActivation activation;
+		result.masterId = activation.masterId();
+		activationToken = activation.activationToken();
+	}
 
-	const auto selected = LicenseSelector::select(activation.activationToken(), cache.refreshedToken(),
+	const auto selected = LicenseSelector::select(activationToken, cache.refreshedToken(),
 												  result.masterId, LicenseToken::productionKeys());
 	if (selected)
 	{
@@ -157,6 +177,13 @@ LicenseActionResult LicenseService::activate(const QString& code)
 	}
 
 	if (flushAndVerify(activation) == false)
+	{
+		return LicenseActionResult::NotWritable;
+	}
+	LicensePublic publicStore;
+	publicStore.setMasterId(response.masterId);
+	publicStore.setSignedToken(activation.activationToken());
+	if (flushAndVerify(publicStore) == false)
 	{
 		return LicenseActionResult::NotWritable;
 	}
@@ -243,6 +270,13 @@ LicenseActionResult LicenseService::checkIn(const QList<LicenseDevice>& devices)
 		{
 			return LicenseActionResult::NotWritable;
 		}
+		LicensePublic publicStore;
+		publicStore.setMasterId(activation.masterId());
+		publicStore.setSignedToken(response.token);
+		if (flushAndVerify(publicStore) == false)
+		{
+			return LicenseActionResult::NotWritable;
+		}
 	}
 
 	return LicenseActionResult::Ok;
@@ -271,8 +305,8 @@ QString LicenseService::describe(const LicenseState& state)
 				   : tr("We could not verify the subscription. Check the internet connection. The service will be suspended on %1 if this continues.").arg(deadline);
 	case LicenseReason::Quota:
 		return state.level == LicenseLevel::Suspended
-				   ? tr("The school is using more devices than its licence allows, and the service is suspended.")
-				   : tr("The school is using more devices than its licence allows. The service will be suspended on %1 unless the quota is raised.").arg(deadline);
+				   ? tr("The school is using more devices than its licence allows. Devices outside the licensed quota cannot start new sessions.")
+				   : tr("The school is using more devices than its licence allows. Raise the quota before %1 to avoid limiting new sessions.").arg(deadline);
 	case LicenseReason::Connection:
 		return state.level == LicenseLevel::Suspended
 				   ? tr("The licence server could not be reached for too long, and the service is suspended. Check the internet connection.")

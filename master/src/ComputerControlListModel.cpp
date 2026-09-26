@@ -27,6 +27,7 @@
 #include "ComputerControlListModel.h"
 #include "ComputerManager.h"
 #include "FeatureManager.h"
+#include "LicenseService.h"
 #include "PlatformSessionFunctions.h"
 #include "VeyonMaster.h"
 #include "UserConfig.h"
@@ -344,6 +345,11 @@ void ComputerControlListModel::updateSessionInfo(const QModelIndex& index)
 
 void ComputerControlListModel::startComputerControlInterface( ComputerControlInterface* controlInterface )
 {
+	if (licenseBlocksNewSessions(m_master->licenseState()) ||
+		!isWithinLicense(controlInterface->computer()))
+	{
+		return;
+	}
 	controlInterface->start( computerScreenSize(), ComputerControlInterface::UpdateMode::Monitoring );
 
 	connect(controlInterface, &ComputerControlInterface::framebufferSizeChanged,
@@ -366,6 +372,24 @@ void ComputerControlListModel::startComputerControlInterface( ComputerControlInt
 
 	connect(controlInterface, &ComputerControlInterface::accessControlDetailsChanged,
 			this, [=, this] () { updateAccessControlDetails(interfaceIndex(controlInterface)); });
+}
+
+bool ComputerControlListModel::isWithinLicense(const Computer& computer) const
+{
+	const auto snapshot = LicenseService::snapshot();
+	if (!snapshot.claims)
+	{
+		return false;
+	}
+	QStringList identities;
+	for (const auto& candidate : m_master->computerManager().selectedComputers(QModelIndex()))
+	{
+		const auto mac = candidate.macAddress();
+		identities.append(mac.isEmpty() ? candidate.hostName() : mac);
+	}
+	const auto allowed = licenseDevicesWithinQuota(identities, snapshot.claims->maxDevices);
+	const auto mac = computer.macAddress();
+	return allowed.contains((mac.isEmpty() ? computer.hostName() : mac).trimmed().toLower());
 }
 
 
@@ -455,6 +479,10 @@ QImage ComputerControlListModel::computerDecorationRole( const ComputerControlIn
 
 QString ComputerControlListModel::computerToolTipRole( const ComputerControlInterface::Pointer& controlInterface ) const
 {
+	if (LicenseService::snapshot().claims && !isWithinLicense(controlInterface->computer()))
+	{
+		return tr("Di luar kuota lisensi");
+	}
 	const QString state( computerStateDescription( controlInterface ) );
 	const QString name(tr("Name: %1").arg(controlInterface->computerName()));
 	const QString location( tr( "Location: %1" ).arg( controlInterface->computer().location() ) );

@@ -51,8 +51,21 @@ Screenshot::Screenshot( const QString &fileName, QObject* parent ) :
 
 
 
-void Screenshot::take( const ComputerControlInterface::Pointer& computerControlInterface )
+bool Screenshot::take( const ComputerControlInterface::Pointer& computerControlInterface )
 {
+	if (computerControlInterface.isNull())
+	{
+		return false;
+	}
+	m_image = computerControlInterface->framebuffer();
+	if (m_image.isNull())
+	{
+		m_image = computerControlInterface->scaledFramebuffer();
+	}
+	if (m_image.isNull())
+	{
+		return false;
+	}
 	auto userLogin = computerControlInterface->userLoginName();
 	if( userLogin.isEmpty() )
 	{
@@ -70,7 +83,7 @@ void Screenshot::take( const ComputerControlInterface::Pointer& computerControlI
 			QMessageBox::critical( nullptr, tr( "Screenshot" ), msg );
 		}
 
-		return;
+		return false;
 	}
 
 	// construct filename
@@ -89,7 +102,7 @@ void Screenshot::take( const ComputerControlInterface::Pointer& computerControlI
 			QMessageBox::critical( nullptr, tr( "Screenshot" ), msg );
 		}
 
-		return;
+		return false;
 	}
 
 	// construct caption
@@ -104,8 +117,6 @@ void Screenshot::take( const ComputerControlInterface::Pointer& computerControlI
 	const auto time = QTime::currentTime().toString( Qt::ISODate );
 
 	const auto caption = QStringLiteral( "%1@%2 %3 %4" ).arg( user, host, date, time );
-
-	m_image = computerControlInterface->framebuffer();
 
 	QPixmap icon( QStringLiteral( ":/core/icon16.png" ) );
 
@@ -140,9 +151,15 @@ void Screenshot::take( const ComputerControlInterface::Pointer& computerControlI
 	m_image.setText( metaDataKey( MetaData::Date ), date );
 	m_image.setText( metaDataKey( MetaData::Time ), time );
 
-	m_image.save( &outputFile, "PNG", 50 );
+	if (!m_image.save(&outputFile, "PNG", 50))
+	{
+		outputFile.close();
+		outputFile.remove();
+		return false;
+	}
 
 	Q_EMIT VeyonCore::filesystem().screenshotDirectoryModified();
+	return true;
 }
 
 

@@ -54,5 +54,6 @@ private:
 	QTextEdit* m_conversation = nullptr;
 	QLineEdit* m_input = nullptr;
 	QPushButton* m_sendButton = nullptr;
+	bool m_replySent = false;
 
 };

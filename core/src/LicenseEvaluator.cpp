@@ -140,3 +140,39 @@ LicenseState LicenseEvaluator::evaluate(const std::optional<LicenseClaims>& clai
 	}
 	return { worst, LicenseReason::Connection, escalatesAt };
 }
+
+bool licenseCheckInDue(const QDateTime& lastCheckIn, const QDateTime& now)
+{
+	return !lastCheckIn.isValid() || now < lastCheckIn || lastCheckIn.secsTo(now) >= 24 * 60 * 60;
+}
+
+bool licenseBlocksNewSessions(const LicenseState& state)
+{
+	return state.level == LicenseLevel::Suspended && state.reason != LicenseReason::Quota;
+}
+
+bool licenseNeedsBanner(const LicenseState& state)
+{
+	return state.level != LicenseLevel::Normal;
+}
+
+QStringList licenseDevicesWithinQuota(QStringList macAddresses, int maxDevices)
+{
+	if (maxDevices <= 0)
+	{
+		return {};
+	}
+
+	for (auto& mac : macAddresses)
+	{
+		mac = mac.trimmed().toLower();
+	}
+	macAddresses.removeAll(QString());
+	std::sort(macAddresses.begin(), macAddresses.end());
+	macAddresses.erase(std::unique(macAddresses.begin(), macAddresses.end()), macAddresses.end());
+	if (macAddresses.size() > maxDevices)
+	{
+		macAddresses.erase(macAddresses.begin() + maxDevices, macAddresses.end());
+	}
+	return macAddresses;
+}

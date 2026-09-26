@@ -77,6 +77,7 @@ private:
 	void updateSessionInfo(const QModelIndex& index);
 
 	void startComputerControlInterface( ComputerControlInterface* controlInterface );
+	bool isWithinLicense(const Computer& computer) const;
 	void stopComputerControlInterface( const ComputerControlInterface::Pointer& controlInterface );
 
 	double averageAspectRatio() const;

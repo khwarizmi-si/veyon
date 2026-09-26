@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - codex/khwarizmi-windows-installers
+      - feat/license-client
     paths:
       - ".github/workflows/windows-installers.yml"
       - "CMakeLists.txt"

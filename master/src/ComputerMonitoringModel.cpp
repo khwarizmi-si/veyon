@@ -69,6 +69,17 @@ void ComputerMonitoringModel::setStateFilter( ComputerControlInterface::State st
 }
 
 
+void ComputerMonitoringModel::setHideConnectedComputers( bool hide )
+{
+	if( m_hideConnectedComputers != hide )
+	{
+		beginResetModel();
+		m_hideConnectedComputers = hide;
+		endResetModel();
+	}
+}
+
+
 
 void ComputerMonitoringModel::setFilterNonEmptyUserLoginNames( bool enabled )
 {
@@ -84,6 +95,12 @@ void ComputerMonitoringModel::setFilterNonEmptyUserLoginNames( bool enabled )
 
 bool ComputerMonitoringModel::filterAcceptsRow( int sourceRow, const QModelIndex& sourceParent ) const
 {
+	if( m_hideConnectedComputers && m_stateRole >= 0 &&
+		sourceModel()->data( sourceModel()->index( sourceRow, 0, sourceParent ),
+							 m_stateRole ).value<ComputerControlInterface::State>() == ComputerControlInterface::State::Connected )
+	{
+		return false;
+	}
 	if( m_stateFilter != ComputerControlInterface::State::None &&
 		m_stateRole >= 0 &&
 		sourceModel()->data( sourceModel()->index( sourceRow, 0, sourceParent ),

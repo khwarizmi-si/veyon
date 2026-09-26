@@ -29,6 +29,7 @@
 class AccessControlProvider;
 class DesktopAccessDialog;
 class MonitoringMode;
+class LicenseSyncFeature;
 class SystemTrayIcon;
 
 // clazy:excludeall=rule-of-three
@@ -59,10 +60,16 @@ public:
 		return *m_accessControlProvider;
 	}
 
+	LicenseSyncFeature& licenseSyncFeature()
+	{
+		return *m_licenseSyncFeature;
+	}
+
 private:
 	SystemTrayIcon* m_systemTrayIcon;
 	MonitoringMode* m_monitoringMode;
 	DesktopAccessDialog* m_desktopAccessDialog;
 	AccessControlProvider* m_accessControlProvider;
+	LicenseSyncFeature* m_licenseSyncFeature;
 
 };

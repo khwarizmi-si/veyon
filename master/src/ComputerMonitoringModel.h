@@ -54,6 +54,7 @@ public:
 	}
 
 	void setStateFilter( ComputerControlInterface::State state );
+	void setHideConnectedComputers( bool hide );
 
 	bool filterNonEmptyUserLoginNames() const
 	{
@@ -69,6 +70,7 @@ private:
 	int m_stateRole{-1};
 	int m_userLoginNameRole{-1};
 	ComputerControlInterface::State m_stateFilter{ComputerControlInterface::State::None};
+	bool m_hideConnectedComputers{false};
 	bool m_filterNonEmptyUserLoginNames{false};
 
 };
