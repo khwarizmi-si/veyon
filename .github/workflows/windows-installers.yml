@@ -17,6 +17,7 @@ on:
       - "master/**"
       - "nsis/**"
       - "plugins/**"
+      - "tests/**"
       - "3rdparty/**"
 
 jobs:
@@ -108,6 +109,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=/mingw64 \
             -DQT_TRANSLATIONS_DIR=/mingw64/share/qt6/translations \
             -DVEYON_UPDATE_TRANSLATIONS=OFF \
+            -DWITH_TESTS=ON \
             -DMINGW_TARGET=x86_64-w64-mingw32 \
             -DMINGW_PREFIX=/mingw64 \
             -DMINGW_TOOL_PREFIX=/mingw64/bin/
@@ -121,6 +123,14 @@ jobs:
             "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.1-latest-win64-lgpl-8.1.zip"
           unzip -j /tmp/ffmpeg-win64-lgpl.zip "*/bin/ffmpeg.exe" -d "$GITHUB_WORKSPACE/3rdparty/ffmpeg"
           test -f "$GITHUB_WORKSPACE/3rdparty/ffmpeg/ffmpeg.exe"
+
+      - name: Build and test licence client
+        run: |
+          set -euxo pipefail
+          cmake --build "$GITHUB_WORKSPACE/build-win64" --target license-test
+          export PATH="$GITHUB_WORKSPACE/build-win64/core:/mingw64/bin:$PATH"
+          export QT_QPA_PLATFORM=offscreen
+          ctest --test-dir "$GITHUB_WORKSPACE/build-win64" -R '^license-test$' --output-on-failure --no-tests=error
 
       - name: Build add-on installers
         run: |

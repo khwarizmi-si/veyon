@@ -19,6 +19,8 @@
 // exported file and deployment template. These stores are never exported.
 
 #define FOREACH_LICENSE_ACTIVATION_PROPERTY(OP) \
+	OP(LicenseActivation, LicenseActivation(), QString, pendingActivationKey, setPendingActivationKey, "PendingActivationKey", "License", QString(), Configuration::Property::Flag::Hidden) \
+	OP(LicenseActivation, LicenseActivation(), QString, pendingActivationSecret, setPendingActivationSecret, "PendingActivationSecret", "License", QString(), Configuration::Property::Flag::Hidden) \
 	OP(LicenseActivation, LicenseActivation(), QString, masterId, setMasterId, "MasterId", "License", QString(), Configuration::Property::Flag::Hidden) \
 	OP(LicenseActivation, LicenseActivation(), QString, secret, setSecret, "Secret", "License", QString(), Configuration::Property::Flag::Hidden) \
 	OP(LicenseActivation, LicenseActivation(), QString, activationToken, setActivationToken, "ActivationToken", "License", QString(), Configuration::Property::Flag::Hidden) \

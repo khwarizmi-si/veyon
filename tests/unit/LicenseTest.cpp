@@ -604,6 +604,15 @@ private Q_SLOTS:
 		QCOMPARE(keys, QStringList({ QStringLiteral("code"), QStringLiteral("hostname"), QStringLiteral("version") }));
 	}
 
+	void activationBodyIncludesRecoverySecret()
+	{
+		const auto secret = QString(64, QLatin1Char('a'));
+		const auto object = QJsonDocument::fromJson(LicenseClient::buildActivateBody(
+			QStringLiteral("KHW-ABC"), QStringLiteral("guru-pc"), QStringLiteral("4.11.0"), secret)).object();
+		QCOMPARE(object.value(QStringLiteral("activation_secret")).toString(), secret);
+		QCOMPARE(object.value(QStringLiteral("code")).toString(), QStringLiteral("KHW-ABC"));
+	}
+
 	void parsesSuccessfulActivation()
 	{
 		const auto response = LicenseClient::parseActivateResponse(

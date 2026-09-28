@@ -72,13 +72,19 @@ QUrl LicenseClient::endpoint(const QString& serverUrl, const QString& path)
 	return url;
 }
 
-QByteArray LicenseClient::buildActivateBody(const QString& code, const QString& hostname, const QString& version)
+QByteArray LicenseClient::buildActivateBody(const QString& code, const QString& hostname, const QString& version,
+											 const QString& activationSecret)
 {
-	return QJsonDocument(QJsonObject{
+	QJsonObject object{
 		{ QStringLiteral("code"), code },
 		{ QStringLiteral("hostname"), hostname },
 		{ QStringLiteral("version"), version },
-	}).toJson(QJsonDocument::Compact);
+	};
+	if (!activationSecret.isEmpty())
+	{
+		object.insert(QStringLiteral("activation_secret"), activationSecret);
+	}
+	return QJsonDocument(object).toJson(QJsonDocument::Compact);
 }
 
 QByteArray LicenseClient::buildCheckInBody(const QString& masterId, const QList<LicenseDevice>& devices,
@@ -155,10 +161,11 @@ CheckInResponse LicenseClient::parseCheckInResponse(int httpStatus, const QByteA
 	return response;
 }
 
-ActivationResponse LicenseClient::activate(const QString& code, const QString& hostname, const QString& version)
+ActivationResponse LicenseClient::activate(const QString& code, const QString& hostname, const QString& version,
+											   const QString& activationSecret)
 {
 	QByteArray body;
-	const auto httpStatus = post(QStringLiteral("/v1/activate"), buildActivateBody(code, hostname, version), {}, body);
+	const auto httpStatus = post(QStringLiteral("/v1/activate"), buildActivateBody(code, hostname, version, activationSecret), {}, body);
 	return parseActivateResponse(httpStatus, body);
 }
 

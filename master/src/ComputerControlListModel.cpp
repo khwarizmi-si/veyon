@@ -184,6 +184,7 @@ void ComputerControlListModel::reload()
 
 	const auto computerList = m_master->computerManager().selectedComputers( QModelIndex() );
 
+	m_licenseBlockedInterfaces.clear();
 	m_computerControlInterfaces.clear();
 	m_computerControlInterfaces.reserve( computerList.size() );
 
@@ -197,6 +198,18 @@ void ComputerControlListModel::reload()
 	endResetModel();
 }
 
+
+
+void ComputerControlListModel::resumeLicensedInterfaces()
+{
+	for (const auto& controlInterface : m_computerControlInterfaces)
+	{
+		if (m_licenseBlockedInterfaces.contains(controlInterface.data()))
+		{
+			startComputerControlInterface(controlInterface.data());
+		}
+	}
+}
 
 
 void ComputerControlListModel::update()
@@ -348,8 +361,10 @@ void ComputerControlListModel::startComputerControlInterface( ComputerControlInt
 	if (licenseBlocksNewSessions(m_master->licenseState()) ||
 		!isWithinLicense(controlInterface->computer()))
 	{
+		m_licenseBlockedInterfaces.insert(controlInterface);
 		return;
 	}
+	m_licenseBlockedInterfaces.remove(controlInterface);
 	controlInterface->start( computerScreenSize(), ComputerControlInterface::UpdateMode::Monitoring );
 
 	connect(controlInterface, &ComputerControlInterface::framebufferSizeChanged,
@@ -396,6 +411,7 @@ bool ComputerControlListModel::isWithinLicense(const Computer& computer) const
 
 void ComputerControlListModel::stopComputerControlInterface( const ComputerControlInterface::Pointer& controlInterface )
 {
+	m_licenseBlockedInterfaces.remove(controlInterface.data());
 	m_master->stopAllFeatures( { controlInterface } );
 
 	controlInterface->disconnect(this);

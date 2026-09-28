@@ -128,5 +128,8 @@ private:
 
 	Feature::Uid m_currentMode;
 	QTimer m_licenseTimer;
+	QTimer m_inventoryTimer;
+	bool m_inventoryPending{true};
+	bool m_waitingForLicenseReply{false};
 
 } ;

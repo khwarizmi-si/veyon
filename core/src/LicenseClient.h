@@ -54,13 +54,15 @@ public:
 
 	explicit LicenseClient(const QString& serverUrl);
 
-	ActivationResponse activate(const QString& code, const QString& hostname, const QString& version);
+	ActivationResponse activate(const QString& code, const QString& hostname, const QString& version,
+								const QString& activationSecret = {});
 	CheckInResponse checkIn(const QString& masterId, const QString& secret, const QList<LicenseDevice>& devices,
 							const QString& hostname, const QString& version);
 
 	// Pure helpers, unit-tested.
 	static QUrl endpoint(const QString& serverUrl, const QString& path);
-	static QByteArray buildActivateBody(const QString& code, const QString& hostname, const QString& version);
+	static QByteArray buildActivateBody(const QString& code, const QString& hostname, const QString& version,
+										   const QString& activationSecret = {});
 	static QByteArray buildCheckInBody(const QString& masterId, const QList<LicenseDevice>& devices,
 									   const QString& hostname, const QString& version);
 	static ActivationResponse parseActivateResponse(int httpStatus, const QByteArray& body);

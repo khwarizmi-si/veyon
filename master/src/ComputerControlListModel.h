@@ -26,6 +26,7 @@
 
 #include <QAbstractListModel>
 #include <QImage>
+#include <QSet>
 
 #include "ComputerListModel.h"
 #include "ComputerControlInterface.h"
@@ -57,6 +58,7 @@ public:
 	ComputerControlInterface::Pointer computerControlInterface( const QModelIndex& index ) const;
 
 	void reload();
+	void resumeLicensedInterfaces();
 
 Q_SIGNALS:
 	void stateChanged(QModelIndex);
@@ -102,5 +104,6 @@ private:
 	QSize m_computerScreenSize{};
 
 	ComputerControlInterfaceList m_computerControlInterfaces{};
+	QSet<ComputerControlInterface*> m_licenseBlockedInterfaces;
 
 };

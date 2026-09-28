@@ -87,13 +87,25 @@ VeyonMaster::VeyonMaster( QObject* parent ) :
 	refreshLicenseState();
 	connect(&VeyonCore::builtinFeatures().licenseSyncFeature(), &LicenseSyncFeature::tokenReceived,
 			this, [this](LicenseActionResult result) {
+				m_waitingForLicenseReply = false;
 				if (result != LicenseActionResult::Ok)
 				{
+					m_inventoryPending = true;
 					vWarning() << "licence check-in failed:" << LicenseService::describe(result);
 				}
 				refreshLicenseState();
 			});
-	m_licenseTimer.setInterval(60 * 60 * 1000);
+	m_inventoryTimer.setSingleShot(true);
+	m_inventoryTimer.setInterval(5000);
+	connect(&m_inventoryTimer, &QTimer::timeout, this, &VeyonMaster::startCheckInIfDue);
+	const auto inventoryChanged = [this]() {
+		m_inventoryPending = true;
+		m_inventoryTimer.start();
+	};
+	connect(m_computerControlListModel, &QAbstractItemModel::modelReset, this, inventoryChanged);
+	connect(m_computerControlListModel, &QAbstractItemModel::rowsInserted, this, inventoryChanged);
+	connect(m_computerControlListModel, &QAbstractItemModel::rowsRemoved, this, inventoryChanged);
+	m_licenseTimer.setInterval(60 * 1000);
 	connect(&m_licenseTimer, &QTimer::timeout, this, &VeyonMaster::startCheckInIfDue);
 	m_licenseTimer.start();
 	startCheckInIfDue();
@@ -124,18 +136,14 @@ VeyonMaster::~VeyonMaster()
 void VeyonMaster::refreshLicenseState()
 {
 	const auto state = LicenseService::snapshot().state;
-	if (state.level == m_licenseState.level && state.reason == m_licenseState.reason &&
-		state.escalatesAt == m_licenseState.escalatesAt)
-	{
-		return;
-	}
-	const bool wasBlocked = licenseBlocksNewSessions(m_licenseState);
+	const bool changed = state.level != m_licenseState.level || state.reason != m_licenseState.reason ||
+		state.escalatesAt != m_licenseState.escalatesAt;
 	m_licenseState = state;
-	if (wasBlocked && !licenseBlocksNewSessions(m_licenseState))
+	m_computerControlListModel->resumeLicensedInterfaces();
+	if (changed)
 	{
-		m_computerControlListModel->reload();
+		Q_EMIT licenseStateChanged(m_licenseState);
 	}
-	Q_EMIT licenseStateChanged(m_licenseState);
 }
 
 void VeyonMaster::startCheckInIfDue()
@@ -148,7 +156,16 @@ void VeyonMaster::startCheckInIfDue()
 	LicenseCache cache;
 	const auto lastCheckIn = QDateTime::fromString(cache.lastServerTime(), Qt::ISODateWithMs);
 	const auto now = QDateTime::currentDateTimeUtc();
-	if (!licenseCheckInDue(lastCheckIn, now))
+	if (m_waitingForLicenseReply)
+	{
+		if (m_lastLicenseAttempt.secsTo(now) < 60)
+		{
+			return;
+		}
+		m_waitingForLicenseReply = false;
+		m_inventoryPending = true;
+	}
+	if (!m_inventoryPending && !licenseCheckInDue(lastCheckIn, now))
 	{
 		return;
 	}
@@ -158,6 +175,8 @@ void VeyonMaster::startCheckInIfDue()
 		return;
 	}
 	m_lastLicenseAttempt = now;
+	m_inventoryPending = false;
+	m_waitingForLicenseReply = true;
 	VeyonCore::builtinFeatures().licenseSyncFeature().requestCheckIn(
 		m_localSessionControlInterface.weakPointer(),
 		LicenseSyncFeature::devicesFrom(m_computerControlListModel->computerControlInterfaces()));

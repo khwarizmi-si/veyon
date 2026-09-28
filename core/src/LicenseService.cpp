@@ -10,7 +10,9 @@
  */
 
 #include <QHostInfo>
+#include <QCryptographicHash>
 #include <QLocale>
+#include <QRandomGenerator>
 
 #include "LicenseSelector.h"
 #include "LicenseService.h"
@@ -61,6 +63,8 @@ static bool flushAndVerify(LicenseActivation& store)
 	}
 	const LicenseActivation reloaded;
 	return reloaded.masterId() == store.masterId()
+		&& reloaded.pendingActivationKey() == store.pendingActivationKey()
+		&& reloaded.pendingActivationSecret() == store.pendingActivationSecret()
 		&& reloaded.secret() == store.secret()
 		&& reloaded.activationToken() == store.activationToken();
 }
@@ -148,8 +152,26 @@ LicenseActionResult LicenseService::activate(const QString& code)
 		return LicenseActionResult::NotWritable;
 	}
 
+	const auto activationKey = QString::fromLatin1(QCryptographicHash::hash(
+		(activation.serverUrl() + QLatin1Char('\n') + code.trimmed()).toUtf8(), QCryptographicHash::Sha256).toHex());
+	if (activation.pendingActivationKey() != activationKey || activation.pendingActivationSecret().size() != 64)
+	{
+		QString secret;
+		for (int i = 0; i < 8; ++i)
+		{
+			secret += QStringLiteral("%1").arg(QRandomGenerator::system()->generate(), 8, 16, QLatin1Char('0'));
+		}
+		activation.setPendingActivationKey(activationKey);
+		activation.setPendingActivationSecret(secret);
+	}
+	// Persist the retry credential before a single-use code can be consumed.
+	if (!flushAndVerify(activation))
+	{
+		return LicenseActionResult::NotWritable;
+	}
 	LicenseClient client(activation.serverUrl());
-	const auto response = client.activate(code.trimmed(), QHostInfo::localHostName(), VeyonCore::versionString());
+	const auto response = client.activate(code.trimmed(), QHostInfo::localHostName(), VeyonCore::versionString(),
+										 activation.pendingActivationSecret());
 	if (response.status != LicenseCallStatus::Ok)
 	{
 		auto result = fromCallStatus(response.status);
