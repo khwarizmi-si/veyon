@@ -25,6 +25,7 @@
 #pragma once
 
 #include <QTimer>
+#include <QElapsedTimer>
 
 #include "Feature.h"
 #include "LicenseEvaluator.h"
@@ -118,7 +119,7 @@ private:
 	const FeatureList m_features;
 	ComputerManager* m_computerManager;
 	LicenseState m_licenseState;
-	QDateTime m_lastLicenseAttempt;
+	QElapsedTimer m_lastLicenseAttempt;
 	ComputerControlListModel* m_computerControlListModel;
 	ComputerMonitoringModel* m_computerMonitoringModel;
 

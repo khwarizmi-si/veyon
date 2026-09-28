@@ -31,6 +31,8 @@ Backend menyediakan tenant, kuota, tanggal langganan, aktivasi, dan check-in. In
 
 ## Progres patch setelah audit
 
+- Windows CI #46 pada commit `11c5c766c` gagal di langkah `Build and test licence client`: https://github.com/khwarizmi-si/veyon/actions/runs/36413639896/job/108899482095. Anotasi hanya exit code 1; API log menolak akses (403), browser tidak login. Belum diketahui apakah kompilasi atau tes runtime yang gagal. Installer baru belum dihasilkan; gate tidak dihapus atau dilewati. Log detail diminta dari pengguna.
+- Jeda retry/check-in timeout Master memakai `QElapsedTimer`, bukan selisih jam UTC, sehingga perubahan jam sistem tidak menahan retry. Evaluasi tanggal token tetap memakai UTC. Patch ini belum masuk build #46; perlu build berikutnya.
 - Status overage dihitung, ditulis, dan dikembalikan dalam satu `UPDATE ... RETURNING`. Tes dua caller konkuren sebelumnya gagal karena salah satu menerima waktu overage berbeda dari DB; setelah patch lulus. Seluruh backend: 9 berkas/121 tes dan typecheck lulus. Ini belum memperbaiki dedup insert perangkat konkuren atau definisi slot aktif.
 - Backend aktivasi menyiapkan token sebelum menulis DB; insert Master bersyarat dan pemakaian kode berjalan dalam satu `DB.batch`. Signing failure mempertahankan kode, kegagalan update kode me-rollback Master, dan empat aktivasi konkuren menghasilkan tepat satu Master.
 - Verifikasi backend setelah patch: `npm test` lulus, 9 berkas/120 tes termasuk typecheck. D1 lokal, tidak mengubah produksi. Semantik rollback mengacu pada https://developers.cloudflare.com/d1/worker-api/d1-database/#batch.
@@ -58,5 +60,6 @@ Backend menyediakan tenant, kuota, tanggal langganan, aktivasi, dan check-in. In
 4. Coba kode terpakai dari PC lain tanpa credential retry: harus ditolak.
 5. Cabut izin tulis store lokal sebelum aktivasi: tidak boleh mengirim request atau menghabiskan kode.
 6. Periksa ACL store, ekspor konfigurasi, dan log: credential retry tidak boleh terbaca user biasa atau muncul dalam ekspor/log.
+7. Saat check-in menunggu respons, mundurkan jam Windows pada VM uji. Retry harus tetap berjalan setelah jeda monotonic 60 detik; evaluasi rollback token harus tetap berlaku, bukan dilewati.
 
 Temuan belum boleh ditandai selesai berdasarkan patch atau health check saja. Aktivasi atomik telah lolos tes lokal tetapi belum deployed; recovery respons hilang, semantik slot, dan billing masih belum selesai.

@@ -158,7 +158,7 @@ void VeyonMaster::startCheckInIfDue()
 	const auto now = QDateTime::currentDateTimeUtc();
 	if (m_waitingForLicenseReply)
 	{
-		if (m_lastLicenseAttempt.secsTo(now) < 60)
+		if (m_lastLicenseAttempt.isValid() && m_lastLicenseAttempt.elapsed() < 60000)
 		{
 			return;
 		}
@@ -169,12 +169,11 @@ void VeyonMaster::startCheckInIfDue()
 	{
 		return;
 	}
-	const auto secondsSinceAttempt = m_lastLicenseAttempt.secsTo(now);
-	if (m_lastLicenseAttempt.isValid() && secondsSinceAttempt >= 0 && secondsSinceAttempt < 60)
+	if (m_lastLicenseAttempt.isValid() && m_lastLicenseAttempt.elapsed() < 60000)
 	{
 		return;
 	}
-	m_lastLicenseAttempt = now;
+	m_lastLicenseAttempt.start();
 	m_inventoryPending = false;
 	m_waitingForLicenseReply = true;
 	VeyonCore::builtinFeatures().licenseSyncFeature().requestCheckIn(

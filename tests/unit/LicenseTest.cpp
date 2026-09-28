@@ -9,6 +9,8 @@
  * version 2 of the License, or (at your option) any later version.
  */
 
+// Complete QBitArray before Qt headers instantiate GCC 16 range traits.
+#include <QBitArray>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
