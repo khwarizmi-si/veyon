@@ -34,5 +34,9 @@ passed on commit `f88f4dfdf`: licence test, add-on installers and base installer
 The Configurator follow-up passed [run 38665181812](https://github.com/khwarizmi-si/veyon/actions/runs/38665181812)
 on commit `7a0e61ef7` with the same gates. A later one-line stylesheet change
 restored the native keyboard focus outline; it did not alter Qt APIs or UI wiring.
+The latest [run 38666551425](https://github.com/khwarizmi-si/veyon/actions/runs/38666551425)
+passed on commit `41ff333d0`, including the saved icon-only preference and
+Master side-panel styling. The workflow still reports upstream Node.js 20 and
+MINGW64 deprecation warnings.
 The local macOS host has no Qt toolchain or running Docker daemon, so live visual
 inspection and interactive Windows QA remain before merge.
