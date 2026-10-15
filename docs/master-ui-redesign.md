@@ -31,20 +31,15 @@ References: [Veyon Master UI](https://docs.veyon.io/en/latest/user/introduction.
 7. In Configurator, open every built-in and plugin page in standard and advanced modes; confirm long plugin names remain readable via tooltip and forms scroll without horizontal clipping.
 8. Activate/check a test licence in Configurator; confirm busy state, status text, save/reset and unsaved-change dialog still work.
 
-Windows CI [run 38663873607](https://github.com/khwarizmi-si/veyon/actions/runs/38663873607)
-passed on commit `f88f4dfdf`: licence test, add-on installers and base installer.
-The Configurator follow-up passed [run 38665181812](https://github.com/khwarizmi-si/veyon/actions/runs/38665181812)
-on commit `7a0e61ef7` with the same gates. A later one-line stylesheet change
-restored the native keyboard focus outline; it did not alter Qt APIs or UI wiring.
-The latest [run 38666551425](https://github.com/khwarizmi-si/veyon/actions/runs/38666551425)
-passed on commit `41ff333d0`, including the saved icon-only preference and
-Master side-panel styling. The workflow still reports upstream Node.js 20 and
-MINGW64 deprecation warnings.
 Draft [PR #4](https://github.com/khwarizmi-si/veyon/pull/4) targets
 `feat/license-client` to keep unrelated licence work out of the UI diff.
-Its [Linux CI run 38667339418](https://github.com/khwarizmi-si/veyon/actions/runs/38667339418)
-passed on Debian 11 and Fedora 44. Build success does not replace visual and
-interaction testing.
+On commit `6a011ca0f`, [Windows run 38695412428](https://github.com/khwarizmi-si/veyon/actions/runs/38695412428)
+passed the licence test, add-on installers and base installer; the
+[installer artifact](https://github.com/khwarizmi-si/veyon/actions/runs/38695412428/artifacts/11954715529)
+is available for manual QA. [Linux run 38695396799](https://github.com/khwarizmi-si/veyon/actions/runs/38695396799)
+passed on Debian 11 and Fedora 44. The Windows workflow still reports upstream
+Node.js 20 and MINGW64 deprecation warnings. Build success does not replace
+visual and interaction testing.
 The macOS host has no native Qt toolchain. Docker covers Linux rendering, but
 interactive Windows QA remains before merge.
 
