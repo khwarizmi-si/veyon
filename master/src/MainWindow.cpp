@@ -31,6 +31,7 @@
 #include <QHostAddress>
 #include <QMenu>
 #include <QMessageBox>
+#include <QResizeEvent>
 #include <QSplitter>
 #include <QStatusBar>
 
@@ -240,6 +241,27 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	m_modeGroup( new QButtonGroup( this ) )
 {
 	ui->setupUi( this );
+	const bool dark = VeyonCore::useDarkMode();
+	const auto surface = dark ? QStringLiteral("#1b2927") : QStringLiteral("#ffffff");
+	const auto canvas = dark ? QStringLiteral("#14201e") : QStringLiteral("#f2f6f4");
+	const auto ink = dark ? QStringLiteral("#f0f6f2") : QStringLiteral("#18302c");
+	const auto border = dark ? QStringLiteral("#344741") : QStringLiteral("#d8e4de");
+	const auto accent = dark ? QStringLiteral("#80d6bb") : QStringLiteral("#116b5b");
+	const auto selected = dark ? QStringLiteral("#25433a") : QStringLiteral("#e4f2ed");
+	setStyleSheet(QStringLiteral(R"(
+		QMainWindow { background: %1; color: %3; }
+		QToolBar#toolBar { background: %2; border: 0; border-bottom: 1px solid %4; padding: 6px 10px; spacing: 5px; }
+		QToolBar#toolBar QToolButton { color: %3; border: 1px solid transparent; border-radius: 6px; padding: 6px 8px; min-width: 30px; min-height: 30px; }
+		QToolBar#toolBar QToolButton:hover, QStatusBar QToolButton:hover { background: %6; }
+		QToolBar#toolBar QToolButton:checked, QStatusBar QToolButton:checked { color: %5; background: %6; border: 1px solid %4; }
+		QToolBar#toolBar QToolButton#qt_toolbar_ext_button { border: 1px solid %4; }
+		QStatusBar { background: %2; color: %3; border-top: 1px solid %4; padding: 4px 8px; }
+		QStatusBar QToolButton { color: %3; border: 1px solid transparent; border-radius: 5px; padding: 5px; }
+		QStatusBar QLineEdit, QStatusBar QComboBox { color: %3; background: %1; border: 1px solid %4; border-radius: 5px; padding: 5px 8px; }
+		QStatusBar QLineEdit:focus, QStatusBar QComboBox:focus { border: 1px solid %5; }
+		QSplitter::handle { background: %4; }
+		QListView#computerMonitoringWidget { background: %1; border: 0; }
+	)").arg(canvas, surface, ink, border, accent, selected));
 	m_licenseBanner = new QLabel(ui->centralWidget);
 	m_licenseBanner->setWordWrap(true);
 	m_licenseBanner->setContentsMargins(12, 8, 12, 8);
@@ -289,13 +311,18 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	ui->statusBar->addWidget( ui->spacerLabel4 );
 	ui->statusBar->addWidget( ui->aboutButton );
 	ui->statusBar->setSizeGripEnabled( false );
-	ui->filterLineEdit->setMinimumWidth( 220 );
-	ui->gridSizeSlider->setMinimumWidth( 145 );
+	ui->filterLineEdit->setMinimumWidth( 160 );
+	ui->gridSizeSlider->setMinimumWidth( 100 );
 	ui->panelButtons->layout()->setSpacing( 4 );
 	ui->computerSelectPanelButton->setText( tr( "Lokasi dan komputer" ) );
 	ui->screenshotManagementPanelButton->setText( tr( "Tangkapan" ) );
 	ui->slideshowPanelButton->setText( tr( "Tayangan" ) );
 	ui->spotlightPanelButton->setText( tr( "Sorotan" ) );
+	for (auto* button : { ui->computerSelectPanelButton, ui->screenshotManagementPanelButton,
+						  ui->slideshowPanelButton, ui->spotlightPanelButton })
+	{
+		button->setToolTip(button->text());
+	}
 	ui->filterLineEdit->setPlaceholderText( tr( "Cari pengguna dan komputer" ) );
 
 	// create all views
@@ -588,6 +615,19 @@ ComputerControlInterfaceList MainWindow::selectedComputerControlInterfaces() con
 
 
 
+void MainWindow::resizeEvent( QResizeEvent* event )
+{
+	QMainWindow::resizeEvent(event);
+	const auto compact = event->size().width() < 1100;
+	for (auto* button : { ui->computerSelectPanelButton, ui->screenshotManagementPanelButton,
+						  ui->slideshowPanelButton, ui->spotlightPanelButton })
+	{
+		button->setToolButtonStyle(compact ? Qt::ToolButtonIconOnly : Qt::ToolButtonTextBesideIcon);
+	}
+}
+
+
+
 void MainWindow::closeEvent( QCloseEvent* event )
 {
 	if( m_master.currentMode() != VeyonCore::builtinFeatures().monitoringMode().feature().uid() )
@@ -708,6 +748,11 @@ void MainWindow::addFeaturesToToolBar()
 			}
 		});
 		btn->setObjectName( feature.name() );
+		if( feature.testFlag( Feature::Flag::Mode ) == false )
+		{
+			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			btn->setToolTip(localizedFeatureLabel(feature));
+		}
 		btn->addTo( ui->toolBar );
 
 		if( feature.testFlag( Feature::Flag::Mode ) )

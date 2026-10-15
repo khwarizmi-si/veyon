@@ -38,7 +38,6 @@ protected:
 	bool event(QEvent* event) override;
 
 private:
-	void setExpanded();
 	void updateMinimumSize();
 	void toggleToolTips();
 	void toggleIconMode();

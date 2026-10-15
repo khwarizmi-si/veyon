@@ -38,14 +38,12 @@ MainToolBar::MainToolBar( QWidget* parent ) :
 	m_mainWindow(qobject_cast<MainWindow *>(parent)),
 	m_layout(findChild<QLayout *>())
 {
-	setExpanded();
-	setIconSize(QSize(20, 20));
-	setMinimumHeight( 36 );
+	setIconSize(QSize(22, 22));
+	setMinimumHeight( 48 );
 
 	ToolButton::setToolTipsDisabled( m_mainWindow->masterCore().userConfig().noToolTips() );
 	ToolButton::setIconOnlyMode( m_mainWindow, m_mainWindow->masterCore().userConfig().toolButtonIconOnlyMode() );
 
-	connect(this, &QToolBar::orientationChanged, this, &MainToolBar::setExpanded);
 }
 
 
@@ -63,22 +61,6 @@ bool MainToolBar::event(QEvent* event)
 	}
 
 	return QToolBar::event(event);
-}
-
-
-
-void MainToolBar::setExpanded()
-{
-	if (m_layout)
-	{
-		QMetaObject::invokeMethod(m_layout, "setExpanded", Qt::DirectConnection, Q_ARG(bool, true));
-
-		const auto button = findChild<QToolButton *>(QStringLiteral("qt_toolbar_ext_button"));
-		if (button)
-		{
-			button->setFixedSize(0, 0);
-		}
-	}
 }
 
 
