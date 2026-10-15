@@ -53,10 +53,41 @@ MainWindow::MainWindow( QWidget* parent ) :
 	m_configChanged( false )
 {
 	ui->setupUi( this );
+	const bool dark = VeyonCore::useDarkMode();
+	const auto surface = dark ? QStringLiteral("#1b2927") : QStringLiteral("#ffffff");
+	const auto canvas = dark ? QStringLiteral("#14201e") : QStringLiteral("#f2f6f4");
+	const auto ink = dark ? QStringLiteral("#f0f6f2") : QStringLiteral("#18302c");
+	const auto border = dark ? QStringLiteral("#344741") : QStringLiteral("#d8e4de");
+	const auto accent = dark ? QStringLiteral("#80d6bb") : QStringLiteral("#116b5b");
+	const auto selected = dark ? QStringLiteral("#25433a") : QStringLiteral("#e4f2ed");
+	setStyleSheet(QStringLiteral(R"(
+		QMainWindow, QWidget#centralwidget { background: %1; color: %3; }
+		QListWidget#pageSelector { background: %2; border: 0; border-right: 1px solid %4; outline: 0; padding: 12px 6px; }
+		QListWidget#pageSelector::item { color: %3; border-radius: 6px; padding: 8px 10px; min-height: 28px; }
+		QListWidget#pageSelector::item:hover { background: %1; }
+		QListWidget#pageSelector::item:selected { background: %6; color: %5; }
+		QScrollArea#scrollArea, QWidget#scrollAreaWidgetContents { background: %1; border: 0; }
+		QGroupBox { color: %3; font-weight: 600; border: 1px solid %4; border-radius: 6px; margin-top: 12px; padding: 14px 10px 10px; }
+		QGroupBox::title { subcontrol-origin: margin; left: 12px; padding: 0 4px; }
+		QLineEdit, QComboBox, QSpinBox { color: %3; background: %2; border: 1px solid %4; border-radius: 5px; padding: 6px 8px; }
+		QLineEdit:focus, QComboBox:focus, QSpinBox:focus { border: 1px solid %5; }
+		QDialogButtonBox QPushButton, QPushButton { color: %3; background: %2; border: 1px solid %4; border-radius: 5px; padding: 7px 12px; min-height: 22px; }
+		QPushButton:hover { background: %6; }
+		QPushButton:disabled { color: %4; }
+	)").arg(canvas, surface, ink, border, accent, selected));
+	ui->pageSelector->setIconSize(QSize(24, 24));
+	ui->pageSelector->setMinimumWidth(190);
+	ui->pageSelector->setMaximumWidth(240);
+	ui->pageSelector->setTextElideMode(Qt::ElideRight);
 
 	setWindowTitle(tr("Khwarizmi Configurator %1").arg(VeyonCore::versionString()));
 
 	loadConfigurationPagePlugins();
+	for( int i = 0; i < ui->pageSelector->count(); ++i )
+	{
+		auto* item = ui->pageSelector->item(i);
+		item->setToolTip(item->text());
+	}
 
 	// reset all widget's values to current configuration
 	reset( true );
@@ -93,8 +124,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 	connect( ui->configPages, &QStackedWidget::currentChanged, this, &MainWindow::updateSizes );
 
-	resize( ui->pageSelector->width() + ui->generalConfigurationPage->minimumSizeHint().width(),
-			ui->generalConfigurationPage->minimumSizeHint().height() );
+	resize(1040, 740);
 
 	updateView();
 }
@@ -372,8 +402,7 @@ void MainWindow::loadConfigurationPagePlugins()
 	ui->pageSelector->addItem( licenseItem );
 
 	// adjust minimum size
-	ui->pageSelector->setMinimumSize( ui->pageSelector->sizeHintForColumn(0) + 3 * ui->pageSelector->spacing(),
-									  ui->pageSelector->minimumHeight() );
+	ui->pageSelector->setMinimumWidth(190);
 }
 
 
