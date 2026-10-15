@@ -28,5 +28,8 @@ References: [Veyon Master UI](https://docs.veyon.io/en/latest/user/introduction.
 
 Windows CI [run 38663873607](https://github.com/khwarizmi-si/veyon/actions/runs/38663873607)
 passed on commit `f88f4dfdf`: licence test, add-on installers and base installer.
+The Configurator follow-up passed [run 38665181812](https://github.com/khwarizmi-si/veyon/actions/runs/38665181812)
+on commit `7a0e61ef7` with the same gates. A later one-line stylesheet change
+restored the native keyboard focus outline; it did not alter Qt APIs or UI wiring.
 The local macOS host has no Qt toolchain or running Docker daemon, so live visual
 inspection and interactive Windows QA remain before merge.
