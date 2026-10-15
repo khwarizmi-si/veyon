@@ -38,5 +38,10 @@ The latest [run 38666551425](https://github.com/khwarizmi-si/veyon/actions/runs/
 passed on commit `41ff333d0`, including the saved icon-only preference and
 Master side-panel styling. The workflow still reports upstream Node.js 20 and
 MINGW64 deprecation warnings.
+Draft [PR #4](https://github.com/khwarizmi-si/veyon/pull/4) targets
+`feat/license-client` to keep unrelated licence work out of the UI diff.
+Its [Linux CI run 38667339418](https://github.com/khwarizmi-si/veyon/actions/runs/38667339418)
+passed on Debian 11 and Fedora 44. Build success does not replace visual and
+interaction testing.
 The local macOS host has no Qt toolchain or running Docker daemon, so live visual
 inspection and interactive Windows QA remain before merge.
