@@ -23,4 +23,7 @@ References: [Veyon Master UI](https://docs.veyon.io/en/latest/user/introduction.
 5. Check the lower panel toggles, PC search, connection filter, zoom slider and disconnect notice.
 6. Restart Master after resizing to ensure geometry and panel visibility still restore correctly.
 
-No runtime Qt build or visual QA was available on the author's macOS host at the time of this change.
+Windows CI [run 38663873607](https://github.com/khwarizmi-si/veyon/actions/runs/38663873607)
+passed on commit `f88f4dfdf`: licence test, add-on installers and base installer.
+The local macOS host has no Qt toolchain or running Docker daemon, so live visual
+inspection and interactive Windows QA remain before merge.
