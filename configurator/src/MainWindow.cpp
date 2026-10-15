@@ -29,6 +29,7 @@
 #include <QFileDialog>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QPainter>
 #include <QScrollBar>
 #include <QSettings>
 #include <QTimer>
@@ -87,6 +88,15 @@ MainWindow::MainWindow( QWidget* parent ) :
 	{
 		auto* item = ui->pageSelector->item(i);
 		item->setToolTip(item->text());
+		if( dark && !item->icon().isNull() )
+		{
+			auto pixmap = item->icon().pixmap(ui->pageSelector->iconSize());
+			QPainter painter(&pixmap);
+			painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+			painter.fillRect(pixmap.rect(), QColor(ink));
+			painter.end();
+			item->setIcon(QIcon(pixmap));
+		}
 	}
 
 	// reset all widget's values to current configuration

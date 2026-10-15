@@ -32,6 +32,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QResizeEvent>
+#include <QSizePolicy>
 #include <QSplitter>
 #include <QStatusBar>
 
@@ -278,6 +279,7 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	)").arg(canvas, surface, ink, border, accent, selected));
 	m_licenseBanner = new QLabel(ui->centralWidget);
 	m_licenseBanner->setWordWrap(true);
+	m_licenseBanner->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 	m_licenseBanner->setContentsMargins(12, 8, 12, 8);
 	m_licenseBanner->setStyleSheet(QStringLiteral("background: #fff4d6; color: #35312a; border-bottom: 1px solid #e3cf91;"));
 	ui->centralLayout->insertWidget(0, m_licenseBanner);
@@ -632,11 +634,17 @@ ComputerControlInterfaceList MainWindow::selectedComputerControlInterfaces() con
 void MainWindow::resizeEvent( QResizeEvent* event )
 {
 	QMainWindow::resizeEvent(event);
-	const auto compact = event->size().width() < 1100;
+	const auto compact = event->size().width() < 1250;
 	for (auto* button : { ui->computerSelectPanelButton, ui->screenshotManagementPanelButton,
 						  ui->slideshowPanelButton, ui->spotlightPanelButton })
 	{
 		button->setToolButtonStyle(compact ? Qt::ToolButtonIconOnly : Qt::ToolButtonTextBesideIcon);
+	}
+	for (auto* button : m_modeGroup->buttons())
+	{
+		static_cast<ToolButton*>(button)->setToolButtonStyle(
+			compact || m_master.userConfig().toolButtonIconOnlyMode() ?
+				Qt::ToolButtonIconOnly : Qt::ToolButtonTextBesideIcon);
 	}
 }
 
@@ -762,7 +770,7 @@ void MainWindow::addFeaturesToToolBar()
 			}
 		});
 		btn->setObjectName( feature.name() );
-		if( m_master.userConfig().toolButtonIconOnlyMode() ||
+		if( width() < 1250 || m_master.userConfig().toolButtonIconOnlyMode() ||
 			feature.testFlag( Feature::Flag::Mode ) == false )
 		{
 			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
