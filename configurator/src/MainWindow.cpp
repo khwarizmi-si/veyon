@@ -62,7 +62,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 	const auto selected = dark ? QStringLiteral("#25433a") : QStringLiteral("#e4f2ed");
 	setStyleSheet(QStringLiteral(R"(
 		QMainWindow, QWidget#centralwidget { background: %1; color: %3; }
-		QListWidget#pageSelector { background: %2; border: 0; border-right: 1px solid %4; outline: 0; padding: 12px 6px; }
+		QListWidget#pageSelector { background: %2; border: 0; border-right: 1px solid %4; padding: 12px 6px; }
 		QListWidget#pageSelector::item { color: %3; border-radius: 6px; padding: 8px 10px; min-height: 28px; }
 		QListWidget#pageSelector::item:hover { background: %1; }
 		QListWidget#pageSelector::item:selected { background: %6; color: %5; }
