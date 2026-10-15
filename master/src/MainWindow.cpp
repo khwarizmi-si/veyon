@@ -767,10 +767,6 @@ void MainWindow::addFeaturesToToolBar()
 		{
 			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
 		}
-		if( feature.testFlag( Feature::Flag::Mode ) == false )
-		{
-			btn->setToolTip(localizedFeatureLabel(feature));
-		}
 		btn->addTo( ui->toolBar );
 
 		if( feature.testFlag( Feature::Flag::Mode ) )

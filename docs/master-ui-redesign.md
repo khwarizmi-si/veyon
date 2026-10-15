@@ -11,6 +11,7 @@ Branch: `codex/master-ui-redesign`
 - Keep status controls available; switch panel controls to icon-only at widths below 1100 px while retaining their names in tooltips.
 - Use neutral surfaces, a green active state and subtle boundaries, with separate light and dark tokens.
 - Keep the saved "icons only" preference on startup. Style the location and screenshot panels consistently with Master without changing their models or actions.
+- For icon-only feature buttons, show the action name in the existing custom tooltip while respecting the saved "disable tooltips" setting.
 - Give Configurator the same restrained light/dark surfaces. Its navigation has smaller icons, a bounded sidebar, elided long plugin names with full-text tooltips, and Indonesian labels on built-in pages and the licence page.
 
 References: [Veyon Master UI](https://docs.veyon.io/en/latest/user/introduction.html),
