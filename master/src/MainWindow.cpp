@@ -261,6 +261,20 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 		QStatusBar QLineEdit:focus, QStatusBar QComboBox:focus { border: 1px solid %5; }
 		QSplitter::handle { background: %4; }
 		QListView#computerMonitoringWidget { background: %1; border: 0; }
+		QWidget#ComputerSelectPanel, QWidget#ScreenshotManagementPanel,
+		QWidget#SlideshowPanel, QWidget#SpotlightPanel { background: %2; color: %3; }
+		QWidget#ComputerSelectPanel QTreeView, QWidget#ScreenshotManagementPanel QListView {
+			background: %2; color: %3; border: 1px solid %4; border-radius: 5px;
+		}
+		QWidget#ComputerSelectPanel QTreeView::item:selected,
+		QWidget#ScreenshotManagementPanel QListView::item:selected { background: %6; color: %5; }
+		QWidget#ComputerSelectPanel QLineEdit { color: %3; background: %1; border: 1px solid %4; border-radius: 5px; padding: 6px 8px; }
+		QWidget#ComputerSelectPanel QLineEdit:focus { border: 1px solid %5; }
+		QWidget#ComputerSelectPanel QPushButton, QWidget#ScreenshotManagementPanel QPushButton {
+			color: %3; background: %2; border: 1px solid %4; border-radius: 5px; padding: 6px 10px;
+		}
+		QWidget#ComputerSelectPanel QPushButton:hover,
+		QWidget#ScreenshotManagementPanel QPushButton:hover { background: %6; }
 	)").arg(canvas, surface, ink, border, accent, selected));
 	m_licenseBanner = new QLabel(ui->centralWidget);
 	m_licenseBanner->setWordWrap(true);
@@ -748,9 +762,13 @@ void MainWindow::addFeaturesToToolBar()
 			}
 		});
 		btn->setObjectName( feature.name() );
-		if( feature.testFlag( Feature::Flag::Mode ) == false )
+		if( m_master.userConfig().toolButtonIconOnlyMode() ||
+			feature.testFlag( Feature::Flag::Mode ) == false )
 		{
 			btn->setToolButtonStyle(Qt::ToolButtonIconOnly);
+		}
+		if( feature.testFlag( Feature::Flag::Mode ) == false )
+		{
 			btn->setToolTip(localizedFeatureLabel(feature));
 		}
 		btn->addTo( ui->toolBar );
