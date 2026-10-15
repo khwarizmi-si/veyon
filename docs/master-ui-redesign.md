@@ -7,6 +7,7 @@ Branch: `codex/master-ui-redesign`
 - Keep the live computer grid central. This is an operational classroom console, not a dashboard or a landing page.
 - Keep the existing feature execution, selection, licensing, panel state, filters and shortcuts untouched.
 - Use labeled mode controls and compact icon actions. Each action retains its Qt tooltip and the built-in toolbar overflow at smaller widths.
+- Qt's [toolbar documentation](https://doc.qt.io/qt-6/qtoolbar.html) confirms that a toolbar owned by `QMainWindow` exposes overflowing `addWidget()` controls through its extension menu. Master creates the toolbar as a main-window child; this still needs interactive visual confirmation at target widths.
 - Keep status controls available; switch panel controls to icon-only at widths below 1100 px while retaining their names in tooltips.
 - Use neutral surfaces, a green active state and subtle boundaries, with separate light and dark tokens.
 - Give Configurator the same restrained light/dark surfaces. Its navigation has smaller icons, a bounded sidebar, elided long plugin names with full-text tooltips, and Indonesian labels on built-in pages and the licence page.
