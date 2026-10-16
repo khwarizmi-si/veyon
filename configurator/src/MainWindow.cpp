@@ -297,8 +297,9 @@ void MainWindow::aboutAlKhwarizmi()
 
 void MainWindow::updateSizes()
 {
-	ui->configPages->setMinimumSize( ui->scrollArea->width() - ui->scrollArea->verticalScrollBar()->width(),
-									 ui->configPages->currentWidget()->minimumSizeHint().height() );
+	const auto pageSize = ui->configPages->currentWidget()->minimumSizeHint();
+	ui->configPages->setMinimumSize( qMax(ui->scrollArea->viewport()->width(), pageSize.width()),
+									 pageSize.height() );
 }
 
 

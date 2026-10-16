@@ -31,7 +31,7 @@ References: [Veyon Master UI](https://docs.veyon.io/en/latest/user/introduction.
 5. Check the lower panel toggles, PC search, connection filter, zoom slider and disconnect notice.
    Verify keyboard focus and selected rows in the location tree and screenshot list in both themes.
 6. Restart Master after resizing to ensure geometry and panel visibility still restore correctly.
-7. In Configurator, open every built-in and plugin page in standard and advanced modes; confirm long plugin names remain readable via tooltip and forms scroll without horizontal clipping.
+7. In Configurator, open every built-in and plugin page in standard and advanced modes; confirm long plugin names remain readable via tooltip and wide forms expose a horizontal scrollbar instead of hiding controls.
 8. Activate/check a test licence in Configurator; confirm busy state, status text, save/reset and unsaved-change dialog still work.
 
 Draft [PR #4](https://github.com/khwarizmi-si/veyon/pull/4) targets
@@ -70,3 +70,12 @@ After fixing the icon-mode toggle to reapply responsive styles immediately,
 The Master build also passed after translating its toolbar menu and the
 authentication/active-feature dialogs; those text changes need a visual check
 in the Windows installer alongside the other manual QA items.
+
+An additional Docker check built the Configurator and representative add-on
+configuration pages, then opened Microsoft Entra ID, File Transfer and LDAP/AD
+at 640 px. LDAP/AD labels and right-side controls were previously clipped by
+the disabled horizontal scrollbar. The Configurator now uses each page's
+minimum width and shows horizontal scrolling only when needed. Both sides of
+the LDAP/AD form were reached in the virtual desktop. Entra ID still fits at
+640 px; File Transfer needs horizontal scrolling even at 800 px because of
+long option text. No connected service or plugin action was tested.
