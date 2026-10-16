@@ -24,7 +24,7 @@ References: [Veyon Master UI](https://docs.veyon.io/en/latest/user/introduction.
 1. Build Master in Windows and Linux CI. Verify no compiler warnings from the changed files.
 2. At 1024, 1280 and 1920 px, confirm every feature is reachable via the toolbar or Qt overflow; no clipping of the last control.
 3. Check light and dark modes, active/checked states, focus, tooltips and text contrast.
-   Toggle "Show icons only" on and off at both narrow and wide widths; regular
+   Toggle "Tampilkan ikon saja" on and off at both narrow and wide widths; regular
    feature actions must remain compact and mode buttons must honor the saved
    preference without hiding actions.
 4. Exercise monitoring, demo, lock, chat, screenshot, recorder, remote view/control and add-on actions with selected PCs.
@@ -67,3 +67,6 @@ all-target Docker build also attempts to copy compile commands into the
 read-only source mount; targeted application and plugin builds succeeded.
 After fixing the icon-mode toggle to reapply responsive styles immediately,
 `veyon-master` was rebuilt successfully in the same Docker image.
+The Master build also passed after translating its toolbar menu and the
+authentication/active-feature dialogs; those text changes need a visual check
+in the Windows installer alongside the other manual QA items.

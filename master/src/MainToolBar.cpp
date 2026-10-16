@@ -34,7 +34,7 @@
 
 
 MainToolBar::MainToolBar( QWidget* parent ) :
-	QToolBar( tr( "Configuration" ), parent ),
+	QToolBar( tr( "Pengaturan toolbar" ), parent ),
 	m_mainWindow(qobject_cast<MainWindow *>(parent)),
 	m_layout(findChild<QLayout *>())
 {
@@ -87,11 +87,11 @@ void MainToolBar::contextMenuEvent( QContextMenuEvent* event )
 {
 	QMenu menu( this );
 
-	auto toolTipAction = menu.addAction(tr("Disable tooltips"), this, &MainToolBar::toggleToolTips);
+	auto toolTipAction = menu.addAction(tr("Nonaktifkan tooltip"), this, &MainToolBar::toggleToolTips);
 	toolTipAction->setCheckable( true );
 	toolTipAction->setChecked( m_mainWindow->masterCore().userConfig().noToolTips() );
 
-	auto iconModeAction = menu.addAction( tr( "Show icons only" ), this, &MainToolBar::toggleIconMode );
+	auto iconModeAction = menu.addAction( tr( "Tampilkan ikon saja" ), this, &MainToolBar::toggleIconMode );
 	iconModeAction->setCheckable( true );
 	iconModeAction->setChecked( m_mainWindow->masterCore().userConfig().toolButtonIconOnlyMode() );
 

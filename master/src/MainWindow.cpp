@@ -569,12 +569,11 @@ bool MainWindow::initAuthentication()
 	if( VeyonCore::config().authenticationMethod() == VeyonCore::AuthenticationMethod::KeyFileAuthentication )
 	{
 		QMessageBox::information(nullptr,
-								 tr("Authentication impossible"),
-								 tr("No authentication key files were found or your current ones "
-									"are outdated. Please create new key files using Veyon "
-									"Configurator. Alternatively set up logon authentication "
-									"using Veyon Configurator. Otherwise you won't be "
-									"able to access computers using Veyon."));
+								 tr("Autentikasi tidak tersedia"),
+								 tr("Berkas kunci autentikasi tidak ditemukan atau sudah usang. "
+									"Buat kunci baru di Khwarizmi Configurator, atau atur "
+									"autentikasi masuk di sana. Tanpa autentikasi, komputer "
+									"tidak dapat diakses."));
 	}
 
 	return false;
@@ -667,8 +666,8 @@ void MainWindow::closeEvent( QCloseEvent* event )
 	{
 		const Feature& activeFeature = VeyonCore::featureManager().feature( m_master.currentMode() );
 
-		QMessageBox::information(this, tr("Feature active"),
-								 tr("The feature \"%1\" is still active. Please stop it before closing Khwarizmi.")
+		QMessageBox::information(this, tr("Fitur masih aktif"),
+								 tr("Fitur \"%1\" masih aktif. Hentikan sebelum menutup Khwarizmi.")
 								 .arg(activeFeature.displayName()));
 		event->ignore();
 		return;
