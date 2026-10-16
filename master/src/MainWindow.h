@@ -57,6 +57,7 @@ public:
 	}
 
 	void reloadSubFeatures();
+	void updateToolButtonStyles();
 
 	ComputerControlInterfaceList selectedComputerControlInterfaces() const;
 

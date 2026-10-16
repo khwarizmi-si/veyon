@@ -634,11 +634,22 @@ ComputerControlInterfaceList MainWindow::selectedComputerControlInterfaces() con
 void MainWindow::resizeEvent( QResizeEvent* event )
 {
 	QMainWindow::resizeEvent(event);
-	const auto compact = event->size().width() < 1250;
+	updateToolButtonStyles();
+}
+
+
+
+void MainWindow::updateToolButtonStyles()
+{
+	const auto compact = width() < 1250;
 	for (auto* button : { ui->computerSelectPanelButton, ui->screenshotManagementPanelButton,
 						  ui->slideshowPanelButton, ui->spotlightPanelButton })
 	{
 		button->setToolButtonStyle(compact ? Qt::ToolButtonIconOnly : Qt::ToolButtonTextBesideIcon);
+	}
+	for (auto* button : ui->toolBar->findChildren<ToolButton*>())
+	{
+		button->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	}
 	for (auto* button : m_modeGroup->buttons())
 	{

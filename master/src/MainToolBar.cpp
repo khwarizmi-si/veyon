@@ -116,4 +116,5 @@ void MainToolBar::toggleIconMode()
 
 	ToolButton::setIconOnlyMode( m_mainWindow, newToolButtonIconMode );
 	m_mainWindow->masterCore().userConfig().setToolButtonIconOnlyMode( newToolButtonIconMode );
+	m_mainWindow->updateToolButtonStyles();
 }
