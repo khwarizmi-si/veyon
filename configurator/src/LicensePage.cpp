@@ -25,12 +25,12 @@
 LicensePage::LicensePage(QWidget* parent) :
 	ConfigurationPage(parent)
 {
-	setWindowTitle(tr("Licence"));
+	setWindowTitle(tr("Lisensi"));
 	setWindowIcon(QIcon(QStringLiteral(":/core/license.png")));
 
 	auto layout = new QVBoxLayout(this);
 
-	auto statusBox = new QGroupBox(tr("Status"), this);
+	auto statusBox = new QGroupBox(tr("Status lisensi"), this);
 	auto statusLayout = new QVBoxLayout(statusBox);
 	m_statusLabel = new QLabel(statusBox);
 	m_statusLabel->setWordWrap(true);
@@ -39,20 +39,20 @@ LicensePage::LicensePage(QWidget* parent) :
 	m_detailsLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
 	// I4: the Configurator runs elevated as the administrator, so this page
 	// can only ever show status as of the last check-in, not live.
-	m_hintLabel = new QLabel(tr("Status shown as of the last check. Click Check now for the latest status."), statusBox);
+	m_hintLabel = new QLabel(tr("Status sesuai pemeriksaan terakhir. Periksa lagi untuk memperbaruinya."), statusBox);
 	m_hintLabel->setWordWrap(true);
-	m_checkButton = new QPushButton(tr("Check now"), statusBox);
+	m_checkButton = new QPushButton(tr("Periksa sekarang"), statusBox);
 	statusLayout->addWidget(m_statusLabel);
 	statusLayout->addWidget(m_detailsLabel);
 	statusLayout->addWidget(m_hintLabel);
 	statusLayout->addWidget(m_checkButton, 0, Qt::AlignLeft);
 
-	auto activationBox = new QGroupBox(tr("Activation"), this);
+	auto activationBox = new QGroupBox(tr("Aktivasi"), this);
 	auto activationLayout = new QFormLayout(activationBox);
 	m_codeEdit = new QLineEdit(activationBox);
 	m_codeEdit->setPlaceholderText(QStringLiteral("KHW-..."));
-	m_activateButton = new QPushButton(tr("Activate"), activationBox);
-	activationLayout->addRow(tr("Activation code"), m_codeEdit);
+	m_activateButton = new QPushButton(tr("Aktifkan lisensi"), activationBox);
+	activationLayout->addRow(tr("Kode aktivasi"), m_codeEdit);
 	activationLayout->addRow(QString(), m_activateButton);
 
 	m_resultLabel = new QLabel(this);
@@ -97,15 +97,15 @@ void LicensePage::refresh()
 	const auto format = [](const QDateTime& dateTime) -> QString {
 		return QLocale().toString(dateTime.toLocalTime(), QLocale::ShortFormat);
 	};
-	QString details = tr("School: %1").arg(c.tenantName);
+	QString details = tr("Lembaga: %1").arg(c.tenantName);
 	details += QLatin1Char('\n');
-	details += tr("Device quota: %1").arg(c.maxDevices);
+	details += tr("Kuota PC: %1").arg(c.maxDevices);
 	details += QLatin1Char('\n');
-	details += tr("Subscription until: %1").arg(format(c.subscriptionEnd));
+	details += tr("Berlaku hingga: %1").arg(format(c.subscriptionEnd));
 	details += QLatin1Char('\n');
-	details += tr("Next online check needed by: %1").arg(format(c.expiresAt));
+	details += tr("Perlu verifikasi online sebelum: %1").arg(format(c.expiresAt));
 	details += QLatin1Char('\n');
-	details += tr("Computer ID: %1").arg(snapshot.masterId);
+	details += tr("ID Master: %1").arg(snapshot.masterId);
 	m_detailsLabel->setText(details);
 }
 
