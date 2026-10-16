@@ -36,10 +36,10 @@ References: [Veyon Master UI](https://docs.veyon.io/en/latest/user/introduction.
 
 Draft [PR #4](https://github.com/khwarizmi-si/veyon/pull/4) targets
 `feat/license-client` to keep unrelated licence work out of the UI diff.
-On commit `6bc7b52db`, [Windows run 38840670179](https://github.com/khwarizmi-si/veyon/actions/runs/38840670179)
+On commit `bc58002ab`, [Windows run 38844898178](https://github.com/khwarizmi-si/veyon/actions/runs/38844898178)
 passed the licence test, add-on installers and base installer; the
-[installer artifact](https://github.com/khwarizmi-si/veyon/actions/runs/38840670179/artifacts/12021477601)
-is available for manual QA. [Linux run 38840622683](https://github.com/khwarizmi-si/veyon/actions/runs/38840622683)
+[installer artifact](https://github.com/khwarizmi-si/veyon/actions/runs/38844898178/artifacts/12022164326)
+is available for manual QA. [Linux run 38844884064](https://github.com/khwarizmi-si/veyon/actions/runs/38844884064)
 passed on Debian 11 and Fedora 44. The Windows workflow still reports upstream
 Node.js 20 and MINGW64 deprecation warnings. Build success does not replace
 visual and interaction testing.
