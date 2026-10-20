@@ -35,6 +35,7 @@
 #include "ComputerItemDelegate.h"
 #include "ComputerMonitoringModel.h"
 #include "ComputerMonitoringWidget.h"
+#include "DesktopTheme.h"
 #include "VeyonMaster.h"
 #include "FeatureManager.h"
 #include "VeyonConfiguration.h"
@@ -280,7 +281,7 @@ void ComputerMonitoringWidget::populateFeatureMenu( const ComputerControlInterfa
 
 void ComputerMonitoringWidget::addFeatureToMenu( const Feature& feature, const QString& label )
 {
-	m_featureMenu->addAction(QIcon(feature.iconUrl()),
+	m_featureMenu->addAction(DesktopTheme::icon(QIcon(feature.iconUrl())),
 							 label,
 							 this, [=, this] () { runFeature(feature); });
 }
@@ -289,11 +290,11 @@ void ComputerMonitoringWidget::addFeatureToMenu( const Feature& feature, const Q
 
 void ComputerMonitoringWidget::addSubFeaturesToMenu( const Feature& parentFeature, const FeatureList& subFeatures, const QString& label )
 {
-	auto menu = m_featureMenu->addMenu( QIcon( parentFeature.iconUrl() ), label );
+	auto menu = m_featureMenu->addMenu( DesktopTheme::icon(QIcon( parentFeature.iconUrl() )), label );
 
 	for( const auto& subFeature : subFeatures )
 	{
-		menu->addAction(QIcon(subFeature.iconUrl()), subFeature.displayName(),
+		menu->addAction(DesktopTheme::icon(QIcon(subFeature.iconUrl())), subFeature.displayName(),
 				#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
 						subFeature.shortcut(),
 				#endif
@@ -440,6 +441,18 @@ void ComputerMonitoringWidget::paintEvent( QPaintEvent* event )
 	painter.setClipRegion( watermarkRegion );
 	painter.setOpacity( VeyonCore::useDarkMode() ? 0.11 : 0.08 );
 	painter.drawPixmap( topLeft, scaledWatermark );
+	if (model() && model()->rowCount() == 0)
+	{
+		painter.setOpacity(1);
+		painter.setPen(palette().color(QPalette::Text));
+		auto titleFont = font();
+		titleFont.setPointSize(14);
+		titleFont.setBold(true);
+		painter.setFont(titleFont);
+		const auto textTop = qMax(0, qMin(viewportRect.height() - 40, topLeft.y() + scaledWatermark.height() + 16));
+		painter.drawText(QRect(16, textTop, viewportRect.width() - 32, 32),
+			Qt::AlignCenter | Qt::TextWordWrap, tr("Belum ada komputer ditampilkan"));
+	}
 }
 
 

@@ -18,6 +18,7 @@
 #include <QNetworkRequest>
 #include <QRegularExpression>
 #include <QTest>
+#include <QTranslator>
 #include <QtCrypto>
 
 #include "LicenseClient.h"
@@ -819,6 +820,38 @@ private Q_SLOTS:
 
 	// Every source string actually used by these two contexts must have a
 	// translation, so the UI never falls back to raw English by accident.
+	void compiledIndonesianCatalog()
+	{
+		const auto path = qEnvironmentVariable("VEYON_TEST_ID_QM");
+		if (path.isEmpty())
+		{
+			QSKIP("Set VEYON_TEST_ID_QM to verify a compiled Indonesian catalog");
+		}
+		QTranslator translator;
+		QVERIFY(translator.load(path));
+		QCoreApplication::installTranslator(&translator);
+		const auto description = LicenseService::describe(LicenseActionResult::Ok);
+		QCoreApplication::removeTranslator(&translator);
+		QCOMPARE(description, QStringLiteral("Selesai."));
+	}
+
+	void commonInterfaceContextsHaveTranslations()
+	{
+		const auto ts = readWholeFile(QStringLiteral(VEYON_ID_TS_PATH));
+		for (const auto& context : {QStringLiteral("AuvidusFeaturePlugin"), QStringLiteral("DemoFeaturePlugin"),
+			QStringLiteral("GeneralConfigurationPage"), QStringLiteral("MonitoringMode"),
+			QStringLiteral("RemoteAccessFeaturePlugin"), QStringLiteral("ScreenLockFeaturePlugin"),
+			QStringLiteral("ScreenshotFeaturePlugin")})
+		{
+			const auto messages = messagesInContext(ts, context);
+			QVERIFY2(!messages.isEmpty(), qPrintable(context));
+			for (const auto& message : messages)
+			{
+				QVERIFY2(!message.translation.trimmed().isEmpty(), qPrintable(context + QStringLiteral(": ") + message.source));
+			}
+		}
+	}
+
 	void everyLicenseSourceHasATranslation()
 	{
 		const auto ts = readWholeFile(QStringLiteral(VEYON_ID_TS_PATH));

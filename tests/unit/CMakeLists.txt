@@ -7,3 +7,9 @@ set_default_target_properties(license-test)
 # C++20, and NO_SYSTEM_FROM_IMPORTED makes -Werror apply to Qt's own headers
 target_compile_options(license-test PRIVATE "-Wno-deprecated-enum-enum-conversion")
 add_test(NAME license-test COMMAND license-test)
+
+add_executable(toolbutton-test ToolButtonTest.cpp)
+target_link_libraries(toolbutton-test PRIVATE veyon-core Qt${QT_MAJOR_VERSION}::Test)
+set_default_target_properties(toolbutton-test)
+target_compile_options(toolbutton-test PRIVATE "-Wno-deprecated-enum-enum-conversion")
+add_test(NAME toolbutton-test COMMAND toolbutton-test)

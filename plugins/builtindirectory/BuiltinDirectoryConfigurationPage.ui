@@ -19,9 +19,9 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Builtin directory</string>
+      <string>Direktori perangkat</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,1,0,0" columnstretch="0,1">
+     <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,1,0" columnstretch="0,1">
       <item row="0" column="1">
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -36,7 +36,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QPushButton" name="addComputerButton">
@@ -109,7 +109,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QTableWidget" name="computerTableWidget">
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
@@ -140,7 +140,7 @@
         </column>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QPushButton" name="addLocationButton">
@@ -213,7 +213,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QTableWidget" name="locationTableWidget">
         <attribute name="horizontalHeaderVisible">
          <bool>false</bool>

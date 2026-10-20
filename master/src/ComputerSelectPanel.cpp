@@ -25,6 +25,8 @@
 #include <QFileDialog>
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QVBoxLayout>
+#include <QLabel>
 
 #include "ComputerSelectPanel.h"
 #include "ComputerManager.h"
@@ -47,6 +49,16 @@ ComputerSelectPanel::ComputerSelectPanel( ComputerManager& computerManager, QWid
 	m_filterProxyModel->setRecursiveFilteringEnabled(true);
 
 	ui->setupUi(this);
+	auto panelLayout = qobject_cast<QVBoxLayout*>(layout());
+	panelLayout->setContentsMargins(16, 20, 16, 16);
+	panelLayout->setSpacing(12);
+	auto title = new QLabel(tr("Kelas dan perangkat"), this);
+	title->setObjectName(QStringLiteral("sectionHeading"));
+	panelLayout->insertWidget(0, title);
+	panelLayout->removeWidget(ui->filterLineEdit);
+	panelLayout->insertWidget(1, ui->filterLineEdit);
+	ui->treeView->setHeaderHidden(true);
+	ui->saveListButton->setText(tr("Ekspor daftar"));
 
 	// capture keyboard events for tree view
 	ui->treeView->installEventFilter( this );

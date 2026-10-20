@@ -1360,71 +1360,71 @@ Make sure that the names of the keys belonging to each other are identical on al
     <name>DemoFeaturePlugin</name>
     <message>
         <source>Demo</source>
-        <translation type="unfinished"></translation>
+        <translation>Peraga</translation>
     </message>
     <message>
         <source>Stop demo</source>
-        <translation type="unfinished"></translation>
+        <translation>Hentikan peraga</translation>
     </message>
     <message>
         <source>Share your screen or allow a user to share his screen with other users.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bagikan layar Anda atau izinkan pengguna membagikan layarnya kepada pengguna lain.</translation>
     </message>
     <message>
         <source>Full screen demo</source>
-        <translation type="unfinished"></translation>
+        <translation>Peraga layar penuh</translation>
     </message>
     <message>
         <source>Window demo</source>
-        <translation type="unfinished"></translation>
+        <translation>Peraga dalam jendela</translation>
     </message>
     <message>
         <source>Share your own screen in fullscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Bagikan layar Anda dalam layar penuh</translation>
     </message>
     <message>
         <source>In this mode your screen is being displayed in full screen mode on all computers while the input devices of the users are locked.</source>
-        <translation type="unfinished"></translation>
+        <translation>Layar Anda ditampilkan dalam layar penuh di semua komputer, sementara masukan pengguna dikunci.</translation>
     </message>
     <message>
         <source>Share your own screen in a window</source>
-        <translation type="unfinished"></translation>
+        <translation>Bagikan layar Anda dalam jendela</translation>
     </message>
     <message>
         <source>In this mode your screen being displayed in a window on all computers. The users are able to switch to other windows as needed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Layar Anda ditampilkan dalam jendela di semua komputer. Pengguna tetap dapat berpindah ke jendela lain.</translation>
     </message>
     <message>
         <source>Share selected user&apos;s screen in fullscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Bagikan layar pengguna terpilih dalam layar penuh</translation>
     </message>
     <message>
         <source>In this mode the screen of the selected user is being displayed in full screen mode on all computers while the input devices of the users are locked.</source>
-        <translation type="unfinished"></translation>
+        <translation>Layar pengguna terpilih ditampilkan dalam layar penuh di semua komputer, sementara masukan pengguna dikunci.</translation>
     </message>
     <message>
         <source>Share selected user&apos;s screen in a window</source>
-        <translation type="unfinished"></translation>
+        <translation>Bagikan layar pengguna terpilih dalam jendela</translation>
     </message>
     <message>
         <source>In this mode the screen of the selected user being displayed in a window on all computers. The users are able to switch to other windows as needed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Layar pengguna terpilih ditampilkan dalam jendela di semua komputer. Pengguna tetap dapat berpindah ke jendela lain.</translation>
     </message>
     <message>
         <source>Please select a user screen to share.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih layar pengguna yang ingin dibagikan.</translation>
     </message>
     <message>
         <source>Please select only one user screen to share.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih satu layar pengguna saja untuk dibagikan.</translation>
     </message>
     <message>
         <source>All screens</source>
-        <translation type="unfinished"></translation>
+        <translation>Semua layar</translation>
     </message>
     <message>
         <source>Give a demonstration by screen broadcasting</source>
-        <translation type="unfinished"></translation>
+        <translation>Berikan peragaan dengan menyiarkan layar</translation>
     </message>
 </context>
 <context>
@@ -2038,35 +2038,35 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Use system language setting</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan bahasa sistem</translation>
     </message>
     <message>
         <source>Language:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bahasa:</translation>
     </message>
     <message>
         <source>Style:</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaya:</translation>
     </message>
     <message>
         <source>Native</source>
-        <translation type="unfinished"></translation>
+        <translation>Bawaan sistem</translation>
     </message>
     <message>
         <source>Authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentikasi</translation>
     </message>
     <message>
         <source>Method:</source>
-        <translation type="unfinished"></translation>
+        <translation>Metode:</translation>
     </message>
     <message>
         <source>Logon authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentikasi akun pengguna</translation>
     </message>
     <message>
         <source>Key file authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentikasi berkas kunci</translation>
     </message>
     <message>
         <source>Test</source>
@@ -2082,55 +2082,55 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Update interval:</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval pembaruan:</translation>
     </message>
     <message>
         <source> seconds</source>
-        <translation type="unfinished"></translation>
+        <translation> detik</translation>
     </message>
     <message>
         <source>Logging</source>
-        <translation type="unfinished"></translation>
+        <translation>Pencatatan log</translation>
     </message>
     <message>
         <source>Log file directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktori berkas log</translation>
     </message>
     <message>
         <source>Log level</source>
-        <translation type="unfinished"></translation>
+        <translation>Tingkat pencatatan</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada</translation>
     </message>
     <message>
         <source>Only critical messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Hanya pesan kritis</translation>
     </message>
     <message>
         <source>Errors and critical messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Kesalahan dan pesan kritis</translation>
     </message>
     <message>
         <source>Warnings and errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Peringatan dan kesalahan</translation>
     </message>
     <message>
         <source>Information, warnings and errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Informasi, peringatan, dan kesalahan</translation>
     </message>
     <message>
         <source>Debug messages and everything else</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesan debug dan semua pesan lainnya</translation>
     </message>
     <message>
         <source>x</source>
-        <translation type="unfinished"></translation>
+        <translation>x</translation>
     </message>
     <message>
         <source>Rotate log files</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotasi berkas log</translation>
     </message>
     <message>
         <source> MB</source>
@@ -2138,63 +2138,63 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Limit log file size</source>
-        <translation type="unfinished"></translation>
+        <translation>Batasi ukuran berkas log</translation>
     </message>
     <message>
         <source>Log to standard error output</source>
-        <translation type="unfinished"></translation>
+        <translation>Catat ke keluaran kesalahan standar</translation>
     </message>
     <message>
         <source>Write to logging system of operating system</source>
-        <translation type="unfinished"></translation>
+        <translation>Tulis ke sistem pencatatan sistem operasi</translation>
     </message>
     <message>
         <source>Clear all log files</source>
-        <translation type="unfinished"></translation>
+        <translation>Bersihkan semua berkas log</translation>
     </message>
     <message>
         <source>Authentication is set up properly on this computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentikasi telah diatur dengan benar pada komputer ini.</translation>
     </message>
     <message>
         <source>Authentication keys are not set up properly on this computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci autentikasi belum diatur dengan benar pada komputer ini.</translation>
     </message>
     <message>
         <source>Veyon service</source>
-        <translation type="unfinished"></translation>
+        <translation>Layanan Veyon</translation>
     </message>
     <message>
         <source>The Veyon service needs to be stopped temporarily in order to remove the log files. Continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Layanan Veyon perlu dihentikan sementara untuk menghapus berkas log. Lanjutkan?</translation>
     </message>
     <message>
         <source>Log files cleared</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas log dibersihkan</translation>
     </message>
     <message>
         <source>All log files were cleared successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>Semua berkas log berhasil dibersihkan.</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Kesalahan</translation>
     </message>
     <message>
         <source>Could not remove all log files.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat menghapus semua berkas log.</translation>
     </message>
     <message>
         <source>Authentication test</source>
-        <translation type="unfinished"></translation>
+        <translation>Tes autentikasi</translation>
     </message>
     <message>
         <source>User groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Grup pengguna</translation>
     </message>
     <message>
         <source>Include user groups from domain</source>
-        <translation type="unfinished"></translation>
+        <translation>Sertakan grup pengguna dari domain</translation>
     </message>
     <message>
         <source>Missing user groups backend</source>
@@ -2202,19 +2202,19 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>No user groups plugin was found. Please check your installation!</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin grup pengguna tidak ditemukan. Periksa instalasi Anda!</translation>
     </message>
     <message>
         <source>Color scheme:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tema warna:</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"></translation>
+        <translation>Terang</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelap</translation>
     </message>
 </context>
 <context>
@@ -3660,43 +3660,43 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     <name>MonitoringMode</name>
     <message>
         <source>Monitoring</source>
-        <translation type="unfinished"></translation>
+        <translation>Pantau</translation>
     </message>
     <message>
         <source>This mode allows you to monitor all computers at one or more locations.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pantau semua komputer di satu atau beberapa lokasi.</translation>
     </message>
     <message>
         <source>Query application version of the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Periksa versi aplikasi server</translation>
     </message>
     <message>
         <source>Query active features</source>
-        <translation type="unfinished"></translation>
+        <translation>Periksa fitur aktif</translation>
     </message>
     <message>
         <source>Query properties of remotely available screens</source>
-        <translation type="unfinished"></translation>
+        <translation>Periksa properti layar jarak jauh</translation>
     </message>
     <message>
         <source>Identify users in guest sessions</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifikasi pengguna sesi tamu</translation>
     </message>
     <message>
         <source>Identification request</source>
-        <translation type="unfinished"></translation>
+        <translation>Permintaan identitas</translation>
     </message>
     <message>
         <source>Please enter your name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama Anda:</translation>
     </message>
     <message>
         <source>First name + last name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama lengkap</translation>
     </message>
     <message>
         <source>Builtin monitoring mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode pemantauan bawaan</translation>
     </message>
 </context>
 <context>
@@ -3741,7 +3741,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Please enter your username and password in order to access computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama pengguna dan kata sandi untuk mengakses komputer.</translation>
     </message>
     <message>
         <source>Username</source>
@@ -3923,23 +3923,23 @@ Please save your work and close all programs.</source>
     <name>RemoteAccessFeaturePlugin</name>
     <message>
         <source>Remote view</source>
-        <translation type="unfinished"></translation>
+        <translation>Lihat layar</translation>
     </message>
     <message>
         <source>Open a remote view for a computer without interaction.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lihat layar komputer jarak jauh tanpa mengendalikannya.</translation>
     </message>
     <message>
         <source>Remote control</source>
-        <translation type="unfinished"></translation>
+        <translation>Kendali jarak jauh</translation>
     </message>
     <message>
         <source>Open a remote control window for a computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka jendela kendali komputer jarak jauh.</translation>
     </message>
     <message>
         <source>Exchange clipboard contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Tukar isi papan klip</translation>
     </message>
     <message>
         <source>Show help about command</source>
@@ -3947,15 +3947,15 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>Remote access</source>
-        <translation type="unfinished"></translation>
+        <translation>Akses jarak jauh</translation>
     </message>
     <message>
         <source>No computer has been selected so you can enter a hostname or IP address of a computer for manual access:</source>
-        <translation type="unfinished"></translation>
+        <translation>Belum ada komputer dipilih. Masukkan nama host atau alamat IP untuk akses manual:</translation>
     </message>
     <message>
         <source>Remote view or control a computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Lihat atau kendalikan komputer jarak jauh</translation>
     </message>
 </context>
 <context>
@@ -4060,23 +4060,23 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>To reclaim all user&apos;s full attention you can lock their computers using this button. In this mode all input devices are locked and the screens are blacked.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci komputer untuk memusatkan perhatian pengguna. Semua perangkat masukan dikunci dan layar digelapkan.</translation>
     </message>
     <message>
         <source>Lock input devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci perangkat masukan</translation>
     </message>
     <message>
         <source>Unlock input devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka kunci perangkat masukan</translation>
     </message>
     <message>
         <source>To reclaim all user&apos;s full attention you can lock their computers using this button. In this mode all input devices are locked while the desktop is still visible.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci perangkat masukan untuk memusatkan perhatian pengguna. Desktop tetap terlihat.</translation>
     </message>
     <message>
         <source>Lock screen and input devices of a computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci layar dan perangkat masukan komputer</translation>
     </message>
 </context>
 <context>
@@ -4106,19 +4106,19 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>Use this function to take a screenshot of selected computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ambil tangkapan layar dari komputer yang dipilih.</translation>
     </message>
     <message>
         <source>Screenshots taken</source>
-        <translation type="unfinished"></translation>
+        <translation>Tangkapan layar diambil</translation>
     </message>
     <message>
         <source>Screenshot of %1 computer have been taken successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tangkapan layar dari %1 komputer berhasil diambil.</translation>
     </message>
     <message>
         <source>Take screenshots of computers and save them locally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ambil tangkapan layar komputer dan simpan secara lokal.</translation>
     </message>
 </context>
 <context>
@@ -5012,5 +5012,17 @@ Example: [^-]*-(PC[0-9]*)</source>
         <source>Do not use X Damage extension</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>AuvidusFeaturePlugin</name>
+    <message><source>Mute audio</source><translation>Bisukan audio</translation></message>
+    <message><source>Unmute audio</source><translation>Aktifkan audio</translation></message>
+    <message><source>Mute the speakers and microphone on the selected computers.</source><translation>Bisukan pengeras suara dan mikrofon pada komputer yang dipilih.</translation></message>
+    <message><source>Block USB storage</source><translation>Blokir penyimpanan USB</translation></message>
+    <message><source>Allow USB storage</source><translation>Izinkan penyimpanan USB</translation></message>
+    <message><source>Block access to USB storage devices on the selected computers, e.g. during exams.</source><translation>Blokir akses penyimpanan USB pada komputer yang dipilih, misalnya selama ujian.</translation></message>
+    <message><source>Disable webcam</source><translation>Matikan kamera web</translation></message>
+    <message><source>Enable webcam</source><translation>Aktifkan kamera web</translation></message>
+    <message><source>Disable webcam access on the selected computers.</source><translation>Nonaktifkan akses kamera web pada komputer yang dipilih.</translation></message>
 </context>
 </TS>

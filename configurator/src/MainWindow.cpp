@@ -29,7 +29,7 @@
 #include <QFileDialog>
 #include <QPushButton>
 #include <QMessageBox>
-#include <QPainter>
+#include <QLabel>
 #include <QScrollBar>
 #include <QSettings>
 #include <QTimer>
@@ -38,6 +38,7 @@
 #include "Configuration/UiMapping.h"
 
 #include "AboutDialog.h"
+#include "DesktopTheme.h"
 #include "ConfigurationPagePluginInterface.h"
 #include "ConfigurationManager.h"
 #include "LicensePage.h"
@@ -54,50 +55,90 @@ MainWindow::MainWindow( QWidget* parent ) :
 	m_configChanged( false )
 {
 	ui->setupUi( this );
-	const bool dark = VeyonCore::useDarkMode();
-	const auto surface = dark ? QStringLiteral("#1b2927") : QStringLiteral("#ffffff");
-	const auto canvas = dark ? QStringLiteral("#14201e") : QStringLiteral("#f2f6f4");
-	const auto ink = dark ? QStringLiteral("#f0f6f2") : QStringLiteral("#18302c");
-	const auto border = dark ? QStringLiteral("#344741") : QStringLiteral("#d8e4de");
-	const auto accent = dark ? QStringLiteral("#80d6bb") : QStringLiteral("#116b5b");
-	const auto selected = dark ? QStringLiteral("#25433a") : QStringLiteral("#e4f2ed");
-	setStyleSheet(QStringLiteral(R"(
-		QMainWindow, QWidget#centralwidget { background: %1; color: %3; }
-		QListWidget#pageSelector { background: %2; border: 0; border-right: 1px solid %4; padding: 12px 6px; }
-		QListWidget#pageSelector::item { color: %3; border-radius: 6px; padding: 8px 10px; min-height: 28px; }
-		QListWidget#pageSelector::item:hover { background: %1; }
-		QListWidget#pageSelector::item:selected { background: %6; color: %5; }
-		QScrollArea#scrollArea, QWidget#scrollAreaWidgetContents { background: %1; border: 0; }
-		QGroupBox { color: %3; font-weight: 600; border: 1px solid %4; border-radius: 6px; margin-top: 12px; padding: 14px 10px 10px; }
-		QGroupBox::title { subcontrol-origin: margin; left: 12px; padding: 0 4px; }
-		QLineEdit, QComboBox, QSpinBox { color: %3; background: %2; border: 1px solid %4; border-radius: 5px; padding: 6px 8px; }
-		QLineEdit:focus, QComboBox:focus, QSpinBox:focus { border: 1px solid %5; }
-		QDialogButtonBox QPushButton, QPushButton { color: %3; background: %2; border: 1px solid %4; border-radius: 5px; padding: 7px 12px; min-height: 22px; }
-		QPushButton:hover { background: %6; }
-		QPushButton:disabled { color: %4; }
-	)").arg(canvas, surface, ink, border, accent, selected));
-	ui->pageSelector->setIconSize(QSize(24, 24));
-	ui->pageSelector->setMinimumWidth(190);
+	setObjectName(QStringLiteral("configuratorWindow"));
+	ui->gridLayout->setContentsMargins(0, 0, 0, 12);
+	ui->gridLayout->setHorizontalSpacing(0);
+	ui->verticalLayout->setContentsMargins(24, 12, 24, 16);
+	ui->buttonBox->setCenterButtons(false);
+	ui->buttonBox->setContentsMargins(12, 0, 20, 0);
+	ui->buttonBox->button(QDialogButtonBox::Apply)->setDefault(true);
+	ui->buttonBox->button(QDialogButtonBox::Apply)->setText(tr("Terapkan"));
+	ui->buttonBox->button(QDialogButtonBox::Reset)->setText(tr("Batalkan perubahan"));
+	ui->buttonBox->button(QDialogButtonBox::Apply)->setIcon(QIcon());
+	ui->buttonBox->button(QDialogButtonBox::Reset)->setIcon(QIcon());
+	ui->pageSelector->setIconSize(QSize(20, 20));
+	ui->pageSelector->setSpacing(1);
+	ui->pageSelector->setMinimumWidth(210);
 	ui->pageSelector->setMaximumWidth(240);
 	ui->pageSelector->setTextElideMode(Qt::ElideRight);
 
 	setWindowTitle(tr("Khwarizmi Configurator %1").arg(VeyonCore::versionString()));
 
 	loadConfigurationPagePlugins();
+	const QMap<QString, QString> pageTitles{
+		{QStringLiteral("Authentication keys"), tr("Kunci autentikasi")},
+		{QStringLiteral("Locations & computers"), tr("Lokasi dan komputer")},
+		{QStringLiteral("Applications & websites"), tr("Aplikasi dan situs")},
+		{QStringLiteral("File transfer"), tr("Transfer berkas")}
+	};
+	const QList<QColor> categoryColors{
+		QColor(QStringLiteral("#63718a")), QColor(QStringLiteral("#7656bd")),
+		QColor(QStringLiteral("#2878c8")), QColor(QStringLiteral("#278453")),
+		QColor(QStringLiteral("#b66b16")), QColor(QStringLiteral("#26877b"))
+	};
 	for( int i = 0; i < ui->pageSelector->count(); ++i )
 	{
 		auto* item = ui->pageSelector->item(i);
+		item->setText(pageTitles.value(item->text(), item->text()));
 		item->setToolTip(item->text());
-		if( dark && !item->icon().isNull() )
+		auto tint = categoryColors.at(i % categoryColors.size());
+		if (VeyonCore::useDarkMode())
 		{
-			auto pixmap = item->icon().pixmap(ui->pageSelector->iconSize());
-			QPainter painter(&pixmap);
-			painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-			painter.fillRect(pixmap.rect(), QColor(ink));
-			painter.end();
-			item->setIcon(QIcon(pixmap));
+			tint = tint.lighter(155);
 		}
+		item->setIcon(DesktopTheme::icon(item->icon(), tint));
 	}
+	auto navigation = new QWidget(ui->centralwidget);
+	auto navigationLayout = new QVBoxLayout(navigation);
+	navigationLayout->setContentsMargins(0, 16, 0, 0);
+	navigationLayout->setSpacing(12);
+	auto navigationTitle = new QLabel(tr("Pengaturan"), navigation);
+	navigationTitle->setObjectName(QStringLiteral("navigationTitle"));
+	navigationLayout->addWidget(navigationTitle);
+	auto navigationSearch = new QLineEdit(navigation);
+	navigationSearch->setPlaceholderText(tr("Cari kategori..."));
+	navigationSearch->setClearButtonEnabled(true);
+	navigationLayout->addWidget(navigationSearch);
+	ui->gridLayout->removeWidget(ui->pageSelector);
+	navigationLayout->addWidget(ui->pageSelector, 1);
+	ui->gridLayout->addWidget(navigation, 0, 0);
+	connect(navigationSearch, &QLineEdit::textChanged, this, [this](const QString& query) {
+		for (int i = 0; i < ui->pageSelector->count(); ++i)
+		{
+			auto item = ui->pageSelector->item(i);
+			item->setHidden(!item->text().contains(query, Qt::CaseInsensitive));
+		}
+	});
+	auto content = new QWidget(ui->centralwidget);
+	auto contentLayout = new QVBoxLayout(content);
+	contentLayout->setContentsMargins(0, 0, 0, 0);
+	contentLayout->setSpacing(0);
+	auto heading = new QLabel(ui->pageSelector->currentItem()->text(), content);
+	heading->setObjectName(QStringLiteral("settingsHeading"));
+	heading->setContentsMargins(24, 16, 24, 16);
+	contentLayout->addWidget(heading);
+	ui->gridLayout->removeWidget(ui->scrollArea);
+	contentLayout->addWidget(ui->scrollArea, 1);
+	ui->gridLayout->addWidget(content, 0, 1);
+	connect(ui->pageSelector, &QListWidget::currentRowChanged, heading, [this, heading](int row) {
+		if (const auto item = ui->pageSelector->item(row))
+		{
+			heading->setText(item->text());
+		}
+	});
+	auto brand = new QLabel(tr("Khwarizmi - Pengaturan"), ui->centralwidget);
+	brand->setObjectName(QStringLiteral("settingsBrand"));
+	ui->gridLayout->addWidget(brand, 2, 0);
 
 	// reset all widget's values to current configuration
 	reset( true );
@@ -297,9 +338,21 @@ void MainWindow::aboutAlKhwarizmi()
 
 void MainWindow::updateSizes()
 {
+	// Hidden pages must not impose their size hint on the active page.
+	ui->configPages->setMinimumSize(0, 0);
+	ui->configPages->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+	for (int i = 0; i < ui->configPages->count(); ++i)
+	{
+		ui->configPages->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	}
+	ui->configPages->currentWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	const auto pageSize = ui->configPages->currentWidget()->minimumSizeHint();
-	ui->configPages->setMinimumSize( qMax(ui->scrollArea->viewport()->width(), pageSize.width()),
-									 pageSize.height() );
+	const auto margins = ui->verticalLayout->contentsMargins();
+	const auto availableWidth = ui->scrollArea->viewport()->width() - margins.left() - margins.right();
+	const auto heading = ui->scrollAreaWidgetContents->findChild<QLabel*>(QStringLiteral("settingsHeading"));
+	const auto availableHeight = ui->scrollArea->viewport()->height() - margins.top() - margins.bottom() -
+		(heading ? heading->sizeHint().height() : 0) - ui->verticalLayout->spacing();
+	ui->configPages->setFixedSize(qMax(availableWidth, pageSize.width()), qMax(availableHeight, pageSize.height()));
 }
 
 
@@ -413,7 +466,7 @@ void MainWindow::loadConfigurationPagePlugins()
 	ui->pageSelector->addItem( licenseItem );
 
 	// adjust minimum size
-	ui->pageSelector->setMinimumWidth(190);
+	ui->pageSelector->setMinimumWidth(210);
 }
 
 
