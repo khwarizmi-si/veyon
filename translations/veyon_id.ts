@@ -45,7 +45,23 @@ Jika anda tertarik menerjemahkan Veyon pada bahasa lokal Anda atau bahasa lain a
     </message>
     <message>
         <source>About Veyon %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tentang Veyon %1</translation>
+    </message>
+    <message>
+        <source>About Khwarizmi Surveillance System</source>
+        <translation>Tentang Sistem Pengawasan Khwarizmi</translation>
+    </message>
+    <message>
+        <source>Support the Veyon project with a donation</source>
+        <translation>Dukung proyek Veyon melalui donasi</translation>
+    </message>
+    <message>
+        <source>Current language not translated yet (or native English).
+
+If you&#39;re interested in translating Khwarizmi into your local or another language or want to improve an existing translation, please contact the project maintainer!</source>
+        <translation>Bahasa saat ini belum diterjemahkan (atau menggunakan bahasa Inggris asli).
+
+Jika Anda ingin menerjemahkan Khwarizmi ke bahasa lain atau menyempurnakan terjemahan yang ada, hubungi pengelola proyek!</translation>
     </message>
 </context>
 <context>
@@ -134,12 +150,16 @@ Jika anda tertarik menerjemahkan Veyon pada bahasa lokal Anda atau bahasa lain a
         <source>The specified user is not allowed to access computers with this configuration.</source>
         <translation>Pengguna yang ditentukan tidak diizinkan mengakses komputer dengan konfigurasi ini.</translation>
     </message>
+    <message>
+        <source>Please add the groups whose members should be authorized to access computers in your Khwarizmi network.</source>
+        <translation>Tambahkan grup yang anggotanya diizinkan mengakses komputer dalam jaringan Khwarizmi Anda.</translation>
+    </message>
 </context>
 <context>
     <name>AccessControlProvider</name>
     <message>
         <source>Provider for access control features</source>
-        <translation type="unfinished"></translation>
+        <translation>Penyedia fitur kontrol akses</translation>
     </message>
 </context>
 <context>
@@ -254,7 +274,7 @@ Jika anda tertarik menerjemahkan Veyon pada bahasa lokal Anda atau bahasa lain a
     </message>
     <message>
         <source>Local computer is already being accessed</source>
-        <translation type="unfinished"></translation>
+        <translation>Komputer lokal sedang diakses</translation>
     </message>
 </context>
 <context>
@@ -305,7 +325,7 @@ Jika anda tertarik menerjemahkan Veyon pada bahasa lokal Anda atau bahasa lain a
     </message>
     <message>
         <source>There is no matching rule with a valid action. The access is therefore denied.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada aturan yang cocok dengan tindakan yang valid. Akses ditolak.</translation>
     </message>
 </context>
 <context>
@@ -420,7 +440,13 @@ Kunci publik digunakan pada komputer klien untuk mengautentikasi permintaan kone
         <source>Please enter the name of the user group or role for which to import the authentication key.
 
 Make sure that the names of the keys belonging to each other are identical on all computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama grup pengguna atau peran yang akan menerima kunci autentikasi.
+
+Pastikan nama pasangan kunci sama pada semua komputer.</translation>
+    </message>
+    <message>
+        <source>Please refer to the project documentation for more information on authentication setup.</source>
+        <translation>Lihat dokumentasi proyek untuk informasi lebih lanjut tentang pengaturan autentikasi.</translation>
     </message>
 </context>
 <context>
@@ -598,7 +624,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>This command creates a new authentication key pair with name &lt;NAME&gt; and saves private and public key to the configured key directories. The parameter must be a name for the key, which may only contain letters.</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah ini membuat pasangan kunci autentikasi baru bernama &lt;NAME&gt; dan menyimpan kunci privat serta publik ke direktori kunci yang dikonfigurasi. Nama kunci hanya boleh berisi huruf.</translation>
     </message>
     <message>
         <source>KEY</source>
@@ -606,7 +632,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>This command deletes the authentication key &lt;KEY&gt; from the configured key directory. Please note that a key can&apos;t be recovered once it has been deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah ini menghapus kunci autentikasi &lt;KEY&gt; dari direktori kunci yang dikonfigurasi. Kunci yang telah dihapus tidak dapat dipulihkan.</translation>
     </message>
     <message>
         <source>FILE</source>
@@ -614,15 +640,15 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>This command exports the authentication key &lt;KEY&gt; to &lt;FILE&gt;. If &lt;FILE&gt; is not specified a name will be constructed from name and type of &lt;KEY&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah ini mengekspor kunci autentikasi &lt;KEY&gt; ke &lt;FILE&gt;. Jika &lt;FILE&gt; tidak ditentukan, nama berkas dibuat berdasarkan nama dan jenis &lt;KEY&gt;.</translation>
     </message>
     <message>
         <source>This command extracts the public key part from the private key &lt;KEY&gt; and saves it as the corresponding public key. When setting up another master computer, it is therefore sufficient to transfer the private key only. The public key can then be extracted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah ini mengekstrak kunci publik dari kunci privat &lt;KEY&gt; dan menyimpannya sebagai pasangan kunci publik. Saat menyiapkan komputer Master lain, cukup transfer kunci privat, lalu ekstrak kunci publiknya.</translation>
     </message>
     <message>
         <source>This command imports the authentication key &lt;KEY&gt; from &lt;FILE&gt;. If &lt;FILE&gt; is not specified a name will be constructed from name and type of &lt;KEY&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah ini mengimpor kunci autentikasi &lt;KEY&gt; dari &lt;FILE&gt;. Jika &lt;FILE&gt; tidak ditentukan, nama berkas dibuat berdasarkan nama dan jenis &lt;KEY&gt;.</translation>
     </message>
     <message>
         <source>This command lists all available authentication keys in the configured key directory. If the option &quot;%1&quot; is specified a table with key details will be displayed instead. Some details might be missing if a key is not accessible e.g. due to the lack of read permissions.</source>
@@ -708,11 +734,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Move selected computer up</source>
-        <translation type="unfinished"></translation>
+        <translation>Pindahkan komputer terpilih ke atas</translation>
     </message>
     <message>
         <source>Move selected computer down</source>
-        <translation type="unfinished"></translation>
+        <translation>Pindahkan komputer terpilih ke bawah</translation>
     </message>
     <message>
         <source>Name</source>
@@ -736,11 +762,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Move selected location up</source>
-        <translation type="unfinished"></translation>
+        <translation>Pindahkan lokasi terpilih ke atas</translation>
     </message>
     <message>
         <source>Move selected location down</source>
-        <translation type="unfinished"></translation>
+        <translation>Pindahkan lokasi terpilih ke bawah</translation>
     </message>
     <message>
         <source>The import of CSV files is possible through the command line interface. For more information, see the &lt;a href=&quot;https://docs.veyon.io/en/latest/admin/cli.html#network-object-directory&quot;&gt;online documentation&lt;/a&gt;.</source>
@@ -827,7 +853,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Exports objects to the specified text file using the given format string containing one or multiple placeholders. Valid placeholders are: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspor objek ke berkas teks yang ditentukan menggunakan format dengan satu atau beberapa placeholder. Placeholder yang valid: %1</translation>
     </message>
     <message>
         <source>Export all objects to a CSV file</source>
@@ -835,7 +861,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Export all computers in a specific location to a CSV file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspor semua komputer di lokasi tertentu ke berkas CSV</translation>
     </message>
     <message>
         <source>TYPE</source>
@@ -847,43 +873,43 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>HOST ADDRESS</source>
-        <translation type="unfinished"></translation>
+        <translation>ALAMAT HOST</translation>
     </message>
     <message>
         <source>MAC ADDRESS</source>
-        <translation type="unfinished"></translation>
+        <translation>ALAMAT MAC</translation>
     </message>
     <message>
         <source>PARENT</source>
-        <translation type="unfinished"></translation>
+        <translation>INDUK</translation>
     </message>
     <message>
         <source>Adds an object where %1 can be one of &quot;%2&quot; or &quot;%3&quot;. %4 can be specified by name or UUID.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan objek dengan %1 berupa &quot;%2&quot; atau &quot;%3&quot;. %4 dapat ditentukan berdasarkan nama atau UUID.</translation>
     </message>
     <message>
         <source>Add a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambah ruangan</translation>
     </message>
     <message>
         <source>Add a computer to room %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambah komputer ke ruangan %1</translation>
     </message>
     <message>
         <source>OBJECT</source>
-        <translation type="unfinished"></translation>
+        <translation>OBJEK</translation>
     </message>
     <message>
         <source>Removes the specified object from the directory. %1 can be specified by name or UUID. Removing a location will also remove all related computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus objek yang ditentukan dari direktori. %1 dapat berupa nama atau UUID. Menghapus lokasi juga akan menghapus semua komputer terkait.</translation>
     </message>
     <message>
         <source>Remove a computer by name</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus komputer berdasarkan nama</translation>
     </message>
     <message>
         <source>Remove an object by UUID</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus objek berdasarkan UUID</translation>
     </message>
     <message>
         <source>The specified command does not exist or no help is available for it.</source>
@@ -995,29 +1021,29 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>&quot;Room 01&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Ruangan 01&quot;</translation>
     </message>
     <message>
         <source>&quot;Computer 01&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Komputer 01&quot;</translation>
     </message>
     <message>
         <source>Location &quot;%1&quot; not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokasi &quot;%1&quot; tidak ditemukan.</translation>
     </message>
 </context>
 <context>
     <name>BuiltinUltraVncServer</name>
     <message>
         <source>Builtin VNC server (UltraVNC)</source>
-        <translation type="unfinished"></translation>
+        <translation>Server VNC bawaan (UltraVNC)</translation>
     </message>
 </context>
 <context>
     <name>BuiltinX11VncServer</name>
     <message>
         <source>Builtin VNC server (x11vnc)</source>
-        <translation type="unfinished"></translation>
+        <translation>Server VNC bawaan (x11vnc)</translation>
     </message>
 </context>
 <context>
@@ -1028,11 +1054,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Name: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama: %1</translation>
     </message>
     <message>
         <source>Location: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokasi: %1</translation>
     </message>
     <message>
         <source>Active features: %1</source>
@@ -1040,7 +1066,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>[no user]</source>
-        <translation type="unfinished"></translation>
+        <translation>[tidak ada pengguna]</translation>
     </message>
     <message>
         <source>Online and connected</source>
@@ -1048,19 +1074,19 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Establishing connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Membuat koneksi</translation>
     </message>
     <message>
         <source>Computer offline or switched off</source>
-        <translation type="unfinished"></translation>
+        <translation>Komputer tidak terhubung atau dimatikan</translation>
     </message>
     <message>
         <source>Veyon Server unreachable or not running</source>
-        <translation type="unfinished"></translation>
+        <translation>Server Veyon tidak dapat dijangkau atau tidak berjalan</translation>
     </message>
     <message>
         <source>Authentication failed or access denied</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentikasi gagal atau akses ditolak</translation>
     </message>
     <message>
         <source>Disconnected</source>
@@ -1072,27 +1098,31 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Logged on user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna yang masuk: %1</translation>
     </message>
     <message>
         <source>Hostname: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama host: %1</translation>
     </message>
     <message>
         <source>unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>tidak diketahui</translation>
     </message>
     <message>
         <source>IP address: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Alamat IP: %1</translation>
     </message>
     <message>
         <source>Hostname could not be resolved</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama host tidak dapat diresolusikan</translation>
     </message>
     <message>
         <source>No features active</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada fitur aktif</translation>
+    </message>
+    <message>
+        <source>Khwarizmi Server unreachable or not running</source>
+        <translation>Server Khwarizmi tidak dapat dijangkau atau tidak berjalan</translation>
     </message>
 </context>
 <context>
@@ -1103,31 +1133,31 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>User &quot;%1&quot; at host &quot;%2&quot; attempted to access this computer but could not authenticate successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna &quot;%1&quot; pada host &quot;%2&quot; mencoba mengakses komputer ini, tetapi autentikasi gagal.</translation>
     </message>
     <message>
         <source>Remote access</source>
-        <translation type="unfinished"></translation>
+        <translation>Akses jarak jauh</translation>
     </message>
     <message>
         <source>User &quot;%1&quot; at host &quot;%2&quot; is now accessing this computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna &quot;%1&quot; pada host &quot;%2&quot; sedang mengakses komputer ini.</translation>
     </message>
     <message>
         <source>Access control error</source>
-        <translation type="unfinished"></translation>
+        <translation>Kesalahan kontrol akses</translation>
     </message>
     <message>
         <source>User &quot;%1&quot; at host &quot;%2&quot; attempted to access this computer but has been blocked due to access control settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna &quot;%1&quot; pada host &quot;%2&quot; mencoba mengakses komputer ini, tetapi diblokir oleh pengaturan kontrol akses.</translation>
     </message>
     <message>
         <source>Veyon Service %1 at %2:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Layanan Veyon %1 di %2:%3</translation>
     </message>
     <message>
         <source>Active connections:</source>
-        <translation type="unfinished"></translation>
+        <translation>Koneksi aktif:</translation>
     </message>
 </context>
 <context>
@@ -1138,7 +1168,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Logged in since</source>
-        <translation type="unfinished"></translation>
+        <translation>Masuk sejak</translation>
     </message>
     <message>
         <source>Missing network object directory plugin</source>
@@ -1146,62 +1176,62 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>No default network object directory plugin was found. Please check your installation or configure a different network object directory backend via Veyon Configurator.</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin direktori objek jaringan bawaan tidak ditemukan. Periksa instalasi atau pilih backend direktori objek jaringan lain melalui Konfigurator Veyon.</translation>
     </message>
     <message>
         <source>Computer name;Hostname;User</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama komputer;Nama host;Pengguna</translation>
     </message>
     <message>
         <source>%1 days</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hari</translation>
     </message>
     <message>
         <source>1 day</source>
-        <translation type="unfinished"></translation>
+        <translation>1 hari</translation>
     </message>
     <message>
         <source>Location detection failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Deteksi lokasi gagal</translation>
     </message>
     <message>
         <source>The location of this computer could not be determined. This indicates a problem with the system configuration. No locations and computers will be displayed in the &quot;Locations &amp; computers&quot; panel.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokasi komputer ini tidak dapat ditentukan. Ada masalah pada konfigurasi sistem. Lokasi dan komputer tidak akan ditampilkan pada panel &quot;Lokasi dan komputer&quot;.</translation>
     </message>
     <message>
         <source>Unknown location</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokasi tidak diketahui</translation>
     </message>
 </context>
 <context>
     <name>ComputerSelectPanel</name>
     <message>
         <source>Search computers</source>
-        <translation type="unfinished"></translation>
+        <translation>Cari komputer</translation>
     </message>
     <message>
         <source>Add location</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambah lokasi</translation>
     </message>
     <message>
         <source>Save computer/user list</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekspor daftar komputer/pengguna</translation>
     </message>
     <message>
         <source>Select output filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih nama berkas keluaran</translation>
     </message>
     <message>
         <source>CSV files (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas CSV (*.csv)</translation>
     </message>
     <message>
         <source>File error</source>
-        <translation type="unfinished"></translation>
+        <translation>Kesalahan berkas</translation>
     </message>
     <message>
         <source>Could not write the computer and users list to %1! Please check the file access permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat menyimpan daftar komputer dan pengguna ke %1! Periksa izin akses berkas.</translation>
     </message>
 </context>
 <context>
@@ -1260,7 +1290,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Please specify a valid key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tentukan kunci yang valid.</translation>
     </message>
     <message>
         <source>Specified key does not exist in current configuration!</source>
@@ -1268,11 +1298,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Please specify a valid value.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tentukan nilai yang valid.</translation>
     </message>
     <message>
         <source>Configure Veyon at command line</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurasikan Veyon melalui baris perintah</translation>
     </message>
     <message>
         <source>Commands for managing the configuration of Veyon</source>
@@ -1283,30 +1313,30 @@ Make sure that the names of the keys belonging to each other are identical on al
     <name>ConfigurationManager</name>
     <message>
         <source>Could not modify the autostart property for the Veyon Service.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengubah pengaturan mulai otomatis Layanan Veyon.</translation>
     </message>
     <message>
         <source>Could not configure the firewall configuration for the Veyon Server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengatur firewall untuk Server Veyon.</translation>
     </message>
     <message>
         <source>Could not configure the firewall configuration for the Veyon Worker.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengatur firewall untuk Worker Veyon.</translation>
     </message>
     <message>
         <source>Could not apply platform-specific configuration settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat menerapkan pengaturan khusus platform.</translation>
     </message>
     <message>
         <source>Configuration is not writable. Please check your permissions!</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurasi tidak dapat ditulis. Periksa izin akses Anda!</translation>
     </message>
 </context>
 <context>
     <name>DemoClient</name>
     <message>
         <source>Veyon Demo</source>
-        <translation type="unfinished"></translation>
+        <translation>Peraga Veyon</translation>
     </message>
 </context>
 <context>
@@ -1317,15 +1347,15 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Tunables</source>
-        <translation type="unfinished"></translation>
+        <translation>Penyetelan</translation>
     </message>
     <message>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation> dtk</translation>
     </message>
     <message>
         <source>Update interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval pembaruan</translation>
     </message>
     <message>
         <source> MB</source>
@@ -1337,23 +1367,23 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Slow down thumbnail updates while demo is running</source>
-        <translation type="unfinished"></translation>
+        <translation>Perlambat pembaruan pratinjau selama peraga berjalan</translation>
     </message>
     <message>
         <source>Memory limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Batas memori</translation>
     </message>
     <message>
         <source>Key frame interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval bingkai kunci</translation>
     </message>
     <message>
         <source>Bandwidth limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Batas bandwidth</translation>
     </message>
     <message>
         <source> MB/s</source>
-        <translation type="unfinished"></translation>
+        <translation> MB/dtk</translation>
     </message>
 </context>
 <context>
@@ -1431,7 +1461,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     <name>DesktopAccessDialog</name>
     <message>
         <source>Desktop access dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Permintaan akses desktop</translation>
     </message>
     <message>
         <source>Confirm desktop access</source>
@@ -1439,7 +1469,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>The user %1 at computer %2 wants to access your desktop. Do you want to grant access?</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna %1 pada komputer %2 ingin mengakses desktop Anda. Izinkan akses?</translation>
     </message>
     <message>
         <source>Never for this session</source>
@@ -1454,11 +1484,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     <name>DesktopServicesConfigurationPage</name>
     <message>
         <source>Applications &amp; websites</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplikasi dan situs</translation>
     </message>
     <message>
         <source>Predefined applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplikasi yang telah ditentukan</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1466,27 +1496,27 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokasi berkas</translation>
     </message>
     <message>
         <source>Add new application</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan aplikasi baru</translation>
     </message>
     <message>
         <source>Remove selected application</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus aplikasi terpilih</translation>
     </message>
     <message>
         <source>Predefined websites</source>
-        <translation type="unfinished"></translation>
+        <translation>Situs yang telah ditentukan</translation>
     </message>
     <message>
         <source>Add new website</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan situs baru</translation>
     </message>
     <message>
         <source>Remove selected website</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus situs terpilih</translation>
     </message>
     <message>
         <source>URL</source>
@@ -1494,138 +1524,138 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>New application</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplikasi baru</translation>
     </message>
     <message>
         <source>New website</source>
-        <translation type="unfinished"></translation>
+        <translation>Situs baru</translation>
     </message>
 </context>
 <context>
     <name>DesktopServicesFeaturePlugin</name>
     <message>
         <source>Start application</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka aplikasi</translation>
     </message>
     <message>
         <source>Click this button to start an application on all computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka aplikasi pada semua komputer.</translation>
     </message>
     <message>
         <source>Open website</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka situs</translation>
     </message>
     <message>
         <source>Click this button to open a website on all computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka situs pada semua komputer.</translation>
     </message>
     <message>
         <source>Start application &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka aplikasi &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Custom application</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplikasi khusus</translation>
     </message>
     <message>
         <source>Open website &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka situs &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Custom website</source>
-        <translation type="unfinished"></translation>
+        <translation>Situs khusus</translation>
     </message>
     <message>
         <source>Start apps and open websites in user sessions</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka aplikasi dan situs dalam sesi pengguna</translation>
     </message>
 </context>
 <context>
     <name>DocumentationFigureCreator</name>
     <message>
         <source>Teacher</source>
-        <translation type="unfinished"></translation>
+        <translation>Guru</translation>
     </message>
     <message>
         <source>Room %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan %1</translation>
     </message>
     <message>
         <source>generic-student-user</source>
-        <translation type="unfinished"></translation>
+        <translation>pengguna-siswa-contoh</translation>
     </message>
     <message>
         <source>Please complete all tasks within the next 5 minutes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selesaikan semua tugas dalam 5 menit ke depan.</translation>
     </message>
     <message>
         <source>Custom website</source>
-        <translation type="unfinished"></translation>
+        <translation>Situs khusus</translation>
     </message>
     <message>
         <source>Open file manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka pengelola berkas</translation>
     </message>
     <message>
         <source>Start learning tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka alat pembelajaran</translation>
     </message>
     <message>
         <source>Play tutorial video</source>
-        <translation type="unfinished"></translation>
+        <translation>Putar video panduan</translation>
     </message>
     <message>
         <source>Custom application</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplikasi khusus</translation>
     </message>
     <message>
         <source>Handout</source>
-        <translation type="unfinished"></translation>
+        <translation>Lembar materi</translation>
     </message>
     <message>
         <source>Texts to read</source>
-        <translation type="unfinished"></translation>
+        <translation>Bahan bacaan</translation>
     </message>
 </context>
 <context>
     <name>ExternalVncServer</name>
     <message>
         <source>External VNC server</source>
-        <translation type="unfinished"></translation>
+        <translation>Server VNC eksternal</translation>
     </message>
 </context>
 <context>
     <name>ExternalVncServerConfigurationWidget</name>
     <message>
         <source>External VNC server configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurasi server VNC eksternal</translation>
     </message>
     <message>
         <source>Port:</source>
-        <translation type="unfinished"></translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kata sandi:</translation>
     </message>
 </context>
 <context>
     <name>FeatureCommands</name>
     <message>
         <source>List names of all available features</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan nama semua fitur yang tersedia</translation>
     </message>
     <message>
         <source>Show table with details of all available features</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan tabel rincian semua fitur yang tersedia</translation>
     </message>
     <message>
         <source>Start a feature on a remote host</source>
-        <translation type="unfinished"></translation>
+        <translation>Jalankan fitur pada host jarak jauh</translation>
     </message>
     <message>
         <source>Stop a feature on a remote host</source>
-        <translation type="unfinished"></translation>
+        <translation>Hentikan fitur pada host jarak jauh</translation>
     </message>
     <message>
         <source>Please specify the command to display help for.</source>
@@ -1633,51 +1663,51 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Displays a list with the names of all available features.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan daftar nama semua fitur yang tersedia.</translation>
     </message>
     <message>
         <source>Displays a table with detailed information about all available features. This information include a description, the UID, the name of the plugin providing the respective feature and some other implementation-related details.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan tabel informasi terperinci semua fitur yang tersedia, termasuk keterangan, UID, nama plugin penyedia fitur, dan rincian implementasi lainnya.</translation>
     </message>
     <message>
         <source>HOST ADDRESS</source>
-        <translation type="unfinished"></translation>
+        <translation>ALAMAT HOST</translation>
     </message>
     <message>
         <source>FEATURE</source>
-        <translation type="unfinished"></translation>
+        <translation>FITUR</translation>
     </message>
     <message>
         <source>ARGUMENTS</source>
-        <translation type="unfinished"></translation>
+        <translation>ARGUMEN</translation>
     </message>
     <message>
         <source>Starts the specified feature on the specified host by connecting to the Veyon Server running remotely. The feature can be specified by name or UID. Use the ``show`` command to see all available features. Depending on the feature, additional arguments (such as the text message to display) encoded as a single JSON string have to be specified. Please refer to the developer documentation for more information</source>
-        <translation type="unfinished"></translation>
+        <translation>Jalankan fitur pada host yang ditentukan melalui koneksi ke Server Veyon jarak jauh. Fitur dapat ditentukan berdasarkan nama atau UID. Gunakan perintah ``show`` untuk melihat semua fitur. Beberapa fitur memerlukan argumen tambahan (misalnya isi pesan) dalam satu string JSON. Lihat dokumentasi pengembang untuk informasi lebih lanjut.</translation>
     </message>
     <message>
         <source>Lock the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci layar</translation>
     </message>
     <message>
         <source>Display a text message</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan pesan teks</translation>
     </message>
     <message>
         <source>Test message</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesan percobaan</translation>
     </message>
     <message>
         <source>Start an application</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka aplikasi</translation>
     </message>
     <message>
         <source>Stops the specified feature on the specified host by connecting to the Veyon Server running remotely. The feature can be specified by name or UID. Use the ``show`` command to see all available features.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hentikan fitur pada host yang ditentukan melalui koneksi ke Server Veyon jarak jauh. Fitur dapat ditentukan berdasarkan nama atau UID. Gunakan perintah ``show`` untuk melihat semua fitur yang tersedia.</translation>
     </message>
     <message>
         <source>Unlock the screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka kunci layar</translation>
     </message>
     <message>
         <source>The specified command does not exist or no help is available for it.</source>
@@ -1689,11 +1719,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Keterangan</translation>
     </message>
     <message>
         <source>Master</source>
-        <translation type="unfinished"></translation>
+        <translation>Master</translation>
     </message>
     <message>
         <source>Service</source>
@@ -1701,89 +1731,89 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Worker</source>
-        <translation type="unfinished"></translation>
+        <translation>Worker</translation>
     </message>
     <message>
         <source>UID</source>
-        <translation type="unfinished"></translation>
+        <translation>UID</translation>
     </message>
     <message>
         <source>Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin</translation>
     </message>
     <message>
         <source>Invalid feature name or UID specified</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama fitur atau UID tidak valid</translation>
     </message>
     <message>
         <source>Error parsing the JSON-encoded arguments: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal membaca argumen berformat JSON: %1</translation>
     </message>
     <message>
         <source>Failed to initialize credentials</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal menyiapkan kredensial</translation>
     </message>
     <message>
         <source>Could not establish a connection to host %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat membuat koneksi ke host %1</translation>
     </message>
     <message>
         <source>Failed to send feature control message to host %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal mengirim pesan kontrol fitur ke host %1</translation>
     </message>
     <message>
         <source>Feature-related CLI operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Operasi CLI terkait fitur</translation>
     </message>
     <message>
         <source>Commands for controlling features</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah untuk mengendalikan fitur</translation>
     </message>
 </context>
 <context>
     <name>FileCollectDialog</name>
     <message>
         <source>File transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer berkas</translation>
     </message>
     <message>
         <source>Collected files</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas terkumpul</translation>
     </message>
     <message>
         <source>Overall progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Kemajuan keseluruhan</translation>
     </message>
     <message>
         <source>Output directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktori keluaran</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Mulai</translation>
     </message>
     <message>
         <source>Enter collection name</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama pengumpulan</translation>
     </message>
     <message>
         <source>Please enter a name for this file collection:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama pengumpulan berkas ini:</translation>
     </message>
     <message>
         <source>Output directory creation failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal membuat direktori keluaran</translation>
     </message>
     <message>
         <source>The output directory &quot;%1&quot; does not exist and could not be created. Please check the configuration and the file permissions for the configured destination directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktori keluaran &quot;%1&quot; tidak ada dan tidak dapat dibuat. Periksa konfigurasi serta izin akses direktori tujuan.</translation>
     </message>
 </context>
 <context>
     <name>FileCollectTreeModel</name>
     <message>
         <source>Progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Kemajuan</translation>
     </message>
     <message>
         <source>Name</source>
@@ -1791,34 +1821,34 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Number of files</source>
-        <translation type="unfinished"></translation>
+        <translation>Jumlah berkas</translation>
     </message>
 </context>
 <context>
     <name>FileTransferConfigurationPage</name>
     <message>
         <source>File transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer berkas</translation>
     </message>
     <message>
         <source>Settings for distributing files</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengaturan pengiriman berkas</translation>
     </message>
     <message>
         <source>Settings for collecting files</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengaturan pengumpulan berkas</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak</translation>
     </message>
     <message>
         <source>Prefix filenames with grouping attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan atribut pengelompokan di awal nama berkas</translation>
     </message>
     <message>
         <source>Store files in subdirectories based on the grouping attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Simpan berkas dalam subdirektori berdasarkan atribut pengelompokan</translation>
     </message>
     <message>
         <source>None</source>
@@ -1826,121 +1856,121 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>First part of user name</source>
-        <translation type="unfinished"></translation>
+        <translation>Bagian awal nama pengguna</translation>
     </message>
     <message>
         <source>Last part of user name</source>
-        <translation type="unfinished"></translation>
+        <translation>Bagian akhir nama pengguna</translation>
     </message>
     <message>
         <source>Collect all files from configured source directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Kumpulkan semua berkas dari direktori sumber yang dikonfigurasi</translation>
     </message>
     <message>
         <source>Prompt user for folder to collect</source>
-        <translation type="unfinished"></translation>
+        <translation>Minta pengguna memilih folder untuk dikumpulkan</translation>
     </message>
     <message>
         <source>Prompt user for files to collect</source>
-        <translation type="unfinished"></translation>
+        <translation>Minta pengguna memilih berkas untuk dikumpulkan</translation>
     </message>
     <message>
         <source>Grouping attribute 3:</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut pengelompokan 3:</translation>
     </message>
     <message>
         <source>Destination directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktori tujuan:</translation>
     </message>
     <message>
         <source>Store collected files in:</source>
-        <translation type="unfinished"></translation>
+        <translation>Simpan berkas terkumpul di:</translation>
     </message>
     <message>
         <source>Group collected files:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kelompokkan berkas terkumpul:</translation>
     </message>
     <message>
         <source>Grouping attribute 1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut pengelompokan 1:</translation>
     </message>
     <message>
         <source>Grouping attribute 2:</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut pengelompokan 2:</translation>
     </message>
     <message>
         <source>Directly in the destination directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Langsung dalam direktori tujuan</translation>
     </message>
     <message>
         <source>Subdirectory based on date &amp; time</source>
-        <translation type="unfinished"></translation>
+        <translation>Subdirektori berdasarkan tanggal dan waktu</translation>
     </message>
     <message>
         <source>Subdirectory with name entered by the collecting user</source>
-        <translation type="unfinished"></translation>
+        <translation>Subdirektori dengan nama yang dimasukkan pengumpul</translation>
     </message>
     <message>
         <source>Files to collect:</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas untuk dikumpulkan:</translation>
     </message>
     <message>
         <source>Files to exclude:</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas yang dikecualikan:</translation>
     </message>
     <message>
         <source>e.g. *.lnk or *.desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya *.lnk atau *.desktop</translation>
     </message>
     <message>
         <source>Collect files recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Kumpulkan berkas termasuk isi subdirektori</translation>
     </message>
     <message>
         <source>Destination directory (remote):</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktori tujuan (jarak jauh):</translation>
     </message>
     <message>
         <source>Default source directory:</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktori sumber bawaan:</translation>
     </message>
     <message>
         <source>Source directory (remote):</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktori sumber (jarak jauh):</translation>
     </message>
     <message>
         <source>User login name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama akun pengguna</translation>
     </message>
     <message>
         <source>Full name of user</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama lengkap pengguna</translation>
     </message>
     <message>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama perangkat</translation>
     </message>
     <message>
         <source>Remember last source directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Ingat direktori sumber terakhir</translation>
     </message>
     <message>
         <source>Create destination directory if it does not exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Buat direktori tujuan jika belum ada</translation>
     </message>
 </context>
 <context>
     <name>FileTransferController</name>
     <message>
         <source>Could not open file %1 for reading! Please check your permissions!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat membuka berkas %1 untuk dibaca! Periksa izin akses Anda!</translation>
     </message>
 </context>
 <context>
     <name>FileTransferDialog</name>
     <message>
         <source>File transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer berkas</translation>
     </message>
     <message>
         <source>Options</source>
@@ -1948,90 +1978,94 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Overwrite existing files</source>
-        <translation type="unfinished"></translation>
+        <translation>Timpa berkas yang sudah ada</translation>
     </message>
     <message>
         <source>Transfer only</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer saja</translation>
     </message>
     <message>
         <source>Transfer and open file(s) with associated program</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer lalu buka berkas dengan aplikasi terkait</translation>
     </message>
     <message>
         <source>Transfer and open destination folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer lalu buka folder tujuan</translation>
     </message>
     <message>
         <source>Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Mulai</translation>
     </message>
 </context>
 <context>
     <name>FileTransferPlugin</name>
     <message>
         <source>Distribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim berkas</translation>
     </message>
     <message>
         <source>Click this button to distribute files from your computer to all computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim berkas dari komputer Anda ke semua komputer.</translation>
     </message>
     <message>
         <source>Collect</source>
-        <translation type="unfinished"></translation>
+        <translation>Kumpulkan berkas</translation>
     </message>
     <message>
         <source>Click this button to collect files from all computers to your computer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kumpulkan berkas dari semua komputer ke komputer Anda.</translation>
     </message>
     <message>
         <source>Select one or more files to transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih satu atau beberapa berkas untuk ditransfer</translation>
     </message>
     <message>
         <source>File transfer</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer berkas</translation>
     </message>
     <message>
         <source>Received file %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas %1 diterima.</translation>
     </message>
     <message>
         <source>The file %1 is to be collected, but is still open in an application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas %1 akan dikumpulkan, tetapi masih terbuka dalam aplikasi.</translation>
     </message>
     <message>
         <source>The file %1 is to be collected, but is still open in the application &lt;b&gt;%2&lt;/b&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas %1 akan dikumpulkan, tetapi masih terbuka dalam aplikasi &lt;b&gt;%2&lt;/b&gt;.</translation>
     </message>
     <message>
         <source>Please save your changes and close the program so that the transfer can be completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Simpan perubahan dan tutup program agar transfer dapat diselesaikan.</translation>
     </message>
     <message>
         <source>Are you sure you want to skip transferring the file %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Lewati transfer berkas %1?</translation>
     </message>
     <message>
         <source>Could not receive file %1 as it already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat menerima berkas %1 karena berkas sudah ada.</translation>
     </message>
     <message>
         <source>Could not receive file %1 as it could not be opened for writing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat menerima berkas %1 karena berkas tidak dapat dibuka untuk ditulis!</translation>
     </message>
     <message>
         <source>Transfer files between computers</source>
-        <translation type="unfinished"></translation>
+        <translation>Transfer berkas antar-komputer</translation>
     </message>
 </context>
 <context>
     <name>GeneralConfigurationPage</name>
+    <message>
+        <source>System</source>
+        <translation>Ikuti sistem</translation>
+    </message>
     <message>
         <source>User interface</source>
         <translation>Antarmuka pengguna</translation>
@@ -2221,14 +2255,14 @@ Make sure that the names of the keys belonging to each other are identical on al
     <name>HeadlessVncServer</name>
     <message>
         <source>Headless VNC server</source>
-        <translation type="unfinished"></translation>
+        <translation>Server VNC tanpa layar</translation>
     </message>
 </context>
 <context>
     <name>LdapBrowseDialog</name>
     <message>
         <source>Browse LDAP</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelajahi LDAP</translation>
     </message>
 </context>
 <context>
@@ -2250,19 +2284,19 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Anonymous bind</source>
-        <translation type="unfinished"></translation>
+        <translation>Bind anonim</translation>
     </message>
     <message>
         <source>Use bind credentials</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan kredensial bind</translation>
     </message>
     <message>
         <source>Query timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Batas waktu kueri</translation>
     </message>
     <message>
         <source>Bind DN</source>
-        <translation type="unfinished"></translation>
+        <translation>DN bind</translation>
     </message>
     <message>
         <source> ms</source>
@@ -2270,11 +2304,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>LDAP server and port</source>
-        <translation type="unfinished"></translation>
+        <translation>Server dan port LDAP</translation>
     </message>
     <message>
         <source>Bind password</source>
-        <translation type="unfinished"></translation>
+        <translation>Kata sandi bind</translation>
     </message>
     <message>
         <source>Connection security</source>
@@ -2294,11 +2328,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Never (insecure!)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak pernah (tidak aman!)</translation>
     </message>
     <message>
         <source>Custom CA certificate file</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas sertifikat CA khusus</translation>
     </message>
     <message>
         <source>None</source>
@@ -2314,31 +2348,31 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Base DN</source>
-        <translation type="unfinished"></translation>
+        <translation>DN dasar</translation>
     </message>
     <message>
         <source>Discover base DN by naming context</source>
-        <translation type="unfinished"></translation>
+        <translation>Temukan DN dasar melalui konteks penamaan</translation>
     </message>
     <message>
         <source>e.g. namingContexts or defaultNamingContext</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya namingContexts atau defaultNamingContext</translation>
     </message>
     <message>
         <source>Fixed base DN</source>
-        <translation type="unfinished"></translation>
+        <translation>DN dasar tetap</translation>
     </message>
     <message>
         <source>e.g. dc=example,dc=org</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya dc=example,dc=org</translation>
     </message>
     <message>
         <source>Environment settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengaturan lingkungan</translation>
     </message>
     <message>
         <source>Object trees</source>
-        <translation type="unfinished"></translation>
+        <translation>Pohon objek</translation>
     </message>
     <message>
         <source>(only if different from group tree)</source>
@@ -2346,39 +2380,39 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Computer tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Pohon komputer</translation>
     </message>
     <message>
         <source>Perform recursive search operations in object trees</source>
-        <translation type="unfinished"></translation>
+        <translation>Lakukan pencarian rekursif pada pohon objek</translation>
     </message>
     <message>
         <source>User tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Pohon pengguna</translation>
     </message>
     <message>
         <source>e.g. OU=Computers</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya OU=Computers</translation>
     </message>
     <message>
         <source>Group tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Pohon grup</translation>
     </message>
     <message>
         <source>Computer group tree</source>
-        <translation type="unfinished"></translation>
+        <translation>Pohon grup komputer</translation>
     </message>
     <message>
         <source>e.g. OU=Users</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya OU=Users</translation>
     </message>
     <message>
         <source>e.g. OU=Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya OU=Groups</translation>
     </message>
     <message>
         <source>Object attributes</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut objek</translation>
     </message>
     <message>
         <source>e.g. name or description</source>
@@ -2386,7 +2420,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Hostnames stored as fully qualified domain names (FQDN, e.g. myhost.example.org)</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama host disimpan sebagai nama domain lengkap (FQDN, misalnya myhost.example.org)</translation>
     </message>
     <message>
         <source>e.g. room or computerLab</source>
@@ -2394,7 +2428,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>User login name attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut nama akun pengguna</translation>
     </message>
     <message>
         <source>Computer location attribute</source>
@@ -2402,71 +2436,71 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>e.g. member or memberUid</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya member atau memberUid</translation>
     </message>
     <message>
         <source>Group member attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut anggota grup</translation>
     </message>
     <message>
         <source>e.g. hwAddress</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya hwAddress</translation>
     </message>
     <message>
         <source>Computer MAC address attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut alamat MAC komputer</translation>
     </message>
     <message>
         <source>e.g. dNSHostName</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya dNSHostName</translation>
     </message>
     <message>
         <source>e.g. uid or sAMAccountName</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya uid atau sAMAccountName</translation>
     </message>
     <message>
         <source>Computer display name attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut nama tampilan komputer</translation>
     </message>
     <message>
         <source>Computer hostname attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut nama host komputer</translation>
     </message>
     <message>
         <source>Location name attribute</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut nama lokasi</translation>
     </message>
     <message>
         <source>e.g. cn or displayName</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya cn atau displayName</translation>
     </message>
     <message>
         <source>Advanced settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengaturan lanjutan</translation>
     </message>
     <message>
         <source>Optional object filters</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter objek opsional</translation>
     </message>
     <message>
         <source>Filter for computer groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter grup komputer</translation>
     </message>
     <message>
         <source>e.g. (objectClass=computer)</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya (objectClass=computer)</translation>
     </message>
     <message>
         <source>e.g. (objectClass=group)</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya (objectClass=group)</translation>
     </message>
     <message>
         <source>e.g. (objectClass=person)</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya (objectClass=person)</translation>
     </message>
     <message>
         <source>Filter for users</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter pengguna</translation>
     </message>
     <message>
         <source>Filter for computers</source>
@@ -2474,11 +2508,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Filter for user groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter grup pengguna</translation>
     </message>
     <message>
         <source>e.g. (objectClass=room) or (objectClass=computerLab)</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya (objectClass=room) atau (objectClass=computerLab)</translation>
     </message>
     <message>
         <source>Filter for computer containers</source>
@@ -2486,35 +2520,35 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>e.g. (objectClass=container) or (objectClass=organizationalUnit)</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya (objectClass=container) atau (objectClass=organizationalUnit)</translation>
     </message>
     <message>
         <source>Query options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opsi kueri</translation>
     </message>
     <message>
         <source>Query nested user groups (supported by AD only)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kueri grup pengguna bertingkat (hanya didukung AD)</translation>
     </message>
     <message>
         <source>Group member identification</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifikasi anggota grup</translation>
     </message>
     <message>
         <source>Distinguished name (Samba/AD/FreeIPA)</source>
-        <translation type="unfinished"></translation>
+        <translation>Distinguished name (Samba/AD/FreeIPA)</translation>
     </message>
     <message>
         <source>Configured attribute for user login name or computer hostname (OpenLDAP)</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut yang dikonfigurasi untuk nama akun pengguna atau nama host komputer (OpenLDAP)</translation>
     </message>
     <message>
         <source>Computer locations identification</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifikasi lokasi komputer</translation>
     </message>
     <message>
         <source>Identify computer locations (e.g. rooms) via:</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifikasi lokasi komputer (misalnya ruangan) melalui:</translation>
     </message>
     <message>
         <source>Computer groups</source>
@@ -2526,7 +2560,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Location attribute in computer objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Atribut lokasi pada objek komputer</translation>
     </message>
     <message>
         <source>Integration tests</source>
@@ -2534,11 +2568,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>List all groups of a user</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan semua grup pengguna</translation>
     </message>
     <message>
         <source>List all groups of a computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan semua grup komputer</translation>
     </message>
     <message>
         <source>Get computer object by IP address</source>
@@ -2554,7 +2588,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelajahi</translation>
     </message>
     <message>
         <source>Test</source>
@@ -2568,7 +2602,9 @@ Make sure that the names of the keys belonging to each other are identical on al
         <source>Could not query the configured base DN. Please check the base DN parameter.
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengueri DN dasar yang dikonfigurasi. Periksa parameter DN dasar.
+
+%1</translation>
     </message>
     <message>
         <source>LDAP base DN test successful</source>
@@ -2578,7 +2614,9 @@ Make sure that the names of the keys belonging to each other are identical on al
         <source>The LDAP base DN has been queried successfully. The following entries were found:
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>DN dasar LDAP berhasil dikueri. Entri berikut ditemukan:
+
+%1</translation>
     </message>
     <message>
         <source>LDAP naming context test failed</source>
@@ -2588,7 +2626,9 @@ Make sure that the names of the keys belonging to each other are identical on al
         <source>Could not query the base DN via naming contexts. Please check the naming context attribute parameter.
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengueri DN dasar melalui konteks penamaan. Periksa parameter atribut konteks penamaan.
+
+%1</translation>
     </message>
     <message>
         <source>LDAP naming context test successful</source>
@@ -2597,23 +2637,24 @@ Make sure that the names of the keys belonging to each other are identical on al
     <message>
         <source>The LDAP naming context has been queried successfully. The following base DN was found:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konteks penamaan LDAP berhasil dikueri. DN dasar berikut ditemukan:
+%1</translation>
     </message>
     <message>
         <source>user tree</source>
-        <translation type="unfinished"></translation>
+        <translation>pohon pengguna</translation>
     </message>
     <message>
         <source>group tree</source>
-        <translation type="unfinished"></translation>
+        <translation>pohon grup</translation>
     </message>
     <message>
         <source>computer tree</source>
-        <translation type="unfinished"></translation>
+        <translation>pohon komputer</translation>
     </message>
     <message>
         <source>computer group tree</source>
-        <translation type="unfinished"></translation>
+        <translation>pohon grup komputer</translation>
     </message>
     <message>
         <source>Enter username</source>
@@ -2645,15 +2686,15 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Could not find a group with the name &quot;%1&quot;. Please check the group name or the group tree parameter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Grup bernama &quot;%1&quot; tidak ditemukan. Periksa nama grup atau parameter pohon grup.</translation>
     </message>
     <message>
         <source>Enter computer display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama tampilan komputer</translation>
     </message>
     <message>
         <source>Please enter a computer display name to query:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama tampilan komputer yang ingin dikueri:</translation>
     </message>
     <message>
         <source>computer objects</source>
@@ -2665,19 +2706,19 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Please enter a computer hostname to query:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama host komputer yang ingin dikueri:</translation>
     </message>
     <message>
         <source>Invalid hostname</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama host tidak valid</translation>
     </message>
     <message>
         <source>You configured computer hostnames to be stored as fully qualified domain names (FQDN) but entered a hostname without domain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama host komputer dikonfigurasi sebagai nama domain lengkap (FQDN), tetapi nama host yang dimasukkan tidak memiliki domain.</translation>
     </message>
     <message>
         <source>You configured computer hostnames to be stored as simple hostnames without a domain name but entered a hostname with a domain name part.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama host komputer dikonfigurasi tanpa domain, tetapi nama host yang dimasukkan memiliki bagian nama domain.</translation>
     </message>
     <message>
         <source>Enter computer DN</source>
@@ -2685,7 +2726,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Please enter the DN of a computer whose MAC address to query:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan DN komputer yang alamat MAC-nya ingin dikueri:</translation>
     </message>
     <message>
         <source>computer MAC addresses</source>
@@ -2697,7 +2738,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Please enter the name of a computer location (wildcards allowed):</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama lokasi komputer (boleh menggunakan karakter pengganti):</translation>
     </message>
     <message>
         <source>computer locations</source>
@@ -2725,7 +2766,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>computer containers</source>
-        <translation type="unfinished"></translation>
+        <translation>kontainer komputer</translation>
     </message>
     <message>
         <source>Please enter a user login name whose group memberships to query:</source>
@@ -2741,15 +2782,15 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Could not find a user with the name &quot;%1&quot;. Please check the username or the user tree parameter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna bernama &quot;%1&quot; tidak ditemukan. Periksa nama pengguna atau parameter pohon pengguna.</translation>
     </message>
     <message>
         <source>Enter hostname</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama host</translation>
     </message>
     <message>
         <source>Please enter a computer hostname whose group memberships to query:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama host komputer yang keanggotaan grupnya ingin dikueri:</translation>
     </message>
     <message>
         <source>groups of computer</source>
@@ -2761,7 +2802,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Could not find a computer with the hostname &quot;%1&quot;. Please check the hostname or the computer tree parameter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Komputer dengan nama host &quot;%1&quot; tidak ditemukan. Periksa nama host atau parameter pohon komputer.</translation>
     </message>
     <message>
         <source>Enter computer IP address</source>
@@ -2773,19 +2814,19 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Hostname lookup failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Pencarian nama host gagal</translation>
     </message>
     <message>
         <source>Could not lookup hostname for IP address %1. Please check your DNS server settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat menemukan nama host untuk alamat IP %1. Periksa pengaturan server DNS.</translation>
     </message>
     <message>
         <source>Please enter the name of a location whose entries to query:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama lokasi yang entrinya ingin dikueri:</translation>
     </message>
     <message>
         <source>location entries</source>
-        <translation type="unfinished"></translation>
+        <translation>entri lokasi</translation>
     </message>
     <message>
         <source>Certificate files (*.pem)</source>
@@ -2799,7 +2840,9 @@ Make sure that the names of the keys belonging to each other are identical on al
         <source>Could not connect to the LDAP server. Please check the server parameters.
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat terhubung ke server LDAP. Periksa parameter server.
+
+%1</translation>
     </message>
     <message>
         <source>LDAP bind failed</source>
@@ -2809,7 +2852,9 @@ Make sure that the names of the keys belonging to each other are identical on al
         <source>Could not bind to the LDAP server. Please check the server parameters and bind credentials.
 
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat melakukan bind ke server LDAP. Periksa parameter server dan kredensial bind.
+
+%1</translation>
     </message>
     <message>
         <source>LDAP bind successful</source>
@@ -2827,7 +2872,9 @@ Make sure that the names of the keys belonging to each other are identical on al
         <source>Could not query any entries in configured %1. Please check the parameter &quot;%2&quot;.
 
 %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengueri entri pada %1 yang dikonfigurasi. Periksa parameter &quot;%2&quot;.
+
+%3</translation>
     </message>
     <message>
         <source>LDAP %1 test successful</source>
@@ -2839,27 +2886,31 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>LDAP test failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Tes LDAP gagal</translation>
     </message>
     <message>
         <source>Could not query any %1. Please check the parameter(s) %2 and enter the name of an existing object.
 
 %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengueri %1. Periksa parameter %2 dan masukkan nama objek yang sudah ada.
+
+%3</translation>
     </message>
     <message>
         <source>and</source>
-        <translation type="unfinished"></translation>
+        <translation>dan</translation>
     </message>
     <message>
         <source>LDAP test successful</source>
-        <translation type="unfinished"></translation>
+        <translation>Tes LDAP berhasil</translation>
     </message>
     <message>
         <source>%1 %2 have been queried successfully:
 
 %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2 berhasil dikueri:
+
+%3</translation>
     </message>
     <message>
         <source>LDAP filter test failed</source>
@@ -2869,7 +2920,9 @@ Make sure that the names of the keys belonging to each other are identical on al
         <source>Could not query any %1 using the configured filter. Please check the LDAP filter for %1.
 
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengueri %1 menggunakan filter yang dikonfigurasi. Periksa filter LDAP untuk %1.
+
+%2</translation>
     </message>
     <message>
         <source>LDAP filter test successful</source>
@@ -2881,18 +2934,18 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Map container/OU structure 1:1 to locations</source>
-        <translation type="unfinished"></translation>
+        <translation>Petakan struktur kontainer/OU ke lokasi dengan rasio 1:1</translation>
     </message>
 </context>
 <context>
     <name>LdapPlugin</name>
     <message>
         <source>Auto-configure the base DN via naming context</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurasikan DN dasar secara otomatis melalui konteks penamaan</translation>
     </message>
     <message>
         <source>Query objects from LDAP directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Kueri objek dari direktori LDAP</translation>
     </message>
     <message>
         <source>Show help about command</source>
@@ -2900,23 +2953,23 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Please specify a valid LDAP url following the schema &quot;ldap[s]://[user[:password]@]hostname[:port]&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan URL LDAP yang valid dengan skema &quot;ldap[s]://[user[:password]@]hostname[:port]&quot;</translation>
     </message>
     <message>
         <source>No naming context attribute name given - falling back to configured value.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama atribut konteks penamaan tidak diberikan - menggunakan nilai yang dikonfigurasi.</translation>
     </message>
     <message>
         <source>Could not query base DN. Please check your LDAP configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengueri DN dasar. Periksa konfigurasi LDAP.</translation>
     </message>
     <message>
         <source>Configuring %1 as base DN and disabling naming context queries.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengatur %1 sebagai DN dasar dan menonaktifkan kueri konteks penamaan.</translation>
     </message>
     <message>
         <source>Commands for configuring and testing LDAP/AD integration</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah untuk mengonfigurasi dan menguji integrasi LDAP/AD</translation>
     </message>
     <message>
         <source>%1 (load computers and locations from LDAP/AD)</source>
@@ -2928,7 +2981,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>LDAP/AD support for Veyon</source>
-        <translation type="unfinished"></translation>
+        <translation>Dukungan LDAP/AD untuk Veyon</translation>
     </message>
 </context>
 <context>
@@ -3084,43 +3137,43 @@ Make sure that the names of the keys belonging to each other are identical on al
     <name>LinuxPlatformConfigurationPage</name>
     <message>
         <source>Linux</source>
-        <translation type="unfinished"></translation>
+        <translation>Linux</translation>
     </message>
     <message>
         <source>User authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentikasi pengguna</translation>
     </message>
     <message>
         <source>Custom PAM service for user authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Layanan PAM khusus untuk autentikasi pengguna</translation>
     </message>
     <message>
         <source>User sessions</source>
-        <translation type="unfinished"></translation>
+        <translation>Sesi pengguna</translation>
     </message>
     <message>
         <source>Minimum session lifetime before server start</source>
-        <translation type="unfinished"></translation>
+        <translation>Durasi sesi minimum sebelum server dimulai</translation>
     </message>
     <message>
         <source>User login</source>
-        <translation type="unfinished"></translation>
+        <translation>Masuk akun pengguna</translation>
     </message>
     <message>
         <source>Login key sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Urutan tombol untuk masuk akun</translation>
     </message>
     <message>
         <source>Input start delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeda sebelum masukan dimulai</translation>
     </message>
     <message>
         <source>Key press interval for text input</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval penekanan tombol untuk masukan teks</translation>
     </message>
     <message>
         <source>Key press interval to control input fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval penekanan tombol untuk mengendalikan kolom masukan</translation>
     </message>
 </context>
 <context>
@@ -3134,11 +3187,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     <name>LocationDialog</name>
     <message>
         <source>Select location</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih lokasi</translation>
     </message>
     <message>
         <source>enter search filter...</source>
-        <translation type="unfinished"></translation>
+        <translation>masukkan kata pencarian...</translation>
     </message>
 </context>
 <context>
@@ -3149,7 +3202,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Disable tooltips</source>
-        <translation type="unfinished"></translation>
+        <translation>Nonaktifkan tooltip</translation>
     </message>
     <message>
         <source>Show icons only</source>
@@ -3172,11 +3225,11 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Master</source>
-        <translation type="unfinished"></translation>
+        <translation>Master</translation>
     </message>
     <message>
         <source>Access control</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrol akses</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -3188,7 +3241,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tampilan</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -3200,7 +3253,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>&amp;Save settings to file</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Simpan pengaturan ke berkas</translation>
     </message>
     <message>
         <source>Save settings to file</source>
@@ -3212,7 +3265,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>L&amp;oad settings from file</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Muat pengaturan dari berkas</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -3232,19 +3285,19 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>&amp;Standard</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Standar</translation>
     </message>
     <message>
         <source>&amp;Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lanjutan</translation>
     </message>
     <message>
         <source>Adjust size of computer icons automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Sesuaikan ukuran ikon komputer secara otomatis</translation>
     </message>
     <message>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Otomatis</translation>
     </message>
     <message>
         <source>About</source>
@@ -3256,15 +3309,15 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Align computers to grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapikan komputer pada kisi</translation>
     </message>
     <message>
         <source>Only show powered on computers</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan hanya komputer yang menyala</translation>
     </message>
     <message>
         <source>Locations &amp;&amp; computers</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokasi &amp;&amp; komputer</translation>
     </message>
     <message>
         <source>Screenshots</source>
@@ -3272,19 +3325,19 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Slideshow</source>
-        <translation type="unfinished"></translation>
+        <translation>Tayangan bergilir</translation>
     </message>
     <message>
         <source>Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorotan</translation>
     </message>
     <message>
         <source>Only show computers with logged on users</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan hanya komputer dengan pengguna yang masuk</translation>
     </message>
     <message>
         <source>Veyon Configurator %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurator Veyon %1</translation>
     </message>
     <message>
         <source>Load settings from file</source>
@@ -3308,7 +3361,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Insufficient privileges</source>
-        <translation type="unfinished"></translation>
+        <translation>Hak akses tidak mencukupi</translation>
     </message>
     <message>
         <source>Could not start with administrative privileges. Please make sure a sudo-like program is installed for your desktop environment! The program will be run with normal user privileges.</source>
@@ -3320,7 +3373,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>The local configuration backend reported that the configuration is not writable! Please run Veyon Configurator with higher privileges.</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurasi lokal tidak dapat ditulis! Jalankan Konfigurator Veyon dengan hak akses yang lebih tinggi.</translation>
     </message>
     <message>
         <source>Authentication impossible</source>
@@ -3328,7 +3381,7 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>No authentication key files were found or your current ones are outdated. Please create new key files using Veyon Configurator. Alternatively set up logon authentication using Veyon Configurator. Otherwise you won&apos;t be able to access computers using Veyon.</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas kunci autentikasi tidak ditemukan atau sudah usang. Buat berkas kunci baru melalui Konfigurator Veyon, atau gunakan autentikasi akun pengguna. Tanpa autentikasi, komputer tidak dapat diakses melalui Veyon.</translation>
     </message>
     <message>
         <source>Access denied</source>
@@ -3340,25 +3393,27 @@ Make sure that the names of the keys belonging to each other are identical on al
     </message>
     <message>
         <source>Feature active</source>
-        <translation type="unfinished"></translation>
+        <translation>Fitur masih aktif</translation>
     </message>
     <message>
         <source>The feature &quot;%1&quot; is still active. Please stop it before closing Veyon.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fitur &quot;%1&quot; masih aktif. Hentikan fitur sebelum menutup Veyon.</translation>
     </message>
     <message>
         <source>Use custom computer arrangement.
 
 Press and hold to load arrangement from a file or save current arrangement to a file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan susunan komputer khusus.
+
+Tekan dan tahan untuk memuat susunan dari berkas atau menyimpan susunan saat ini ke berkas.</translation>
     </message>
     <message>
         <source>Load computer positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Muat posisi komputer</translation>
     </message>
     <message>
         <source>Save computer positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Simpan posisi komputer</translation>
     </message>
 </context>
 <context>
@@ -3397,19 +3452,19 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Thumbnail spacing</source>
-        <translation type="unfinished"></translation>
+        <translation>Jarak antarpratinjau</translation>
     </message>
     <message>
         <source> px</source>
-        <translation type="unfinished"></translation>
+        <translation> px</translation>
     </message>
     <message>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Otomatis</translation>
     </message>
     <message>
         <source>Computer thumbnail caption</source>
-        <translation type="unfinished"></translation>
+        <translation>Keterangan pratinjau komputer</translation>
     </message>
     <message>
         <source>Computer and user name</source>
@@ -3421,7 +3476,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Only last part of user name</source>
-        <translation type="unfinished"></translation>
+        <translation>Hanya bagian terakhir nama pengguna</translation>
     </message>
     <message>
         <source>Only computer name</source>
@@ -3433,7 +3488,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Thumbnail update interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval pembaruan pratinjau</translation>
     </message>
     <message>
         <source>Sort order</source>
@@ -3441,59 +3496,59 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Thumbnail aspect ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>Rasio aspek pratinjau</translation>
     </message>
     <message>
         <source>Highest</source>
-        <translation type="unfinished"></translation>
+        <translation>Tertinggi</translation>
     </message>
     <message>
         <source>High</source>
-        <translation type="unfinished"></translation>
+        <translation>Tinggi</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="unfinished"></translation>
+        <translation>Sedang</translation>
     </message>
     <message>
         <source>Low</source>
-        <translation type="unfinished"></translation>
+        <translation>Rendah</translation>
     </message>
     <message>
         <source>Lowest</source>
-        <translation type="unfinished"></translation>
+        <translation>Terendah</translation>
     </message>
     <message>
         <source>Image quality in monitoring mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Kualitas gambar dalam mode pemantauan</translation>
     </message>
     <message>
         <source>Remote access image quality</source>
-        <translation type="unfinished"></translation>
+        <translation>Kualitas gambar akses jarak jauh</translation>
     </message>
     <message>
         <source>Identify users in guest sessions</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifikasi pengguna sesi tamu</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak pernah</translation>
     </message>
     <message>
         <source>If login name matches</source>
-        <translation type="unfinished"></translation>
+        <translation>Jika nama akun cocok</translation>
     </message>
     <message>
         <source>If full name matches</source>
-        <translation type="unfinished"></translation>
+        <translation>Jika nama lengkap cocok</translation>
     </message>
     <message>
         <source>Guest</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamu</translation>
     </message>
     <message>
         <source>Guest user identity extension</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahan identitas pengguna tamu</translation>
     </message>
     <message>
         <source>None</source>
@@ -3501,11 +3556,11 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Prefix</source>
-        <translation type="unfinished"></translation>
+        <translation>Awalan</translation>
     </message>
     <message>
         <source>Suffix</source>
-        <translation type="unfinished"></translation>
+        <translation>Akhiran</translation>
     </message>
     <message>
         <source>Behaviour</source>
@@ -3513,23 +3568,23 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Program start</source>
-        <translation type="unfinished"></translation>
+        <translation>Saat aplikasi dimulai</translation>
     </message>
     <message>
         <source>Perform access control</source>
-        <translation type="unfinished"></translation>
+        <translation>Terapkan kontrol akses</translation>
     </message>
     <message>
         <source>Automatically select current location</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih lokasi saat ini secara otomatis</translation>
     </message>
     <message>
         <source>Automatically adjust computer icon size</source>
-        <translation type="unfinished"></translation>
+        <translation>Sesuaikan ukuran ikon komputer secara otomatis</translation>
     </message>
     <message>
         <source>Automatically open computer select panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka panel pemilihan komputer secara otomatis</translation>
     </message>
     <message>
         <source>Computer locations</source>
@@ -3541,7 +3596,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Allow adding hidden locations manually</source>
-        <translation type="unfinished"></translation>
+        <translation>Izinkan penambahan lokasi tersembunyi secara manual</translation>
     </message>
     <message>
         <source>Hide local computer</source>
@@ -3549,7 +3604,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Hide local session</source>
-        <translation type="unfinished"></translation>
+        <translation>Sembunyikan sesi lokal</translation>
     </message>
     <message>
         <source>Hide empty locations</source>
@@ -3565,7 +3620,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Enforce selected mode for client computers</source>
-        <translation type="unfinished"></translation>
+        <translation>Wajibkan mode terpilih pada komputer klien</translation>
     </message>
     <message>
         <source>Actions such as rebooting or powering down computers</source>
@@ -3573,7 +3628,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Show confirmation dialog for potentially unsafe actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan konfirmasi untuk tindakan yang berpotensi berisiko</translation>
     </message>
     <message>
         <source>Feature on computer double click:</source>
@@ -3581,7 +3636,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Open feature windows on the same screen as the main window</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka jendela fitur pada layar yang sama dengan jendela utama</translation>
     </message>
     <message>
         <source>Features</source>
@@ -3597,27 +3652,27 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>&lt;no feature&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;tidak ada fitur&gt;</translation>
     </message>
     <message>
         <source>Always expand all locations</source>
-        <translation type="unfinished"></translation>
+        <translation>Selalu bentangkan semua lokasi</translation>
     </message>
     <message>
         <source>Configuration templates</source>
-        <translation type="unfinished"></translation>
+        <translation>Templat konfigurasi</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Lanjutan</translation>
     </message>
     <message>
         <source>Computer name source</source>
-        <translation type="unfinished"></translation>
+        <translation>Sumber nama komputer</translation>
     </message>
     <message>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Bawaan</translation>
     </message>
     <message>
         <source>Host address</source>
@@ -3625,35 +3680,35 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Session client address</source>
-        <translation type="unfinished"></translation>
+        <translation>Alamat klien sesi</translation>
     </message>
     <message>
         <source>Session client name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama klien sesi</translation>
     </message>
     <message>
         <source>Session host name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama host sesi</translation>
     </message>
     <message>
         <source>Session metadata</source>
-        <translation type="unfinished"></translation>
+        <translation>Metadata sesi</translation>
     </message>
     <message>
         <source>Full name of user</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama lengkap pengguna</translation>
     </message>
     <message>
         <source>User login name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama akun pengguna</translation>
     </message>
     <message>
         <source>Computer UID role</source>
-        <translation type="unfinished"></translation>
+        <translation>Peran UID komputer</translation>
     </message>
     <message>
         <source>Session meta data hash</source>
-        <translation type="unfinished"></translation>
+        <translation>Hash metadata sesi</translation>
     </message>
 </context>
 <context>
@@ -3703,34 +3758,42 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     <name>NetworkObjectTreeModel</name>
     <message>
         <source>Locations/Computers</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokasi/Komputer</translation>
     </message>
 </context>
 <context>
     <name>OpenWebsiteDialog</name>
     <message>
         <source>Open website</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka situs</translation>
     </message>
     <message>
         <source>e.g. Veyon</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya Veyon</translation>
     </message>
     <message>
         <source>Remember and add to website menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Simpan dan tambahkan ke menu situs</translation>
     </message>
     <message>
         <source>e.g. www.veyon.io</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya www.veyon.io</translation>
     </message>
     <message>
         <source>Please enter the URL of the website to open:</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan alamat situs yang ingin dibuka:</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama:</translation>
+    </message>
+    <message>
+        <source>e.g. Khwarizmi</source>
+        <translation>misalnya Khwarizmi</translation>
+    </message>
+    <message>
+        <source>e.g. www.example.com</source>
+        <translation>misalnya www.example.com</translation>
     </message>
 </context>
 <context>
@@ -3757,18 +3820,22 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Logon failed with given username and password. Please try again!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal masuk dengan nama pengguna dan kata sandi tersebut. Coba lagi!</translation>
+    </message>
+    <message>
+        <source>Khwarizmi Logon</source>
+        <translation>Masuk Khwarizmi</translation>
     </message>
 </context>
 <context>
     <name>PluginCommands</name>
     <message>
         <source>List names of all installed plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan nama semua plugin terpasang</translation>
     </message>
     <message>
         <source>Show table with details of all installed plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan tabel rincian semua plugin terpasang</translation>
     </message>
     <message>
         <source>Name</source>
@@ -3776,30 +3843,30 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Keterangan</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versi</translation>
     </message>
     <message>
         <source>UID</source>
-        <translation type="unfinished"></translation>
+        <translation>UID</translation>
     </message>
     <message>
         <source>Plugin-related CLI operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Operasi CLI terkait plugin</translation>
     </message>
     <message>
         <source>Commands for managing plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah untuk mengelola plugin</translation>
     </message>
 </context>
 <context>
     <name>PowerControlFeaturePlugin</name>
     <message>
         <source>Power on a computer via Wake-on-LAN (WOL)</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyalakan komputer melalui Wake-on-LAN (WOL)</translation>
     </message>
     <message>
         <source>Power on</source>
@@ -3807,7 +3874,7 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Click this button to power on all computers. This way you do not have to power on each computer by hand.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyalakan semua komputer tanpa menyalakannya satu per satu secara manual.</translation>
     </message>
     <message>
         <source>Reboot</source>
@@ -3823,27 +3890,27 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Click this button to power down all computers. This way you do not have to power down each computer by hand.</source>
-        <translation type="unfinished"></translation>
+        <translation>Matikan semua komputer tanpa mematikannya satu per satu secara manual.</translation>
     </message>
     <message>
         <source>Power down now</source>
-        <translation type="unfinished"></translation>
+        <translation>Matikan sekarang</translation>
     </message>
     <message>
         <source>Install updates and power down</source>
-        <translation type="unfinished"></translation>
+        <translation>Pasang pembaruan lalu matikan</translation>
     </message>
     <message>
         <source>Power down after user confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Matikan setelah konfirmasi pengguna</translation>
     </message>
     <message>
         <source>Power down after timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Matikan setelah hitung mundur</translation>
     </message>
     <message>
         <source>MAC ADDRESS</source>
-        <translation type="unfinished"></translation>
+        <translation>ALAMAT MAC</translation>
     </message>
     <message>
         <source>This command broadcasts a Wake-on-LAN (WOL) packet to the network in order to power on the computer with the given MAC address.</source>
@@ -3851,53 +3918,55 @@ Press and hold to load arrangement from a file or save current arrangement to a 
     </message>
     <message>
         <source>Please specify the command to display help for!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tentukan perintah yang ingin dilihat bantuannya!</translation>
     </message>
     <message>
         <source>Confirm reboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmasi mulai ulang</translation>
     </message>
     <message>
         <source>Do you really want to reboot &lt;b&gt;ALL&lt;/b&gt; computers?</source>
-        <translation type="unfinished"></translation>
+        <translation>Mulai ulang &lt;b&gt;SEMUA&lt;/b&gt; komputer?</translation>
     </message>
     <message>
         <source>Do you really want to reboot the selected computers?</source>
-        <translation type="unfinished"></translation>
+        <translation>Mulai ulang komputer yang dipilih?</translation>
     </message>
     <message>
         <source>Confirm power down</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmasi matikan komputer</translation>
     </message>
     <message>
         <source>Do you really want to power down &lt;b&gt;ALL&lt;/b&gt; computers?</source>
-        <translation type="unfinished"></translation>
+        <translation>Matikan &lt;b&gt;SEMUA&lt;/b&gt; komputer?</translation>
     </message>
     <message>
         <source>Do you really want to power down the selected computers?</source>
-        <translation type="unfinished"></translation>
+        <translation>Matikan komputer yang dipilih?</translation>
     </message>
     <message>
         <source>Invalid MAC address specified!</source>
-        <translation type="unfinished"></translation>
+        <translation>Alamat MAC tidak valid!</translation>
     </message>
     <message>
         <source>The computer was remotely requested to power down. Do you want to power down the computer now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ada permintaan jarak jauh untuk mematikan komputer ini. Matikan komputer sekarang?</translation>
     </message>
     <message>
         <source>The computer will be powered down in %1 minutes, %2 seconds.
 
 Please save your work and close all programs.</source>
-        <translation type="unfinished"></translation>
+        <translation>Komputer akan dimatikan dalam %1 menit, %2 detik.
+
+Simpan pekerjaan Anda dan tutup semua program.</translation>
     </message>
     <message>
         <source>Power on/down or reboot a computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyalakan, matikan, atau mulai ulang komputer</translation>
     </message>
     <message>
         <source>Commands for controlling power status of computers</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah untuk mengendalikan daya komputer</translation>
     </message>
 </context>
 <context>
@@ -3908,15 +3977,15 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>Please specify a timeout for powering down the selected computers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tentukan waktu tunggu sebelum mematikan komputer terpilih:</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished"></translation>
+        <translation>menit</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>detik</translation>
     </message>
 </context>
 <context>
@@ -3962,30 +4031,38 @@ Please save your work and close all programs.</source>
     <name>RemoteAccessWidget</name>
     <message>
         <source>%1 - Veyon Remote Access</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - Akses Jarak Jauh Veyon</translation>
     </message>
     <message>
         <source>%1 - %2 - Veyon Remote Access</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - %2 - Akses Jarak Jauh Veyon</translation>
+    </message>
+    <message>
+        <source>%1 - Khwarizmi Remote Access</source>
+        <translation>%1 - Akses Jarak Jauh Khwarizmi</translation>
+    </message>
+    <message>
+        <source>%1 - %2 - Khwarizmi Remote Access</source>
+        <translation>%1 - %2 - Akses Jarak Jauh Khwarizmi</translation>
     </message>
 </context>
 <context>
     <name>RemoteAccessWidgetToolBar</name>
     <message>
         <source>View only</source>
-        <translation type="unfinished"></translation>
+        <translation>Lihat saja</translation>
     </message>
     <message>
         <source>Remote control</source>
-        <translation type="unfinished"></translation>
+        <translation>Kendali jarak jauh</translation>
     </message>
     <message>
         <source>Select screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih layar</translation>
     </message>
     <message>
         <source>Send shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pintasan</translation>
     </message>
     <message>
         <source>Screenshot</source>
@@ -4001,7 +4078,7 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluar</translation>
     </message>
     <message>
         <source>Ctrl+Alt+Del</source>
@@ -4041,11 +4118,11 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Menghubungkan...</translation>
     </message>
     <message>
         <source>All screens</source>
-        <translation type="unfinished"></translation>
+        <translation>Semua layar</translation>
     </message>
 </context>
 <context>
@@ -4083,11 +4160,11 @@ Please save your work and close all programs.</source>
     <name>Screenshot</name>
     <message>
         <source>unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>tidak diketahui</translation>
     </message>
     <message>
         <source>Could not take a screenshot as directory %1 doesn&apos;t exist and couldn&apos;t be created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengambil tangkapan layar karena direktori %1 tidak ada dan tidak dapat dibuat.</translation>
     </message>
     <message>
         <source>Screenshot</source>
@@ -4095,7 +4172,7 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>Could not open screenshot file %1 for writing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat membuka berkas tangkapan layar %1 untuk ditulis.</translation>
     </message>
 </context>
 <context>
@@ -4120,12 +4197,16 @@ Please save your work and close all programs.</source>
         <source>Take screenshots of computers and save them locally.</source>
         <translation>Ambil tangkapan layar komputer dan simpan secara lokal.</translation>
     </message>
+    <message>
+        <source>No screenshot was saved. Check the connection and screenshot directory.</source>
+        <translation>Tidak ada tangkapan layar yang disimpan. Periksa koneksi dan direktori tangkapan layar.</translation>
+    </message>
 </context>
 <context>
     <name>ScreenshotManagementPanel</name>
     <message>
         <source>All screenshots taken by you are listed here. You can take screenshots by clicking the &quot;Screenshot&quot; item in the context menu of a computer. The screenshots can be managed using the buttons below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Semua tangkapan layar Anda tercantum di sini. Ambil tangkapan layar melalui pilihan &quot;Tangkapan layar&quot; pada menu konteks komputer. Kelola hasilnya menggunakan tombol di bawah.</translation>
     </message>
     <message>
         <source>User:</source>
@@ -4157,38 +4238,38 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>Do you really want to delete all selected screenshots?</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus semua tangkapan layar yang dipilih?</translation>
     </message>
 </context>
 <context>
     <name>ServerAccessControlManager</name>
     <message>
         <source>Requested authentication method not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Metode autentikasi yang diminta tidak tersedia</translation>
     </message>
     <message>
         <source>Access allowed by rule &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Akses diizinkan oleh aturan &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Access denied by rule &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Akses ditolak oleh aturan &quot;%1&quot;</translation>
     </message>
     <message>
         <source>No rule allowed access</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada aturan yang mengizinkan akses</translation>
     </message>
     <message>
         <source>Accessing user not member of an authorized user group</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna yang mengakses bukan anggota grup yang diizinkan</translation>
     </message>
     <message>
         <source>User has denied access</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna menolak akses</translation>
     </message>
     <message>
         <source>User confirmed access</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna menyetujui akses</translation>
     </message>
 </context>
 <context>
@@ -4199,11 +4280,11 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>Show notification when an unauthorized access is blocked</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan notifikasi ketika akses tanpa izin diblokir</translation>
     </message>
     <message>
         <source>Show notification on remote connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan notifikasi saat koneksi jarak jauh dibuat</translation>
     </message>
     <message>
         <source>Hide tray icon</source>
@@ -4231,44 +4312,45 @@ Please save your work and close all programs.</source>
     </message>
     <message>
         <source>Session mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode sesi</translation>
     </message>
     <message>
         <source>Local session mode (single server instance for primary local session)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode sesi lokal (satu proses server untuk sesi lokal utama)</translation>
     </message>
     <message>
         <source>Enabling this option will make the service launch a server process for every interactive session on a computer.
 Typically this is required to support terminal servers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jika diaktifkan, layanan akan menjalankan proses server untuk setiap sesi interaktif pada komputer.
+Biasanya diperlukan untuk mendukung server terminal.</translation>
     </message>
     <message>
         <source>Active session mode (single server instance for active local or remote session)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode sesi aktif (satu proses server untuk sesi lokal atau jarak jauh yang aktif)</translation>
     </message>
     <message>
         <source>Multi session mode (distinct server instance for each local and remote desktop session)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mode multisesi (proses server terpisah untuk setiap sesi desktop lokal dan jarak jauh)</translation>
     </message>
     <message>
         <source>Maximum session count</source>
-        <translation type="unfinished"></translation>
+        <translation>Jumlah sesi maksimum</translation>
     </message>
     <message>
         <source>Network port numbers</source>
-        <translation type="unfinished"></translation>
+        <translation>Nomor port jaringan</translation>
     </message>
     <message>
         <source>Veyon server</source>
-        <translation type="unfinished"></translation>
+        <translation>Server Veyon</translation>
     </message>
     <message>
         <source>Internal VNC server</source>
-        <translation type="unfinished"></translation>
+        <translation>Server VNC internal</translation>
     </message>
     <message>
         <source>Feature manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengelola fitur</translation>
     </message>
     <message>
         <source>Demo server</source>
@@ -4276,7 +4358,7 @@ Typically this is required to support terminal servers.</source>
     </message>
     <message>
         <source>Miscellaneous settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengaturan lainnya</translation>
     </message>
     <message>
         <source>Enable firewall exception</source>
@@ -4284,15 +4366,15 @@ Typically this is required to support terminal servers.</source>
     </message>
     <message>
         <source>Allow connections from localhost only</source>
-        <translation type="unfinished"></translation>
+        <translation>Izinkan koneksi hanya dari localhost</translation>
     </message>
     <message>
         <source>Disable clipboard synchronization</source>
-        <translation type="unfinished"></translation>
+        <translation>Nonaktifkan sinkronisasi papan klip</translation>
     </message>
     <message>
         <source>VNC server</source>
-        <translation type="unfinished"></translation>
+        <translation>Server VNC</translation>
     </message>
     <message>
         <source>Plugin:</source>
@@ -4304,7 +4386,7 @@ Typically this is required to support terminal servers.</source>
     </message>
     <message>
         <source>All settings were saved successfully. In order to take effect the Veyon service needs to be restarted. Restart it now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Semua pengaturan berhasil disimpan. Layanan Veyon perlu dimulai ulang agar perubahan diterapkan. Mulai ulang sekarang?</translation>
     </message>
     <message>
         <source>Running</source>
@@ -4312,11 +4394,11 @@ Typically this is required to support terminal servers.</source>
     </message>
     <message>
         <source>Session metadata</source>
-        <translation type="unfinished"></translation>
+        <translation>Metadata sesi</translation>
     </message>
     <message>
         <source>Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Isi</translation>
     </message>
     <message>
         <source>None</source>
@@ -4324,29 +4406,39 @@ Typically this is required to support terminal servers.</source>
     </message>
     <message>
         <source>Value of an environment variable</source>
-        <translation type="unfinished"></translation>
+        <translation>Nilai variabel lingkungan</translation>
     </message>
     <message>
         <source>Value of a registry key</source>
-        <translation type="unfinished"></translation>
+        <translation>Nilai kunci registri</translation>
     </message>
     <message>
         <source>Optionally enter a regular expression with a capture to extract a part of the computer name and use it as the display name for the computer.
 
 Example: [^-]*-(PC[0-9]*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Opsional: masukkan ekspresi reguler dengan grup tangkapan untuk mengambil bagian nama komputer sebagai nama tampilan.
+
+Contoh: [^-]*-(PC[0-9]*)</translation>
     </message>
     <message>
         <source>Enable if a single Veyon Server instance should be launched for the currently active session, no matter if local or remote.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktifkan untuk menjalankan satu proses Server Veyon bagi sesi yang sedang aktif, baik lokal maupun jarak jauh.</translation>
     </message>
     <message>
         <source>Environment variable name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama variabel lingkungan</translation>
     </message>
     <message>
         <source>Registry key name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama kunci registri</translation>
+    </message>
+    <message>
+        <source>Enable if a single Khwarizmi Server instance should be launched for the currently active session, no matter if local or remote.</source>
+        <translation>Aktifkan untuk menjalankan satu proses Server Khwarizmi bagi sesi yang sedang aktif, baik lokal maupun jarak jauh.</translation>
+    </message>
+    <message>
+        <source>Khwarizmi server</source>
+        <translation>Server Khwarizmi</translation>
     </message>
 </context>
 <context>
@@ -4357,23 +4449,23 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Starting %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Memulai %1</translation>
     </message>
     <message>
         <source>Stopping %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Menghentikan %1</translation>
     </message>
     <message>
         <source>Restarting %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Memulai ulang %1</translation>
     </message>
     <message>
         <source>Registering %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Mendaftarkan %1</translation>
     </message>
     <message>
         <source>Unregistering %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Membatalkan pendaftaran %1</translation>
     </message>
 </context>
 <context>
@@ -4400,7 +4492,7 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Query status of Veyon Service</source>
-        <translation type="unfinished"></translation>
+        <translation>Periksa status Layanan Veyon</translation>
     </message>
     <message>
         <source>Service is running</source>
@@ -4416,14 +4508,14 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Commands for configuring and controlling Veyon Service</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah untuk mengonfigurasi dan mengendalikan Layanan Veyon</translation>
     </message>
 </context>
 <context>
     <name>ShellCommands</name>
     <message>
         <source>Run command file</source>
-        <translation type="unfinished"></translation>
+        <translation>Jalankan berkas perintah</translation>
     </message>
     <message>
         <source>File &quot;%1&quot; does not exist!</source>
@@ -4431,96 +4523,100 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Interactive shell and script execution for Veyon CLI</source>
-        <translation type="unfinished"></translation>
+        <translation>Shell interaktif dan eksekusi skrip untuk CLI Veyon</translation>
     </message>
     <message>
         <source>Commands for shell functionalities</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah untuk fungsi shell</translation>
     </message>
 </context>
 <context>
     <name>SlideshowPanel</name>
     <message>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>Sebelumnya</translation>
     </message>
     <message>
         <source>Start/pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Mulai/jeda</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>Berikutnya</translation>
     </message>
     <message>
         <source>Duration:</source>
-        <translation type="unfinished"></translation>
+        <translation>Durasi:</translation>
     </message>
     <message>
         <source>View in separate window</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan dalam jendela terpisah</translation>
     </message>
     <message>
         <source>Veyon Master – Slideshow</source>
-        <translation type="unfinished"></translation>
+        <translation>Master Veyon - Tayangan bergilir</translation>
+    </message>
+    <message>
+        <source>Khwarizmi Master – Slideshow</source>
+        <translation>Master Khwarizmi - Tayangan bergilir</translation>
     </message>
 </context>
 <context>
     <name>SpotlightPanel</name>
     <message>
         <source>Add computers by clicking with the middle mouse button or clicking the first button below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan komputer dengan tombol tengah tetikus atau tombol pertama di bawah.</translation>
     </message>
     <message>
         <source>Add selected computers</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan komputer terpilih</translation>
     </message>
     <message>
         <source>Remove selected computers</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus komputer terpilih</translation>
     </message>
     <message>
         <source>Update computers in realtime</source>
-        <translation type="unfinished"></translation>
+        <translation>Perbarui komputer secara langsung</translation>
     </message>
     <message>
         <source>Spotlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorotan</translation>
     </message>
     <message>
         <source>Please select at least one computer to add.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih setidaknya satu komputer untuk ditambahkan.</translation>
     </message>
     <message>
         <source>Please select at least one computer to remove.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih setidaknya satu komputer untuk dihapus.</translation>
     </message>
 </context>
 <context>
     <name>StartAppDialog</name>
     <message>
         <source>Start application</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka aplikasi</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama:</translation>
     </message>
     <message>
         <source>e.g. &quot;C:\Program Files\VideoLAN\VLC\vlc.exe&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya &quot;C:\Program Files\VideoLAN\VLC\vlc.exe&quot;</translation>
     </message>
     <message>
         <source>Remember and add to application menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Simpan dan tambahkan ke menu aplikasi</translation>
     </message>
     <message>
         <source>e.g. VLC</source>
-        <translation type="unfinished"></translation>
+        <translation>misalnya VLC</translation>
     </message>
     <message>
         <source>Please enter the applications to start on the selected computers. You can separate multiple applications by line.</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan aplikasi yang ingin dibuka pada komputer terpilih. Tulis setiap aplikasi pada baris terpisah.</translation>
     </message>
 </context>
 <context>
@@ -4534,22 +4630,22 @@ Example: [^-]*-(PC[0-9]*)</source>
     <name>SystemUserGroupsPlugin</name>
     <message>
         <source>User groups backend for system user groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Backend grup pengguna sistem</translation>
     </message>
     <message>
         <source>Default (system user groups)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bawaan (grup pengguna sistem)</translation>
     </message>
 </context>
 <context>
     <name>TestingCommandLinePlugin</name>
     <message>
         <source>Test internal Veyon components and functions</source>
-        <translation type="unfinished"></translation>
+        <translation>Uji komponen dan fungsi internal Veyon</translation>
     </message>
     <message>
         <source>Commands for testing internal components and functions of Veyon</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah untuk menguji komponen dan fungsi internal Veyon</translation>
     </message>
 </context>
 <context>
@@ -4560,18 +4656,18 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Use the field below to type your message which will be sent to all selected users.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tulis pesan pada kolom di bawah untuk dikirim kepada semua pengguna yang dipilih.</translation>
     </message>
 </context>
 <context>
     <name>TextMessageFeaturePlugin</name>
     <message>
         <source>Text message</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesan teks</translation>
     </message>
     <message>
         <source>Use this function to send a text message to all users e.g. to assign them new tasks.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan teks kepada semua pengguna, misalnya untuk memberikan tugas baru.</translation>
     </message>
     <message>
         <source>Message from teacher</source>
@@ -4586,42 +4682,42 @@ Example: [^-]*-(PC[0-9]*)</source>
     <name>UltraVncConfigurationWidget</name>
     <message>
         <source>Builtin UltraVNC server configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurasi server UltraVNC bawaan</translation>
     </message>
     <message>
         <source>Maximum CPU usage</source>
-        <translation type="unfinished"></translation>
+        <translation>Penggunaan CPU maksimum</translation>
     </message>
     <message>
         <source>Low accuracy (turbo mode)</source>
-        <translation type="unfinished"></translation>
+        <translation>Akurasi rendah (mode turbo)</translation>
     </message>
     <message>
         <source>Poll full screen (leave this enabled per default)</source>
-        <translation type="unfinished"></translation>
+        <translation>Periksa seluruh layar secara berkala (tetap aktifkan secara bawaan)</translation>
     </message>
     <message>
         <source>Enable Desktop Duplication Engine on Windows 8 and newer</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktifkan Desktop Duplication Engine pada Windows 8 dan versi lebih baru</translation>
     </message>
     <message>
         <source>Enable multi monitor support</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktifkan dukungan beberapa monitor</translation>
     </message>
     <message>
         <source>Enable capturing of layered (semi-transparent) windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktifkan penangkapan jendela berlapis (semitransparan)</translation>
     </message>
 </context>
 <context>
     <name>UserLoginDialog</name>
     <message>
         <source>User login</source>
-        <translation type="unfinished"></translation>
+        <translation>Masuk akun pengguna</translation>
     </message>
     <message>
         <source>Please enter a username and password for automatic login on all computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan nama pengguna dan kata sandi untuk masuk secara otomatis pada semua komputer.</translation>
     </message>
     <message>
         <source>Username</source>
@@ -4636,35 +4732,35 @@ Example: [^-]*-(PC[0-9]*)</source>
     <name>UserSessionControlPlugin</name>
     <message>
         <source>Log in</source>
-        <translation type="unfinished"></translation>
+        <translation>Masuk akun</translation>
     </message>
     <message>
         <source>Click this button to log in a specific user on all computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan akun pengguna tertentu pada semua komputer.</translation>
     </message>
     <message>
         <source>Log off</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluar akun</translation>
     </message>
     <message>
         <source>Click this button to log off users from all computers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluarkan akun pengguna dari semua komputer.</translation>
     </message>
     <message>
         <source>Confirm user logoff</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmasi keluar akun</translation>
     </message>
     <message>
         <source>Do you really want to log off &lt;b&gt;ALL&lt;/b&gt; users?</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluarkan &lt;b&gt;SEMUA&lt;/b&gt; akun pengguna?</translation>
     </message>
     <message>
         <source>Do you really want to log off the selected users?</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluarkan akun pengguna yang dipilih?</translation>
     </message>
     <message>
         <source>User session control</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrol sesi pengguna</translation>
     </message>
 </context>
 <context>
@@ -4683,11 +4779,11 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Invalid arguments given</source>
-        <translation type="unfinished"></translation>
+        <translation>Argumen tidak valid</translation>
     </message>
     <message>
         <source>Not enough arguments given - use &quot;%1 help&quot; for more information</source>
-        <translation type="unfinished"></translation>
+        <translation>Argumen tidak cukup - gunakan &quot;%1 help&quot; untuk informasi lebih lanjut</translation>
     </message>
     <message>
         <source>Plugin not licensed</source>
@@ -4707,50 +4803,50 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>No module specified or module not found - available modules are:</source>
-        <translation type="unfinished"></translation>
+        <translation>Modul tidak ditentukan atau tidak ditemukan - modul yang tersedia:</translation>
     </message>
     <message>
         <source>INFO</source>
-        <translation type="unfinished"></translation>
+        <translation>INFO</translation>
     </message>
     <message>
         <source>WARNING</source>
-        <translation type="unfinished"></translation>
+        <translation>PERINGATAN</translation>
     </message>
     <message>
         <source>ERROR</source>
-        <translation type="unfinished"></translation>
+        <translation>KESALAHAN</translation>
     </message>
     <message>
         <source>USAGE</source>
-        <translation type="unfinished"></translation>
+        <translation>PENGGUNAAN</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>KETERANGAN</translation>
     </message>
     <message>
         <source>EXAMPLES</source>
-        <translation type="unfinished"></translation>
+        <translation>CONTOH</translation>
     </message>
     <message>
         <source>Screen %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Layar %1</translation>
     </message>
     <message>
         <source>Guest</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamu</translation>
     </message>
 </context>
 <context>
     <name>VeyonMaster</name>
     <message>
         <source>No write access</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada akses tulis</translation>
     </message>
     <message>
         <source>Could not save your personal settings! Please check the user configuration file path using Veyon Configurator.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat menyimpan pengaturan pribadi! Periksa lokasi berkas konfigurasi pengguna melalui Konfigurator Veyon.</translation>
     </message>
 </context>
 <context>
@@ -4764,7 +4860,7 @@ Example: [^-]*-(PC[0-9]*)</source>
     <name>WebApiConfigurationPage</name>
     <message>
         <source>Web API</source>
-        <translation type="unfinished"></translation>
+        <translation>Web API</translation>
     </message>
     <message>
         <source>General</source>
@@ -4772,51 +4868,51 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Network port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port jaringan</translation>
     </message>
     <message>
         <source>Enable WebAPI server</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktifkan server Web API</translation>
     </message>
     <message>
         <source>Connection settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengaturan koneksi</translation>
     </message>
     <message>
         <source>Lifetime</source>
-        <translation type="unfinished"></translation>
+        <translation>Masa hidup</translation>
     </message>
     <message>
         <source> h</source>
-        <translation type="unfinished"></translation>
+        <translation> jam</translation>
     </message>
     <message>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation> dtk</translation>
     </message>
     <message>
         <source>Idle timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Batas waktu tidak aktif</translation>
     </message>
     <message>
         <source>Authentication timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Batas waktu autentikasi</translation>
     </message>
     <message>
         <source>Maximum number of open connections</source>
-        <translation type="unfinished"></translation>
+        <translation>Jumlah koneksi terbuka maksimum</translation>
     </message>
     <message>
         <source>Connection encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Enkripsi koneksi</translation>
     </message>
     <message>
         <source>TLS certificate file</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas sertifikat TLS</translation>
     </message>
     <message>
         <source>TLS private key file</source>
-        <translation type="unfinished"></translation>
+        <translation>Berkas kunci privat TLS</translation>
     </message>
     <message>
         <source>...</source>
@@ -4824,44 +4920,44 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Use HTTPS with TLS 1.3 instead of HTTP</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan HTTPS dengan TLS 1.3 sebagai pengganti HTTP</translation>
     </message>
 </context>
 <context>
     <name>WebApiPlugin</name>
     <message>
         <source>Run WebAPI server</source>
-        <translation type="unfinished"></translation>
+        <translation>Jalankan server Web API</translation>
     </message>
     <message>
         <source>Failed to start WebAPI server at port %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal menjalankan server Web API pada port %1</translation>
     </message>
     <message>
         <source>WebAPI server running at port %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Server Web API berjalan pada port %1</translation>
     </message>
     <message>
         <source>Provide access to a computer via HTTP</source>
-        <translation type="unfinished"></translation>
+        <translation>Sediakan akses komputer melalui HTTP</translation>
     </message>
     <message>
         <source>Commands for running the WebAPI server</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah untuk menjalankan server Web API</translation>
     </message>
 </context>
 <context>
     <name>WindowsPlatformConfiguration</name>
     <message>
         <source>Could not change the setting for SAS generation by software. Sending Ctrl+Alt+Del via remote control will not work!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengubah pengaturan pengiriman SAS oleh perangkat lunak. Pengiriman Ctrl+Alt+Del melalui kendali jarak jauh tidak akan berfungsi!</translation>
     </message>
 </context>
 <context>
     <name>WindowsPlatformConfigurationPage</name>
     <message>
         <source>Windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows</translation>
     </message>
     <message>
         <source>General</source>
@@ -4869,71 +4965,71 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Enable SAS generation by software (Ctrl+Alt+Del)</source>
-        <translation type="unfinished"></translation>
+        <translation>Izinkan perangkat lunak mengirim SAS (Ctrl+Alt+Del)</translation>
     </message>
     <message>
         <source>User authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Autentikasi pengguna</translation>
     </message>
     <message>
         <source>Use alternative user authentication mechanism</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan mekanisme autentikasi pengguna alternatif</translation>
     </message>
     <message>
         <source>User login</source>
-        <translation type="unfinished"></translation>
+        <translation>Masuk akun pengguna</translation>
     </message>
     <message>
         <source>Input start delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeda sebelum masukan dimulai</translation>
     </message>
     <message>
         <source>Simulated key presses interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval simulasi penekanan tombol</translation>
     </message>
     <message>
         <source>Confirm legal notice (message displayed before user logs in)</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmasikan pemberitahuan hukum (pesan sebelum pengguna masuk)</translation>
     </message>
     <message>
         <source>Screen lock</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci layar</translation>
     </message>
     <message>
         <source>Hide taskbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Sembunyikan bilah tugas</translation>
     </message>
     <message>
         <source>Hide start menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Sembunyikan menu Mulai</translation>
     </message>
     <message>
         <source>Hide desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Sembunyikan desktop</translation>
     </message>
     <message>
         <source>Use custom power scheme with disabled power and sleep buttons</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan skema daya khusus dengan tombol daya dan tidur dinonaktifkan</translation>
     </message>
     <message>
         <source>Use input device interception driver</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan driver intersepsi perangkat masukan</translation>
     </message>
     <message>
         <source>Disable touchpads and touchscreens</source>
-        <translation type="unfinished"></translation>
+        <translation>Nonaktifkan panel sentuh dan layar sentuh</translation>
     </message>
     <message>
         <source>Disable keyboard devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Nonaktifkan papan ketik</translation>
     </message>
     <message>
         <source>Disable mouse devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Nonaktifkan tetikus</translation>
     </message>
     <message>
         <source>Handling of interfering windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Penanganan jendela yang mengganggu</translation>
     </message>
     <message>
         <source>None</source>
@@ -4941,22 +5037,22 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Fix window attributes</source>
-        <translation type="unfinished"></translation>
+        <translation>Perbaiki atribut jendela</translation>
     </message>
     <message>
         <source>Terminate related process</source>
-        <translation type="unfinished"></translation>
+        <translation>Hentikan proses terkait</translation>
     </message>
     <message>
         <source>Close session</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutup sesi</translation>
     </message>
 </context>
 <context>
     <name>WindowsPlatformPlugin</name>
     <message>
         <source>Internal display</source>
-        <translation type="unfinished"></translation>
+        <translation>Layar internal</translation>
     </message>
     <message>
         <source>Plugin implementing abstract functions for the Windows platform</source>
@@ -4967,7 +5063,7 @@ Example: [^-]*-(PC[0-9]*)</source>
     <name>WindowsServiceControl</name>
     <message>
         <source>The service &quot;%1&quot; is already installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Layanan &quot;%1&quot; sudah terpasang.</translation>
     </message>
     <message>
         <source>The service &quot;%1&quot; could not be installed (error %2).</source>
@@ -4975,11 +5071,11 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>Could not change the failure actions config for service &quot;%1&quot; (error %2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak dapat mengubah pengaturan tindakan saat gagal untuk layanan &quot;%1&quot; (kesalahan %2).</translation>
     </message>
     <message>
         <source>The service &quot;%1&quot; has been installed successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>Layanan &quot;%1&quot; berhasil dipasang.</translation>
     </message>
     <message>
         <source>The service &quot;%1&quot; could not be uninstalled (error %2).</source>
@@ -4987,11 +5083,11 @@ Example: [^-]*-(PC[0-9]*)</source>
     </message>
     <message>
         <source>The service &quot;%1&quot; has been uninstalled successfully.</source>
-        <translation type="unfinished"></translation>
+        <translation>Layanan &quot;%1&quot; berhasil dihapus.</translation>
     </message>
     <message>
         <source>The start type of service &quot;%1&quot; could not be changed (error %2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Jenis mulai layanan &quot;%1&quot; tidak dapat diubah (kesalahan %2).</translation>
     </message>
     <message>
         <source>Service &quot;%1&quot; could not be found.</source>
@@ -5002,15 +5098,15 @@ Example: [^-]*-(PC[0-9]*)</source>
     <name>X11VncConfigurationWidget</name>
     <message>
         <source>Builtin x11vnc server configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurasi server x11vnc bawaan</translation>
     </message>
     <message>
         <source>Custom x11vnc parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation>Parameter x11vnc khusus:</translation>
     </message>
     <message>
         <source>Do not use X Damage extension</source>
-        <translation type="unfinished"></translation>
+        <translation>Jangan gunakan ekstensi X Damage</translation>
     </message>
 </context>
 <context>
@@ -5024,5 +5120,265 @@ Example: [^-]*-(PC[0-9]*)</source>
     <message><source>Disable webcam</source><translation>Matikan kamera web</translation></message>
     <message><source>Enable webcam</source><translation>Aktifkan kamera web</translation></message>
     <message><source>Disable webcam access on the selected computers.</source><translation>Nonaktifkan akses kamera web pada komputer yang dipilih.</translation></message>
+    <message>
+        <source>Control audio, webcam and USB devices on computers</source>
+        <translation>Kendalikan audio, kamera web, dan perangkat USB pada komputer</translation>
+    </message>
+</context>
+<context>
+    <name>QPlatformTheme</name>
+    <message><source>Cancel</source><translation>Batal</translation></message>
+    <message><source>Close</source><translation>Tutup</translation></message>
+    <message><source>Apply</source><translation>Terapkan</translation></message>
+    <message><source>Reset</source><translation>Atur ulang</translation></message>
+    <message><source>Save</source><translation>Simpan</translation></message>
+    <message><source>Open</source><translation>Buka</translation></message>
+    <message><source>Help</source><translation>Bantuan</translation></message>
+    <message><source>Discard</source><translation>Buang perubahan</translation></message>
+    <message><source>Yes</source><translation>Ya</translation></message>
+    <message><source>No</source><translation>Tidak</translation></message>
+    <message><source>&amp;Yes</source><translation>&amp;Ya</translation></message>
+    <message><source>&amp;No</source><translation>&amp;Tidak</translation></message>
+</context>
+<context>
+    <name>ChatClientWindow</name>
+    <message>
+        <source>Chat with teacher</source>
+        <translation>Percakapan dengan guru</translation>
+    </message>
+    <message>
+        <source>Type a message and press Enter</source>
+        <translation>Tulis pesan lalu tekan Enter</translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation>Kirim</translation>
+    </message>
+    <message>
+        <source>You</source>
+        <translation>Anda</translation>
+    </message>
+</context>
+<context>
+    <name>ChatFeaturePlugin</name>
+    <message>
+        <source>Chat</source>
+        <translation>Percakapan</translation>
+    </message>
+    <message>
+        <source>Use this function to open a two-way chat with the selected students.</source>
+        <translation>Buka percakapan dua arah dengan siswa yang dipilih.</translation>
+    </message>
+    <message>
+        <source>Two-way chat between teacher and students</source>
+        <translation>Percakapan dua arah antara guru dan siswa</translation>
+    </message>
+</context>
+<context>
+    <name>ChatMasterDialog</name>
+    <message>
+        <source>Chat</source>
+        <translation>Percakapan</translation>
+    </message>
+    <message>
+        <source>Type a message and press Enter</source>
+        <translation>Tulis pesan lalu tekan Enter</translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation>Kirim</translation>
+    </message>
+</context>
+<context>
+    <name>EntraIdConfigurationPage</name>
+    <message>
+        <source>Microsoft Entra ID</source>
+        <translation>Microsoft Entra ID</translation>
+    </message>
+    <message>
+        <source>Enable Microsoft Entra ID connector</source>
+        <translation>Aktifkan konektor Microsoft Entra ID</translation>
+    </message>
+    <message>
+        <source>Microsoft Graph application</source>
+        <translation>Aplikasi Microsoft Graph</translation>
+    </message>
+    <message>
+        <source>Tenant ID</source>
+        <translation>ID tenant</translation>
+    </message>
+    <message>
+        <source>Client ID</source>
+        <translation>ID klien</translation>
+    </message>
+    <message>
+        <source>Client secret</source>
+        <translation>Rahasia klien</translation>
+    </message>
+    <message>
+        <source>Authority host</source>
+        <translation>Host otoritas</translation>
+    </message>
+    <message>
+        <source>Graph base URL</source>
+        <translation>URL dasar Graph</translation>
+    </message>
+    <message>
+        <source>Timeout</source>
+        <translation>Batas waktu</translation>
+    </message>
+    <message>
+        <source>Device mapping</source>
+        <translation>Pemetaan perangkat</translation>
+    </message>
+    <message>
+        <source>Display name field</source>
+        <translation>Kolom nama tampilan</translation>
+    </message>
+    <message>
+        <source>Host address field</source>
+        <translation>Kolom alamat host</translation>
+    </message>
+    <message>
+        <source>MAC address field</source>
+        <translation>Kolom alamat MAC</translation>
+    </message>
+    <message>
+        <source>Location field</source>
+        <translation>Kolom lokasi</translation>
+    </message>
+    <message>
+        <source>Fallback location</source>
+        <translation>Lokasi cadangan</translation>
+    </message>
+    <message>
+        <source>Use Entra security groups for access control</source>
+        <translation>Gunakan grup keamanan Entra untuk kontrol akses</translation>
+    </message>
+    <message>
+        <source>Required Microsoft Graph application permissions: Device.Read.All, Group.Read.All, GroupMember.Read.All and User.Read.All. Grant admin consent in Microsoft Entra admin center.</source>
+        <translation>Izin aplikasi Microsoft Graph yang diperlukan: Device.Read.All, Group.Read.All, GroupMember.Read.All, dan User.Read.All. Berikan persetujuan administrator di pusat admin Microsoft Entra.</translation>
+    </message>
+    <message>
+        <source>Test connection</source>
+        <translation>Tes koneksi</translation>
+    </message>
+    <message>
+        <source>Connection successful. %1 devices returned by Microsoft Graph.</source>
+        <translation>Koneksi berhasil. Microsoft Graph mengembalikan %1 perangkat.</translation>
+    </message>
+</context>
+<context>
+    <name>EntraIdGraphClient</name>
+    <message>
+        <source>Microsoft Entra ID connector is not configured.</source>
+        <translation>Konektor Microsoft Entra ID belum dikonfigurasi.</translation>
+    </message>
+    <message>
+        <source>Microsoft Entra ID token response did not include an access token.</source>
+        <translation>Respons token Microsoft Entra ID tidak menyertakan token akses.</translation>
+    </message>
+    <message>
+        <source>Microsoft Graph returned invalid JSON: %1</source>
+        <translation>Microsoft Graph mengembalikan JSON tidak valid: %1</translation>
+    </message>
+    <message>
+        <source>Microsoft Graph returned an unexpected paging URL.</source>
+        <translation>Microsoft Graph mengembalikan URL paginasi yang tidak diharapkan.</translation>
+    </message>
+    <message>
+        <source>Microsoft Graph request failed (%1): %2</source>
+        <translation>Permintaan Microsoft Graph gagal (%1): %2</translation>
+    </message>
+</context>
+<context>
+    <name>EntraIdNetworkObjectDirectory</name>
+    <message>
+        <source>Entra ID devices</source>
+        <translation>Perangkat Entra ID</translation>
+    </message>
+</context>
+<context>
+    <name>EntraIdPlugin</name>
+    <message>
+        <source>Microsoft Entra ID connector for devices, users and groups</source>
+        <translation>Konektor Microsoft Entra ID untuk perangkat, pengguna, dan grup</translation>
+    </message>
+    <message>
+        <source>Microsoft Entra ID (load devices and locations from Microsoft Graph)</source>
+        <translation>Microsoft Entra ID (muat perangkat dan lokasi dari Microsoft Graph)</translation>
+    </message>
+    <message>
+        <source>Microsoft Entra ID (load security groups from Microsoft Graph)</source>
+        <translation>Microsoft Entra ID (muat grup keamanan dari Microsoft Graph)</translation>
+    </message>
+</context>
+<context>
+    <name>InternetAccessControlPlugin</name>
+    <message>
+        <source>Block internet</source>
+        <translation>Blokir internet</translation>
+    </message>
+    <message>
+        <source>Allow internet</source>
+        <translation>Izinkan internet</translation>
+    </message>
+    <message>
+        <source>Use this function to block or allow internet access on the selected computers, e.g. during exams.</source>
+        <translation>Blokir atau izinkan akses internet pada komputer terpilih, misalnya selama ujian.</translation>
+    </message>
+    <message>
+        <source>Block or allow internet access on computers</source>
+        <translation>Blokir atau izinkan akses internet komputer</translation>
+    </message>
+</context>
+<context>
+    <name>NetworkDiscoveryDirectory</name>
+    <message>
+        <source>Discovered computers</source>
+        <translation>Komputer ditemukan</translation>
+    </message>
+</context>
+<context>
+    <name>NetworkDiscoveryPlugin</name>
+    <message>
+        <source>Discover computers by scanning the network</source>
+        <translation>Temukan komputer dengan memindai jaringan</translation>
+    </message>
+    <message>
+        <source>Network Discovery</source>
+        <translation>Penemuan jaringan</translation>
+    </message>
+</context>
+<context>
+    <name>ScreenRecorderFeaturePlugin</name>
+    <message>
+        <source>Record screens</source>
+        <translation>Rekam layar</translation>
+    </message>
+    <message>
+        <source>Stop recording</source>
+        <translation>Hentikan perekaman</translation>
+    </message>
+    <message>
+        <source>Use this function to record the screens of the selected computers to video files for later evaluation.</source>
+        <translation>Rekam layar komputer terpilih sebagai berkas video untuk evaluasi berikutnya.</translation>
+    </message>
+    <message>
+        <source>Screen recording</source>
+        <translation>Perekaman layar</translation>
+    </message>
+    <message>
+        <source>Recording could not start. Select a connected computer and check that FFmpeg and the Videos folder are available.</source>
+        <translation>Perekaman tidak dapat dimulai. Pilih komputer yang terhubung dan pastikan FFmpeg serta folder Video tersedia.</translation>
+    </message>
+    <message>
+        <source>Recording requested. After stopping, look for MP4 files in %1 on this computer.</source>
+        <translation>Perekaman diminta. Setelah dihentikan, periksa berkas MP4 di %1 pada komputer ini.</translation>
+    </message>
+    <message>
+        <source>Record the screens of computers to video files</source>
+        <translation>Rekam layar komputer ke berkas video</translation>
+    </message>
 </context>
 </TS>

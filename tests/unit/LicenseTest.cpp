@@ -19,6 +19,7 @@
 #include <QRegularExpression>
 #include <QTest>
 #include <QTranslator>
+#include <QXmlStreamReader>
 #include <QtCrypto>
 
 #include "LicenseClient.h"
@@ -831,8 +832,70 @@ private Q_SLOTS:
 		QVERIFY(translator.load(path));
 		QCoreApplication::installTranslator(&translator);
 		const auto description = LicenseService::describe(LicenseActionResult::Ok);
+		const auto warning = LicenseService::describe({LicenseLevel::Warning, LicenseReason::Subscription,
+			QDateTime::fromSecsSinceEpoch(1792890000, Qt::UTC)});
+		const auto suspended = LicenseService::describe({LicenseLevel::Suspended, LicenseReason::Subscription, {}});
 		QCoreApplication::removeTranslator(&translator);
 		QCOMPARE(description, QStringLiteral("Selesai."));
+		QVERIFY2(warning.startsWith(QStringLiteral("Langganan telah berakhir.")), qPrintable(warning));
+		QVERIFY2(suspended.startsWith(QStringLiteral("Langganan telah berakhir")), qPrintable(suspended));
+	}
+
+	void indonesianCatalogIsComplete()
+	{
+		const auto catalog = readWholeFile(QStringLiteral(VEYON_ID_TS_PATH));
+		QXmlStreamReader xml(catalog);
+		QString context;
+		QString source;
+		QString translation;
+		bool unfinished = false;
+		int count = 0;
+		const QRegularExpression placeholder(QStringLiteral("%L?[0-9]+|%L?n"));
+		auto placeholders = [&placeholder](const QString& text) {
+			QStringList result;
+			auto matches = placeholder.globalMatch(text);
+			while (matches.hasNext())
+			{
+				result.append(matches.next().captured());
+			}
+			result.sort();
+			return result;
+		};
+		while (!xml.atEnd())
+		{
+			xml.readNext();
+			if (xml.isStartElement())
+			{
+				if (xml.name() == QLatin1String("name"))
+				{
+					context = xml.readElementText();
+				}
+				else if (xml.name() == QLatin1String("message"))
+				{
+					source.clear();
+					translation.clear();
+					unfinished = false;
+				}
+				else if (xml.name() == QLatin1String("source"))
+				{
+					source = xml.readElementText();
+				}
+				else if (xml.name() == QLatin1String("translation"))
+				{
+					unfinished = xml.attributes().value(QLatin1String("type")) == QLatin1String("unfinished");
+					translation = xml.readElementText(QXmlStreamReader::IncludeChildElements);
+				}
+			}
+			else if (xml.isEndElement() && xml.name() == QLatin1String("message"))
+			{
+				const QString label = context + QStringLiteral(": ") + source;
+				QVERIFY2(!unfinished && !translation.trimmed().isEmpty(), qPrintable(label));
+				QVERIFY2(placeholders(source) == placeholders(translation), qPrintable(label));
+				++count;
+			}
+		}
+		QVERIFY2(!xml.hasError(), qPrintable(xml.errorString()));
+		QVERIFY(count > 1000);
 	}
 
 	void commonInterfaceContextsHaveTranslations()
@@ -841,7 +904,16 @@ private Q_SLOTS:
 		for (const auto& context : {QStringLiteral("AuvidusFeaturePlugin"), QStringLiteral("DemoFeaturePlugin"),
 			QStringLiteral("GeneralConfigurationPage"), QStringLiteral("MonitoringMode"),
 			QStringLiteral("RemoteAccessFeaturePlugin"), QStringLiteral("ScreenLockFeaturePlugin"),
-			QStringLiteral("ScreenshotFeaturePlugin")})
+			QStringLiteral("ScreenshotFeaturePlugin"), QStringLiteral("ComputerSelectPanel"),
+			QStringLiteral("PowerControlFeaturePlugin"), QStringLiteral("UserSessionControlPlugin"),
+			QStringLiteral("OpenWebsiteDialog"), QStringLiteral("StartAppDialog"),
+			QStringLiteral("TextMessageDialog"), QStringLiteral("FileTransferDialog"),
+			QStringLiteral("FileCollectDialog"), QStringLiteral("ChatClientWindow"),
+			QStringLiteral("ChatMasterDialog"), QStringLiteral("ChatFeaturePlugin"),
+			QStringLiteral("EntraIdConfigurationPage"), QStringLiteral("EntraIdGraphClient"),
+			QStringLiteral("EntraIdNetworkObjectDirectory"), QStringLiteral("EntraIdPlugin"),
+			QStringLiteral("InternetAccessControlPlugin"), QStringLiteral("ScreenRecorderFeaturePlugin"),
+			QStringLiteral("NetworkDiscoveryPlugin"), QStringLiteral("NetworkDiscoveryDirectory")})
 		{
 			const auto messages = messagesInContext(ts, context);
 			QVERIFY2(!messages.isEmpty(), qPrintable(context));

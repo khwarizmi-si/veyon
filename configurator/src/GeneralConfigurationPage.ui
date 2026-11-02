@@ -65,7 +65,7 @@
        <widget class="QComboBox" name="uiColorScheme">
         <item>
          <property name="text">
-          <string notr="true">System</string>
+          <string>System</string>
          </property>
         </item>
         <item>
