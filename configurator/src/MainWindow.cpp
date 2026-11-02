@@ -26,9 +26,12 @@
 #include <QDir>
 #include <QProcess>
 #include <QCloseEvent>
+#include <QComboBox>
 #include <QFileDialog>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QLabel>
+#include <QLineEdit>
 #include <QScrollBar>
 #include <QSettings>
 #include <QTimer>
@@ -37,6 +40,7 @@
 #include "Configuration/UiMapping.h"
 
 #include "AboutDialog.h"
+#include "DesktopTheme.h"
 #include "ConfigurationPagePluginInterface.h"
 #include "ConfigurationManager.h"
 #include "LicensePage.h"
@@ -53,10 +57,95 @@ MainWindow::MainWindow( QWidget* parent ) :
 	m_configChanged( false )
 {
 	ui->setupUi( this );
+	setObjectName(QStringLiteral("configuratorWindow"));
+	ui->gridLayout->setContentsMargins(0, 0, 0, 12);
+	ui->gridLayout->setHorizontalSpacing(0);
+	ui->verticalLayout->setContentsMargins(24, 12, 24, 16);
+	ui->buttonBox->setCenterButtons(false);
+	ui->buttonBox->setContentsMargins(12, 0, 20, 0);
+	ui->buttonBox->button(QDialogButtonBox::Apply)->setDefault(true);
+	ui->buttonBox->button(QDialogButtonBox::Apply)->setText(tr("Terapkan"));
+	ui->buttonBox->button(QDialogButtonBox::Reset)->setText(tr("Batalkan perubahan"));
+	ui->buttonBox->button(QDialogButtonBox::Apply)->setIcon(QIcon());
+	ui->buttonBox->button(QDialogButtonBox::Reset)->setIcon(QIcon());
+	ui->pageSelector->setIconSize(QSize(20, 20));
+	ui->pageSelector->setSpacing(1);
+	ui->pageSelector->setMinimumWidth(210);
+	ui->pageSelector->setMaximumWidth(240);
+	ui->pageSelector->setTextElideMode(Qt::ElideRight);
 
 	setWindowTitle(tr("Khwarizmi Configurator %1").arg(VeyonCore::versionString()));
 
 	loadConfigurationPagePlugins();
+	for (auto combo : findChildren<QComboBox*>())
+	{
+		combo->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+		combo->setMinimumContentsLength(12);
+	}
+	const QMap<QString, QString> pageTitles{
+		{QStringLiteral("Authentication keys"), tr("Kunci autentikasi")},
+		{QStringLiteral("Locations & computers"), tr("Lokasi dan komputer")},
+		{QStringLiteral("Applications & websites"), tr("Aplikasi dan situs")},
+		{QStringLiteral("File transfer"), tr("Transfer berkas")}
+	};
+	const QList<QColor> categoryColors{
+		QColor(QStringLiteral("#63718a")), QColor(QStringLiteral("#7656bd")),
+		QColor(QStringLiteral("#2878c8")), QColor(QStringLiteral("#278453")),
+		QColor(QStringLiteral("#b66b16")), QColor(QStringLiteral("#26877b"))
+	};
+	for( int i = 0; i < ui->pageSelector->count(); ++i )
+	{
+		auto* item = ui->pageSelector->item(i);
+		item->setText(pageTitles.value(item->text(), item->text()));
+		item->setToolTip(item->text());
+		auto tint = categoryColors.at(i % categoryColors.size());
+		if (VeyonCore::useDarkMode())
+		{
+			tint = tint.lighter(155);
+		}
+		item->setIcon(DesktopTheme::icon(item->icon(), tint));
+	}
+	auto navigation = new QWidget(ui->centralwidget);
+	auto navigationLayout = new QVBoxLayout(navigation);
+	navigationLayout->setContentsMargins(0, 16, 0, 0);
+	navigationLayout->setSpacing(12);
+	auto navigationTitle = new QLabel(tr("Pengaturan"), navigation);
+	navigationTitle->setObjectName(QStringLiteral("navigationTitle"));
+	navigationLayout->addWidget(navigationTitle);
+	auto navigationSearch = new QLineEdit(navigation);
+	navigationSearch->setPlaceholderText(tr("Cari kategori..."));
+	navigationSearch->setClearButtonEnabled(true);
+	navigationLayout->addWidget(navigationSearch);
+	ui->gridLayout->removeWidget(ui->pageSelector);
+	navigationLayout->addWidget(ui->pageSelector, 1);
+	ui->gridLayout->addWidget(navigation, 0, 0);
+	connect(navigationSearch, &QLineEdit::textChanged, this, [this](const QString& query) {
+		for (int i = 0; i < ui->pageSelector->count(); ++i)
+		{
+			auto item = ui->pageSelector->item(i);
+			item->setHidden(!item->text().contains(query, Qt::CaseInsensitive));
+		}
+	});
+	auto content = new QWidget(ui->centralwidget);
+	auto contentLayout = new QVBoxLayout(content);
+	contentLayout->setContentsMargins(0, 0, 0, 0);
+	contentLayout->setSpacing(0);
+	auto heading = new QLabel(ui->pageSelector->currentItem()->text(), content);
+	heading->setObjectName(QStringLiteral("settingsHeading"));
+	heading->setContentsMargins(24, 16, 24, 16);
+	contentLayout->addWidget(heading);
+	ui->gridLayout->removeWidget(ui->scrollArea);
+	contentLayout->addWidget(ui->scrollArea, 1);
+	ui->gridLayout->addWidget(content, 0, 1);
+	connect(ui->pageSelector, &QListWidget::currentRowChanged, heading, [this, heading](int row) {
+		if (const auto item = ui->pageSelector->item(row))
+		{
+			heading->setText(item->text());
+		}
+	});
+	auto brand = new QLabel(tr("Khwarizmi - Pengaturan"), ui->centralwidget);
+	brand->setObjectName(QStringLiteral("settingsBrand"));
+	ui->gridLayout->addWidget(brand, 2, 0);
 
 	// reset all widget's values to current configuration
 	reset( true );
@@ -91,10 +180,13 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 	connect( &VeyonCore::config(), &VeyonConfiguration::configurationChanged, this, &MainWindow::configurationChanged );
 
-	connect( ui->configPages, &QStackedWidget::currentChanged, this, &MainWindow::updateSizes );
+	connect(ui->configPages, &QStackedWidget::currentChanged, this, [this]() {
+		updateSizes();
+		ui->scrollArea->verticalScrollBar()->setValue(0);
+		ui->scrollArea->horizontalScrollBar()->setValue(0);
+	});
 
-	resize( ui->pageSelector->width() + ui->generalConfigurationPage->minimumSizeHint().width(),
-			ui->generalConfigurationPage->minimumSizeHint().height() );
+	resize(1040, 740);
 
 	updateView();
 }
@@ -257,8 +349,21 @@ void MainWindow::aboutAlKhwarizmi()
 
 void MainWindow::updateSizes()
 {
-	ui->configPages->setMinimumSize( ui->scrollArea->width() - ui->scrollArea->verticalScrollBar()->width(),
-									 ui->configPages->currentWidget()->minimumSizeHint().height() );
+	// Hidden pages must not impose their size hint on the active page.
+	ui->configPages->setMinimumSize(0, 0);
+	ui->configPages->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+	for (int i = 0; i < ui->configPages->count(); ++i)
+	{
+		ui->configPages->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	}
+	ui->configPages->currentWidget()->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	const auto pageSize = ui->configPages->currentWidget()->minimumSizeHint();
+	const auto margins = ui->verticalLayout->contentsMargins();
+	const auto availableWidth = ui->scrollArea->viewport()->width() - margins.left() - margins.right();
+	const auto heading = ui->scrollAreaWidgetContents->findChild<QLabel*>(QStringLiteral("settingsHeading"));
+	const auto availableHeight = ui->scrollArea->viewport()->height() - margins.top() - margins.bottom() -
+		(heading ? heading->sizeHint().height() : 0) - ui->verticalLayout->spacing();
+	ui->configPages->setFixedSize(qMax(availableWidth, pageSize.width()), qMax(availableHeight, pageSize.height()));
 }
 
 
@@ -372,8 +477,7 @@ void MainWindow::loadConfigurationPagePlugins()
 	ui->pageSelector->addItem( licenseItem );
 
 	// adjust minimum size
-	ui->pageSelector->setMinimumSize( ui->pageSelector->sizeHintForColumn(0) + 3 * ui->pageSelector->spacing(),
-									  ui->pageSelector->minimumHeight() );
+	ui->pageSelector->setMinimumWidth(210);
 }
 
 

@@ -23,18 +23,30 @@
  */
 
 #include <QCloseEvent>
+#include <QAction>
 #include <QComboBox>
 #include <QFileDialog>
 #include <QJsonDocument>
 #include <QKeyEvent>
 #include <QLabel>
+#include <QHBoxLayout>
+#include <QItemSelectionModel>
+#include <QDialogButtonBox>
+#include <QGridLayout>
+#include <QScrollArea>
+#include <QVBoxLayout>
 #include <QHostAddress>
 #include <QMenu>
 #include <QMessageBox>
+#include <QResizeEvent>
+#include <QSizePolicy>
 #include <QSplitter>
 #include <QStatusBar>
+#include <QToolBar>
+#include <QToolButton>
 
 #include "AboutDialog.h"
+#include "DesktopTheme.h"
 #include "AccessControlProvider.h"
 #include "MainWindow.h"
 #include "BuiltinFeatures.h"
@@ -81,7 +93,7 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("InternetAccessControl") )
 	{
-		return QStringLiteral("Blokir net");
+		return QStringLiteral("Blokir internet");
 	}
 	if( featureName == QStringLiteral("ScreenRecorder") )
 	{
@@ -97,7 +109,7 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("Chat") || displayName == QStringLiteral("Chat") )
 	{
-		return QStringLiteral("Chat");
+		return QStringLiteral("Percakapan");
 	}
 	if( featureName == QStringLiteral("PowerOn") )
 	{
@@ -105,7 +117,7 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("Reboot") || displayName == QStringLiteral("Restart") )
 	{
-		return QStringLiteral("Restart");
+		return QStringLiteral("Mulai ulang");
 	}
 	if( featureName == QStringLiteral("PowerDown") )
 	{
@@ -125,19 +137,19 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("StartApp") )
 	{
-		return QStringLiteral("Buka app");
+		return QStringLiteral("Buka aplikasi");
 	}
 	if( featureName == QStringLiteral("OpenWebsite") )
 	{
-		return QStringLiteral("Buka web");
+		return QStringLiteral("Buka situs");
 	}
 	if( featureName == QStringLiteral("DistributeFiles") )
 	{
-		return QStringLiteral("Kirim file");
+		return QStringLiteral("Kirim berkas");
 	}
 	if( featureName == QStringLiteral("FileCollect") )
 	{
-		return QStringLiteral("Ambil file");
+		return QStringLiteral("Kumpulkan berkas");
 	}
 	if( featureName == QStringLiteral("Screenshot") || displayName == QStringLiteral("Screenshot") )
 	{
@@ -153,7 +165,7 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("DisableWebcam") || displayName == QStringLiteral("Disable webcam") )
 	{
-		return QStringLiteral("Matikan webcam");
+		return QStringLiteral("Matikan kamera");
 	}
 
 	return displayName;
@@ -170,7 +182,7 @@ QString localizedFeatureActiveLabel( const Feature& feature )
 
 	if( featureName == QStringLiteral("Demo") )
 	{
-		return QStringLiteral("Stop peraga");
+		return QStringLiteral("Hentikan peraga");
 	}
 	if( featureName == QStringLiteral("ScreenLock") )
 	{
@@ -178,7 +190,7 @@ QString localizedFeatureActiveLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("ScreenRecorder") )
 	{
-		return QStringLiteral("Stop rekam");
+		return QStringLiteral("Hentikan rekam");
 	}
 	if( featureName == QStringLiteral("MuteAudio") || activeName == QStringLiteral("Unmute audio") )
 	{
@@ -190,7 +202,7 @@ QString localizedFeatureActiveLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("DisableWebcam") || activeName == QStringLiteral("Enable webcam") )
 	{
-		return QStringLiteral("Aktifkan webcam");
+		return QStringLiteral("Aktifkan kamera");
 	}
 
 	return localizedFeatureLabel( feature );
@@ -200,7 +212,7 @@ QString modernFeatureIconUrl( const Feature& feature )
 {
 	if( feature.name() == QStringLiteral("MonitoringMode") )
 	{
-		return QStringLiteral(":/master/computers.png");
+		return QStringLiteral(":/core/ui-icons/monitor.png");
 	}
 	if( feature.name() == QStringLiteral("ScreenRecorder") )
 	{
@@ -208,11 +220,11 @@ QString modernFeatureIconUrl( const Feature& feature )
 	}
 	if( feature.name() == QStringLiteral("RemoteView") )
 	{
-		return QStringLiteral(":/core/view-fullscreen.png");
+		return QStringLiteral(":/core/ui-icons/scan.png");
 	}
 	if( feature.name() == QStringLiteral("RemoteControl") )
 	{
-		return QStringLiteral(":/remoteaccess/preferences-system-windows-effect-desktopgrid.png");
+		return QStringLiteral(":/core/ui-icons/mouse-pointer-2.png");
 	}
 	if( feature.name() == QStringLiteral("TextMessage") )
 	{
@@ -224,7 +236,11 @@ QString modernFeatureIconUrl( const Feature& feature )
 	}
 	if( feature.name() == QStringLiteral("Screenshot") )
 	{
-		return QStringLiteral(":/master/camera-photo.png");
+		return QStringLiteral(":/core/ui-icons/camera.png");
+	}
+	if( feature.name() == QStringLiteral("Chat") )
+	{
+		return QStringLiteral(":/core/ui-icons/messages-square.png");
 	}
 
 	return feature.iconUrl();
@@ -240,8 +256,10 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	m_modeGroup( new QButtonGroup( this ) )
 {
 	ui->setupUi( this );
+	setObjectName(QStringLiteral("masterWindow"));
 	m_licenseBanner = new QLabel(ui->centralWidget);
 	m_licenseBanner->setWordWrap(true);
+	m_licenseBanner->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 	m_licenseBanner->setContentsMargins(12, 8, 12, 8);
 	m_licenseBanner->setStyleSheet(QStringLiteral("background: #fff4d6; color: #35312a; border-bottom: 1px solid #e3cf91;"));
 	ui->centralLayout->insertWidget(0, m_licenseBanner);
@@ -273,12 +291,81 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	// add widgets to status bar
 	ui->statusBar->addWidget( ui->panelButtons );
 	ui->statusBar->addWidget( ui->spacerLabel1 );
-	ui->statusBar->addWidget( ui->filterLineEdit, 2 );
 	ui->filterPoweredOnComputersButton->hide();
 	auto* connectionFilter = new QComboBox(ui->statusBar);
 	connectionFilter->addItems({tr("Semua PC"), tr("Aktif"), tr("Tidak aktif")});
 	connectionFilter->setToolTip(tr("Filter berdasarkan koneksi komputer"));
-	ui->statusBar->addWidget(connectionFilter);
+	auto workspaceHeader = new QWidget(ui->centralWidget);
+	workspaceHeader->setObjectName(QStringLiteral("workspaceHeader"));
+	workspaceHeader->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+	auto headerLayout = new QHBoxLayout(workspaceHeader);
+	headerLayout->setContentsMargins(20, 16, 20, 16);
+	headerLayout->setSpacing(12);
+	auto workspaceTitle = new QLabel(tr("Ruang kelas"), workspaceHeader);
+	workspaceTitle->setObjectName(QStringLiteral("workspaceTitle"));
+	headerLayout->addWidget(workspaceTitle);
+	headerLayout->addStretch();
+	ui->filterLineEdit->setClearButtonEnabled(true);
+	ui->filterLineEdit->setMinimumWidth(160);
+	ui->filterLineEdit->setMaximumWidth(320);
+	headerLayout->addWidget(ui->filterLineEdit, 1);
+	headerLayout->addWidget(connectionFilter);
+	ui->centralLayout->insertWidget(1, workspaceHeader);
+	auto targetBar = new QWidget(ui->centralWidget);
+	targetBar->setObjectName(QStringLiteral("targetBar"));
+	targetBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+	auto targetLayout = new QHBoxLayout(targetBar);
+	targetLayout->setContentsMargins(20, 8, 20, 8);
+	auto targetSummary = new QLabel(targetBar);
+	targetSummary->setWordWrap(true);
+	targetLayout->addWidget(targetSummary, 1);
+	auto selectedActions = new QToolButton(targetBar);
+	selectedActions->setText(tr("Tindakan pilihan"));
+	selectedActions->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	selectedActions->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/ellipsis.png")),
+		QColor(VeyonCore::useDarkMode() ? QStringLiteral("#dedee3") : QStringLiteral("#515157"))));
+	selectedActions->setToolTip(tr("Buka tindakan untuk komputer yang dipilih"));
+	targetLayout->addWidget(selectedActions);
+	connect(selectedActions, &QToolButton::clicked, this, [this, selectedActions]() {
+		ui->computerMonitoringWidget->showContextMenu(selectedActions->mapToGlobal(QPoint(0, selectedActions->height())));
+	});
+	auto updateTargets = [this, targetSummary, selectedActions]() {
+		const auto model = ui->computerMonitoringWidget->model();
+		const auto visible = model->rowCount();
+		int connected = 0;
+		for (int row = 0; row < visible; ++row)
+		{
+			const auto computer = model->data(model->index(row, 0), ComputerControlListModel::ControlInterfaceRole)
+				.value<ComputerControlInterface::Pointer>();
+			if (computer && computer->state() == ComputerControlInterface::State::Connected)
+			{
+				++connected;
+			}
+		}
+		const auto selected = ui->computerMonitoringWidget->selectionModel()->selectedIndexes().size();
+		targetSummary->setText(tr("%1 tampil  |  %2 aktif  |  %3 tidak terhubung  |  %4 dipilih")
+			.arg(visible).arg(connected).arg(visible - connected).arg(selected));
+		selectedActions->setEnabled(selected > 0);
+		for (const auto& feature : m_master.features())
+		{
+			if (feature.testFlag(Feature::Flag::Mode))
+			{
+				if (auto button = findChild<ToolButton*>(feature.name()))
+				{
+					button->setEnabled(connected > 0 || feature.name() == QStringLiteral("MonitoringMode"));
+				}
+			}
+		}
+	};
+	connect(ui->computerMonitoringWidget->selectionModel(), &QItemSelectionModel::selectionChanged,
+		this, updateTargets);
+	connect(ui->computerMonitoringWidget->model(), &QAbstractItemModel::modelReset, this, updateTargets);
+	connect(ui->computerMonitoringWidget->model(), &QAbstractItemModel::rowsInserted, this, updateTargets);
+	connect(ui->computerMonitoringWidget->model(), &QAbstractItemModel::rowsRemoved, this, updateTargets);
+	connect(ui->computerMonitoringWidget->model(), &QAbstractItemModel::layoutChanged, this, updateTargets);
+	connect(&m_master.computerControlListModel(), &ComputerControlListModel::stateChanged, this, updateTargets);
+	updateTargets();
+	ui->centralLayout->insertWidget(2, targetBar);
 	ui->statusBar->addWidget( ui->filterComputersWithLoggedOnUsersButton );
 	ui->statusBar->addWidget( ui->spacerLabel2, 1 );
 	ui->statusBar->addWidget( ui->gridSizeSlider, 2 );
@@ -289,13 +376,31 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	ui->statusBar->addWidget( ui->spacerLabel4 );
 	ui->statusBar->addWidget( ui->aboutButton );
 	ui->statusBar->setSizeGripEnabled( false );
-	ui->filterLineEdit->setMinimumWidth( 220 );
-	ui->gridSizeSlider->setMinimumWidth( 145 );
+	const auto darkIcons = VeyonCore::useDarkMode();
+	ui->computerSelectPanelButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/monitor.png")),
+		QColor(darkIcons ? QStringLiteral("#93c5fd") : QStringLiteral("#2563eb"))));
+	ui->screenshotManagementPanelButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/camera.png")),
+		QColor(darkIcons ? QStringLiteral("#fdba74") : QStringLiteral("#c2410c"))));
+	ui->slideshowPanelButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/presentation.png")),
+		QColor(darkIcons ? QStringLiteral("#c4b5fd") : QStringLiteral("#7c3aed"))));
+	ui->spotlightPanelButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/focus.png")),
+		QColor(darkIcons ? QStringLiteral("#5eead4") : QStringLiteral("#0f766e"))));
+	for (auto* button : ui->statusBar->findChildren<QToolButton*>())
+	{
+		button->setIcon(DesktopTheme::icon(button->icon()));
+	}
+	ui->filterLineEdit->setMinimumWidth( 160 );
+	ui->gridSizeSlider->setMinimumWidth( 100 );
 	ui->panelButtons->layout()->setSpacing( 4 );
 	ui->computerSelectPanelButton->setText( tr( "Lokasi dan komputer" ) );
 	ui->screenshotManagementPanelButton->setText( tr( "Tangkapan" ) );
 	ui->slideshowPanelButton->setText( tr( "Tayangan" ) );
 	ui->spotlightPanelButton->setText( tr( "Sorotan" ) );
+	for (auto* button : { ui->computerSelectPanelButton, ui->screenshotManagementPanelButton,
+						  ui->slideshowPanelButton, ui->spotlightPanelButton })
+	{
+		button->setToolTip(button->text());
+	}
 	ui->filterLineEdit->setPlaceholderText( tr( "Cari pengguna dan komputer" ) );
 
 	// create all views
@@ -350,7 +455,7 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	QList<int> splitterSizes;
 	for( auto* splitter : { slideshowSpotlightSplitter, monitoringSplitter, mainSplitter } )
 	{
-		splitter->setHandleWidth( 9 );
+		splitter->setHandleWidth( 1 );
 
 		splitter->installEventFilter( this );
 
@@ -407,7 +512,8 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 
 	ui->centralLayout->addWidget( mainSplitter );
 
-	if( VeyonCore::config().autoOpenComputerSelectPanel() )
+	if( VeyonCore::config().autoOpenComputerSelectPanel() ||
+		!m_master.userConfig().splitterStates().contains(mainSplitter->objectName()) )
 	{
 		ui->computerSelectPanelButton->setChecked( true );
 	}
@@ -500,7 +606,9 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	addToolBar( Qt::TopToolBarArea, ui->toolBar );
 
 	addFeaturesToToolBar();
+	updateTargets();
 	reloadSubFeatures();
+	updateToolButtonStyles();
 
 	m_modeGroup->button(int(qHash(VeyonCore::builtinFeatures().monitoringMode().feature().uid())))->setChecked(true); // clazy:exclude=qt6-qhash-signature
 }
@@ -526,12 +634,11 @@ bool MainWindow::initAuthentication()
 	if( VeyonCore::config().authenticationMethod() == VeyonCore::AuthenticationMethod::KeyFileAuthentication )
 	{
 		QMessageBox::information(nullptr,
-								 tr("Authentication impossible"),
-								 tr("No authentication key files were found or your current ones "
-									"are outdated. Please create new key files using Veyon "
-									"Configurator. Alternatively set up logon authentication "
-									"using Veyon Configurator. Otherwise you won't be "
-									"able to access computers using Veyon."));
+								 tr("Autentikasi tidak tersedia"),
+								 tr("Berkas kunci autentikasi tidak ditemukan atau sudah usang. "
+									"Buat kunci baru di Khwarizmi Configurator, atau atur "
+									"autentikasi masuk di sana. Tanpa autentikasi, komputer "
+									"tidak dapat diakses."));
 	}
 
 	return false;
@@ -571,7 +678,7 @@ void MainWindow::reloadSubFeatures()
 {
 	for( const auto& feature : m_master.features() )
 	{
-		auto button = ui->toolBar->findChild<QToolButton *>( feature.name() );
+		auto button = findChild<QToolButton *>( feature.name() );
 		if( button )
 		{
 			addSubFeaturesToToolButton( button, feature );
@@ -588,14 +695,41 @@ ComputerControlInterfaceList MainWindow::selectedComputerControlInterfaces() con
 
 
 
+void MainWindow::resizeEvent( QResizeEvent* event )
+{
+	QMainWindow::resizeEvent(event);
+	updateToolButtonStyles();
+}
+
+
+
+void MainWindow::updateToolButtonStyles()
+{
+	const auto compactPanels = width() < 1250;
+	const auto compactToolbar = width() < 900;
+	for (auto* button : { ui->computerSelectPanelButton, ui->screenshotManagementPanelButton,
+						  ui->slideshowPanelButton, ui->spotlightPanelButton })
+	{
+		button->setToolButtonStyle(compactPanels || m_master.userConfig().toolButtonIconOnlyMode() ?
+			Qt::ToolButtonIconOnly : Qt::ToolButtonTextBesideIcon);
+	}
+	for (auto* button : findChildren<ToolButton*>())
+	{
+		button->setToolButtonStyle(compactToolbar || m_master.userConfig().toolButtonIconOnlyMode() ?
+			Qt::ToolButtonIconOnly : Qt::ToolButtonTextBesideIcon);
+	}
+}
+
+
+
 void MainWindow::closeEvent( QCloseEvent* event )
 {
 	if( m_master.currentMode() != VeyonCore::builtinFeatures().monitoringMode().feature().uid() )
 	{
 		const Feature& activeFeature = VeyonCore::featureManager().feature( m_master.currentMode() );
 
-		QMessageBox::information(this, tr("Feature active"),
-								 tr("The feature \"%1\" is still active. Please stop it before closing Khwarizmi.")
+		QMessageBox::information(this, tr("Fitur masih aktif"),
+								 tr("Fitur \"%1\" masih aktif. Hentikan sebelum menutup Khwarizmi.")
 								 .arg(activeFeature.displayName()));
 		event->ignore();
 		return;
@@ -687,6 +821,120 @@ void MainWindow::showAboutDialog()
 
 void MainWindow::addFeaturesToToolBar()
 {
+	auto controls = new QToolBar(tr("Kontrol kelas"), this);
+	controls->setObjectName(QStringLiteral("classControls"));
+	controls->setMovable(false);
+	controls->setFloatable(false);
+	addToolBarBreak(Qt::TopToolBarArea);
+	addToolBar(Qt::TopToolBarArea, controls);
+	auto allActionsButton = new QToolButton(ui->toolBar);
+	allActionsButton->setText(tr("Semua yang tampil"));
+	allActionsButton->setToolTip(tr("Semua tindakan komputer"));
+	allActionsButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	allActionsButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/ellipsis.png")),
+		QColor(VeyonCore::useDarkMode() ? QStringLiteral("#dedee3") : QStringLiteral("#515157"))));
+	connect(allActionsButton, &QToolButton::clicked, this, [this]() {
+		QDialog panel(this);
+		panel.setWindowTitle(tr("Tindakan untuk semua komputer yang tampil"));
+		panel.resize(680, 560);
+		auto layout = new QVBoxLayout(&panel);
+		auto scroll = new QScrollArea(&panel);
+		scroll->setWidgetResizable(true);
+		auto content = new QWidget(scroll);
+		auto sections = new QVBoxLayout(content);
+		QList<QGridLayout*> grids;
+		for (const auto& title : {tr("Tampilan dan kontrol"), tr("Tindakan"), tr("Daya dan sesi")})
+		{
+			auto heading = new QLabel(title, content);
+			heading->setObjectName(QStringLiteral("sectionHeading"));
+			sections->addWidget(heading);
+			auto grid = new QGridLayout;
+			grid->setSpacing(10);
+			grid->setColumnStretch(0, 1);
+			grid->setColumnStretch(1, 1);
+			sections->addLayout(grid);
+			grids.append(grid);
+		}
+		int counts[] = {0, 0, 0};
+		for (const auto& feature : m_master.features())
+		{
+			if (feature.testFlag(Feature::Flag::Meta))
+			{
+				continue;
+			}
+			auto button = findChild<ToolButton*>(feature.name());
+			int section = feature.testFlag(Feature::Flag::Mode) ? 0 : 1;
+			if (QStringList{QStringLiteral("PowerOn"), QStringLiteral("PowerDown"), QStringLiteral("Reboot"),
+				QStringLiteral("UserLogin"), QStringLiteral("UserLogoff")}.contains(feature.name()))
+			{
+				section = 2;
+			}
+			const auto subFeatures = m_master.subFeatures(feature.uid());
+			auto addButton = [&, section](const QString& label, const QIcon& icon) {
+				auto action = new QPushButton(content);
+				action->setAutoDefault(false);
+				action->setAccessibleName(label);
+				action->setToolTip(label);
+				auto buttonLayout = new QHBoxLayout(action);
+				buttonLayout->setContentsMargins(8, 4, 8, 4);
+				auto symbol = new QLabel(action);
+				symbol->setPixmap(icon.pixmap(20, 20));
+				buttonLayout->addWidget(symbol);
+				auto text = new QLabel(label, action);
+				text->setWordWrap(true);
+				text->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+				text->setAttribute(Qt::WA_TransparentForMouseEvents);
+				symbol->setAttribute(Qt::WA_TransparentForMouseEvents);
+				buttonLayout->addWidget(text, 1);
+				action->setMinimumHeight(42);
+				action->setEnabled(button->isEnabled());
+				auto& index = counts[section];
+				grids[section]->addWidget(action, index / 2, index % 2);
+				++index;
+				return action;
+			};
+			auto action = addButton(button->text(), button->icon());
+			connect(action, &QPushButton::clicked, &panel, [this, &panel, feature]() {
+					panel.accept();
+					m_master.runFeature(feature);
+					updateModeButtonGroup();
+					if (feature.testFlag(Feature::Flag::Mode))
+					{
+						reloadSubFeatures();
+					}
+				});
+			if (feature.testFlag(Feature::Flag::Mode))
+			{
+				action->setCheckable(true);
+				action->setChecked(button->isChecked());
+			}
+			for (const auto& subFeature : subFeatures)
+			{
+				auto subAction = addButton(tr("%1 : %2").arg(button->text(), localizedFeatureLabel(subFeature)),
+					DesktopTheme::icon(QIcon(subFeature.iconUrl())));
+				connect(subAction, &QPushButton::clicked, &panel, [this, &panel, button, feature, subFeature]() {
+						panel.accept();
+						m_master.runFeature(subFeature);
+						if (feature.testFlag(Feature::Flag::Mode))
+						{
+							if (!subFeature.testFlag(Feature::Flag::Option))
+							{
+								button->setChecked(true);
+							}
+							reloadSubFeatures();
+						}
+					});
+			}
+		}
+		sections->addStretch();
+		scroll->setWidget(content);
+		layout->addWidget(scroll);
+		auto close = new QDialogButtonBox(QDialogButtonBox::Close, &panel);
+		connect(close, &QDialogButtonBox::rejected, &panel, &QDialog::reject);
+		layout->addWidget(close);
+		panel.exec();
+	});
+
 	for( const auto& feature : m_master.features() )
 	{
 		if( feature.testFlag( Feature::Flag::Meta ) )
@@ -694,7 +942,19 @@ void MainWindow::addFeaturesToToolBar()
 			continue;
 		}
 
-		auto btn = new ToolButton( QIcon( modernFeatureIconUrl( feature ) ),
+		const QMap<QString, QColor> actionColors{
+			{QStringLiteral("MonitoringMode"), QColor(QStringLiteral("#15803d"))},
+			{QStringLiteral("RemoteView"), QColor(QStringLiteral("#2563eb"))},
+			{QStringLiteral("RemoteControl"), QColor(QStringLiteral("#7c3aed"))},
+			{QStringLiteral("Chat"), QColor(QStringLiteral("#059669"))},
+			{QStringLiteral("Screenshot"), QColor(QStringLiteral("#c2410c"))}
+		};
+		auto actionColor = actionColors.value(feature.name());
+		if (actionColor.isValid() && VeyonCore::useDarkMode())
+		{
+			actionColor = actionColor.lighter(160);
+		}
+		auto btn = new ToolButton( DesktopTheme::icon(QIcon( modernFeatureIconUrl( feature ) ), actionColor),
 										  localizedFeatureLabel( feature ),
 										  localizedFeatureActiveLabel( feature ),
 										  feature.description(),
@@ -708,7 +968,41 @@ void MainWindow::addFeaturesToToolBar()
 			}
 		});
 		btn->setObjectName( feature.name() );
-		btn->addTo( ui->toolBar );
+		btn->setParent(ui->toolBar);
+		const auto quickAction = feature.name() == QStringLiteral("MonitoringMode") ||
+			feature.name() == QStringLiteral("RemoteView") ||
+			feature.name() == QStringLiteral("RemoteControl") ||
+			feature.name() == QStringLiteral("Chat") ||
+			feature.name() == QStringLiteral("Screenshot");
+		if (quickAction)
+		{
+			btn->addTo(ui->toolBar);
+		}
+		else
+		{
+			if (feature.testFlag(Feature::Flag::Mode))
+			{
+				btn->addTo(controls);
+			}
+			else
+			{
+				btn->hide();
+			}
+			if (!feature.shortcut().isEmpty())
+			{
+				auto shortcutAction = new QAction(this);
+				shortcutAction->setShortcut(feature.shortcut());
+				connect(shortcutAction, &QAction::triggered, this, [this, feature]() {
+					m_master.runFeature(feature);
+					updateModeButtonGroup();
+					if (feature.testFlag(Feature::Flag::Mode))
+					{
+						reloadSubFeatures();
+					}
+				});
+				addAction(shortcutAction);
+			}
+		}
 
 		if( feature.testFlag( Feature::Flag::Mode ) )
 		{
@@ -716,6 +1010,8 @@ void MainWindow::addFeaturesToToolBar()
 			m_modeGroup->addButton( btn, buttonId( feature ) );
 		}
 	}
+	ui->toolBar->addSeparator();
+	ui->toolBar->addWidget(allActionsButton);
 }
 
 
@@ -744,7 +1040,7 @@ void MainWindow::addSubFeaturesToToolButton( QToolButton* button, const Feature&
 
 	for( const auto& subFeature : subFeatures )
 	{
-		auto action = menu->addAction(QIcon(subFeature.iconUrl()), localizedFeatureLabel( subFeature ),
+		auto action = menu->addAction(DesktopTheme::icon(QIcon(subFeature.iconUrl())), localizedFeatureLabel( subFeature ),
 							   #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
 									  subFeature.shortcut(),
 							   #endif
@@ -782,11 +1078,16 @@ void MainWindow::addSubFeaturesToToolButton( QToolButton* button, const Feature&
 
 void MainWindow::updateModeButtonGroup()
 {
-	const auto& monitoringMode = VeyonCore::builtinFeatures().monitoringMode().feature();
-
-	if( m_master.currentMode() == monitoringMode.uid() )
+	for (const auto& feature : m_master.features())
 	{
-		m_modeGroup->button( buttonId( monitoringMode ) )->setChecked( true );
+		if (feature.testFlag(Feature::Flag::Mode) && feature.uid() == m_master.currentMode())
+		{
+			if (auto button = m_modeGroup->button(buttonId(feature)))
+			{
+				button->setChecked(true);
+			}
+			break;
+		}
 	}
 }
 

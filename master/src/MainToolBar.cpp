@@ -34,18 +34,16 @@
 
 
 MainToolBar::MainToolBar( QWidget* parent ) :
-	QToolBar( tr( "Configuration" ), parent ),
+	QToolBar( tr( "Pengaturan toolbar" ), parent ),
 	m_mainWindow(qobject_cast<MainWindow *>(parent)),
 	m_layout(findChild<QLayout *>())
 {
-	setExpanded();
-	setIconSize(QSize(20, 20));
-	setMinimumHeight( 36 );
+	setIconSize(QSize(22, 22));
+	setMinimumHeight( 48 );
 
 	ToolButton::setToolTipsDisabled( m_mainWindow->masterCore().userConfig().noToolTips() );
 	ToolButton::setIconOnlyMode( m_mainWindow, m_mainWindow->masterCore().userConfig().toolButtonIconOnlyMode() );
 
-	connect(this, &QToolBar::orientationChanged, this, &MainToolBar::setExpanded);
 }
 
 
@@ -63,22 +61,6 @@ bool MainToolBar::event(QEvent* event)
 	}
 
 	return QToolBar::event(event);
-}
-
-
-
-void MainToolBar::setExpanded()
-{
-	if (m_layout)
-	{
-		QMetaObject::invokeMethod(m_layout, "setExpanded", Qt::DirectConnection, Q_ARG(bool, true));
-
-		const auto button = findChild<QToolButton *>(QStringLiteral("qt_toolbar_ext_button"));
-		if (button)
-		{
-			button->setFixedSize(0, 0);
-		}
-	}
 }
 
 
@@ -105,11 +87,11 @@ void MainToolBar::contextMenuEvent( QContextMenuEvent* event )
 {
 	QMenu menu( this );
 
-	auto toolTipAction = menu.addAction(tr("Disable tooltips"), this, &MainToolBar::toggleToolTips);
+	auto toolTipAction = menu.addAction(tr("Nonaktifkan tooltip"), this, &MainToolBar::toggleToolTips);
 	toolTipAction->setCheckable( true );
 	toolTipAction->setChecked( m_mainWindow->masterCore().userConfig().noToolTips() );
 
-	auto iconModeAction = menu.addAction( tr( "Show icons only" ), this, &MainToolBar::toggleIconMode );
+	auto iconModeAction = menu.addAction( tr( "Tampilkan ikon saja" ), this, &MainToolBar::toggleIconMode );
 	iconModeAction->setCheckable( true );
 	iconModeAction->setChecked( m_mainWindow->masterCore().userConfig().toolButtonIconOnlyMode() );
 
@@ -134,4 +116,5 @@ void MainToolBar::toggleIconMode()
 
 	ToolButton::setIconOnlyMode( m_mainWindow, newToolButtonIconMode );
 	m_mainWindow->masterCore().userConfig().setToolButtonIconOnlyMode( newToolButtonIconMode );
+	m_mainWindow->updateToolButtonStyles();
 }

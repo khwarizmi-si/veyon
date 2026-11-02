@@ -1,5 +1,13 @@
 <RCC>
   <qresource prefix="/core">
+    <file>ui-icons/monitor.png</file>
+    <file>ui-icons/scan.png</file>
+    <file>ui-icons/mouse-pointer-2.png</file>
+    <file>ui-icons/messages-square.png</file>
+    <file>ui-icons/camera.png</file>
+    <file>ui-icons/ellipsis.png</file>
+    <file>ui-icons/presentation.png</file>
+    <file>ui-icons/focus.png</file>
     <file>../../COPYING</file>
     <file>icon64.png</file>
     <file>application-x-pem-key.png</file>

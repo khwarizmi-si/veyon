@@ -57,11 +57,13 @@ public:
 	}
 
 	void reloadSubFeatures();
+	void updateToolButtonStyles();
 
 	ComputerControlInterfaceList selectedComputerControlInterfaces() const;
 
 protected:
 	void closeEvent( QCloseEvent* event ) override;
+	void resizeEvent( QResizeEvent* event ) override;
 	bool eventFilter( QObject* object, QEvent* event ) override;
 	void keyPressEvent( QKeyEvent *e ) override;
 
