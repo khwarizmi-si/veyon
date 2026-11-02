@@ -31,6 +31,7 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QLabel>
+#include <QLineEdit>
 #include <QScrollBar>
 #include <QSettings>
 #include <QTimer>
