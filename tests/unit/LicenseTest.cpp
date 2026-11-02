@@ -833,7 +833,7 @@ private Q_SLOTS:
 		QCoreApplication::installTranslator(&translator);
 		const auto description = LicenseService::describe(LicenseActionResult::Ok);
 		const auto warning = LicenseService::describe({LicenseLevel::Warning, LicenseReason::Subscription,
-			QDateTime::fromSecsSinceEpoch(1792890000, Qt::UTC)});
+			QDateTime::fromSecsSinceEpoch(1792890000).toUTC()});
 		const auto suspended = LicenseService::describe({LicenseLevel::Suspended, LicenseReason::Subscription, {}});
 		QCoreApplication::removeTranslator(&translator);
 		QCOMPARE(description, QStringLiteral("Selesai."));
