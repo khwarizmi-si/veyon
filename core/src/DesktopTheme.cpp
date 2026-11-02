@@ -16,6 +16,7 @@ void DesktopTheme::apply(QApplication* application, bool dark)
 	const auto selected = dark ? QStringLiteral("#173c2b") : QStringLiteral("#dcfce7");
 	const auto muted = dark ? QStringLiteral("#b8b8be") : QStringLiteral("#64646a");
 	const auto sidebar = dark ? QStringLiteral("#242426") : QStringLiteral("#ffffff");
+	const auto focus = dark ? QStringLiteral("#4ade80") : accent;
 
 	auto font = application->font();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -79,11 +80,12 @@ QWidget#panelButtons QToolButton { padding: 4px 8px; }
 QWidget#panelButtons QToolButton:checked { background: %2; border-color: %4; color: %3; }
 QPushButton { background: %2; border: 1px solid %4; border-radius: 16px; padding: 7px 14px; min-height: 20px; font-weight: 600; }
 QPushButton:hover { border-color: %7; }
-QPushButton:pressed { background: %6; padding-top: 7px; padding-bottom: 3px; }
+QPushButton:pressed { background: %6; padding-top: 9px; padding-bottom: 5px; }
 QPushButton:default { background: %5; color: white; border-color: %5; font-weight: 600; }
 QPushButton:disabled { color: %7; background: %1; }
+QPushButton:focus, QToolButton:focus { border-color: %9; border-style: dashed; }
 QLineEdit, QComboBox, QAbstractSpinBox, QTextEdit, QPlainTextEdit { background: %2; color: %3; border: 1px solid %4; border-radius: 16px; padding: 7px 10px; selection-background-color: %5; selection-color: white; }
-QLineEdit:focus, QComboBox:focus, QAbstractSpinBox:focus, QTextEdit:focus, QPlainTextEdit:focus { border-color: %5; }
+QLineEdit:focus, QComboBox:focus, QAbstractSpinBox:focus, QTextEdit:focus, QPlainTextEdit:focus { border-color: %9; }
 QLineEdit:disabled, QComboBox:disabled, QAbstractSpinBox:disabled { background: %1; color: %7; }
 QComboBox { padding-right: 24px; }
 QComboBox QAbstractItemView { background: %2; selection-background-color: %5; selection-color: white; }
@@ -106,12 +108,13 @@ QLabel#navigationTitle { font-size: 18px; font-weight: 600; padding: 0 16px; }
 QLabel#sectionHeading { font-size: 14px; font-weight: 600; }
 QLabel#workspaceTitle { font-size: 20px; font-weight: 600; }
 QWidget#workspaceHeader { background: %2; border-bottom: 1px solid %4; }
-QToolBar QToolButton#MonitoringMode { background: %6; border-color: %5; }
-QToolBar QToolButton#RemoteView { background: %2; border-color: #60a5fa; }
-QToolBar QToolButton#RemoteControl { background: %2; border-color: #a78bfa; }
-QToolBar QToolButton#Chat { background: %2; border-color: #34d399; }
-QToolBar QToolButton#Screenshot { background: %2; border-color: #fb923c; }
+QToolBar QToolButton#MonitoringMode:!focus { background: %6; border-color: %5; }
+QToolBar QToolButton#RemoteView:!focus { background: %2; border-color: #60a5fa; }
+QToolBar QToolButton#RemoteControl:!focus { background: %2; border-color: #a78bfa; }
+QToolBar QToolButton#Chat:!focus { background: %2; border-color: #34d399; }
+QToolBar QToolButton#Screenshot:!focus { background: %2; border-color: #fb923c; }
 QToolBar QToolButton { border-radius: 16px; padding: 7px 12px; }
+QToolBar QToolButton:focus { background: %6; border-color: %9; border-style: dashed; }
 QWidget#targetBar { background: %6; border-bottom: 1px solid %4; }
 QLabel#settingsBrand { color: %7; font-size: 11px; padding: 8px 12px; }
 QScrollArea#scrollArea, QWidget#scrollAreaWidgetContents, QStackedWidget#configPages { background: %1; border: 0; }
@@ -129,7 +132,7 @@ QSlider::groove:horizontal { height: 4px; background: %4; border-radius: 2px; }
 QSlider::sub-page:horizontal { background: %5; border-radius: 2px; }
 QSlider::handle:horizontal { width: 14px; height: 14px; margin: -5px 0; background: %2; border: 1px solid %7; border-radius: 7px; }
 QToolTip { background: %2; color: %3; border: 1px solid %4; border-radius: 5px; padding: 6px 9px; }
-)").arg(canvas, surface, ink, border, accent, selected, muted, sidebar));
+)").arg(canvas, surface, ink, border, accent, selected, muted, sidebar, focus));
 }
 
 QIcon DesktopTheme::icon(const QIcon& source, const QColor& tint)

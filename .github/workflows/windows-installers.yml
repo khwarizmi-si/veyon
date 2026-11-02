@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - codex/khwarizmi-windows-installers
+      - codex/master-ui-redesign
       - feat/license-client
     paths:
       - ".github/workflows/windows-installers.yml"
@@ -18,6 +19,7 @@ on:
       - "nsis/**"
       - "plugins/**"
       - "tests/**"
+      - "translations/**"
       - "3rdparty/**"
 
 jobs:
@@ -109,6 +111,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=/mingw64 \
             -DQT_TRANSLATIONS_DIR=/mingw64/share/qt6/translations \
             -DVEYON_UPDATE_TRANSLATIONS=OFF \
+            -DWITH_TRANSLATIONS=ON \
             -DWITH_TESTS=ON \
             -DMINGW_TARGET=x86_64-w64-mingw32 \
             -DMINGW_PREFIX=/mingw64 \
@@ -124,13 +127,14 @@ jobs:
           unzip -j /tmp/ffmpeg-win64-lgpl.zip "*/bin/ffmpeg.exe" -d "$GITHUB_WORKSPACE/3rdparty/ffmpeg"
           test -f "$GITHUB_WORKSPACE/3rdparty/ffmpeg/ffmpeg.exe"
 
-      - name: Build and test licence client
+      - name: Build and test licence client and Indonesian UI
         run: |
           set -euxo pipefail
-          cmake --build "$GITHUB_WORKSPACE/build-win64" --target license-test
+          cmake --build "$GITHUB_WORKSPACE/build-win64" --target veyon_id_qm license-test toolbutton-test
           export PATH="$GITHUB_WORKSPACE/build-win64/core:/mingw64/bin:$PATH"
           export QT_QPA_PLATFORM=offscreen
-          ctest --test-dir "$GITHUB_WORKSPACE/build-win64" -R '^license-test$' --output-on-failure --no-tests=error
+          export VEYON_TEST_ID_QM="$GITHUB_WORKSPACE/build-win64/translations/veyon_id.qm"
+          ctest --test-dir "$GITHUB_WORKSPACE/build-win64" -R '^(license-test|toolbutton-test)$' --output-on-failure --no-tests=error
 
       - name: Build add-on installers
         run: |

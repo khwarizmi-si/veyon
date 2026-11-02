@@ -1,5 +1,42 @@
 # Khwarizmi UI adaptation
 
+## Follow-up: 2026-11-02
+
+Latest localization checkpoint: all 534 remaining legacy entries are now
+translated. A source audit also found and added 68 English/technical source
+messages absent from the old catalog, including chat, Entra ID, internet
+control, discovery and screen recording. lrelease produces 1,266 finished
+translations and no unfinished entries. The whole-catalog XML regression
+checks nonempty translations and placeholder equality. Both CTest targets
+pass; rich-text formatting is preserved. noVNC verifies translated Master
+actions and Master/Service settings pages. Windows/device QA remains open.
+The observations in the earlier checkpoints below are historical.
+
+Accessibility follow-up: light/dark contrast tests cover input focus against
+the Base palette and highlighted text against Highlight. The dark focus
+border now uses a brighter green; buttons have explicit keyboard focus
+borders. Direct panel icons and ellipsis receive theme-aware colors rather
+than retaining black artwork on dark surfaces. Device-action dialog buttons
+have autoDefault disabled so the Close button is the Enter default. Verified
+in noVNC without dispatching a device action; theme restored to System.
+
+- Complete 64 additional legacy translations for computer selection, power
+  confirmations, user sessions, application/website launch and file dialogs.
+- Make the System color-scheme option translatable; add Indonesian standard
+  Qt dialog button translations (including Close and Cancel).
+- Re-enable translation builds in the existing Docker cache with source
+  updates disabled, and deploy the freshly built catalog to the build-tree
+  runtime location. No production subscription settings were changed.
+- The Indonesian preference matches the Configurator language selector.
+- Verify the Master suspended-subscription banner in Indonesian in noVNC.
+  This closes the previously observed English-banner symptom after reload;
+  there is no evidence requiring a change to licensing behavior.
+- Extend tests to cover warning and suspended banner messages, eight more
+  complete source contexts, and standard dialog button lookup. Both CTest
+  targets pass with VEYON_TEST_ID_QM set to the compiled catalog.
+- Remaining untranslated legacy messages: 534. Full Windows and device QA
+  remain outstanding. Earlier dated observations below are historical.
+
 ## Scope
 
 2026-10-20: replace the Apple-inspired direction with the visual language at

@@ -93,7 +93,7 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("InternetAccessControl") )
 	{
-		return QStringLiteral("Blokir net");
+		return QStringLiteral("Blokir internet");
 	}
 	if( featureName == QStringLiteral("ScreenRecorder") )
 	{
@@ -109,7 +109,7 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("Chat") || displayName == QStringLiteral("Chat") )
 	{
-		return QStringLiteral("Chat");
+		return QStringLiteral("Percakapan");
 	}
 	if( featureName == QStringLiteral("PowerOn") )
 	{
@@ -117,7 +117,7 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("Reboot") || displayName == QStringLiteral("Restart") )
 	{
-		return QStringLiteral("Restart");
+		return QStringLiteral("Mulai ulang");
 	}
 	if( featureName == QStringLiteral("PowerDown") )
 	{
@@ -137,19 +137,19 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("StartApp") )
 	{
-		return QStringLiteral("Buka app");
+		return QStringLiteral("Buka aplikasi");
 	}
 	if( featureName == QStringLiteral("OpenWebsite") )
 	{
-		return QStringLiteral("Buka web");
+		return QStringLiteral("Buka situs");
 	}
 	if( featureName == QStringLiteral("DistributeFiles") )
 	{
-		return QStringLiteral("Kirim file");
+		return QStringLiteral("Kirim berkas");
 	}
 	if( featureName == QStringLiteral("FileCollect") )
 	{
-		return QStringLiteral("Ambil file");
+		return QStringLiteral("Kumpulkan berkas");
 	}
 	if( featureName == QStringLiteral("Screenshot") || displayName == QStringLiteral("Screenshot") )
 	{
@@ -165,7 +165,7 @@ QString localizedFeatureLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("DisableWebcam") || displayName == QStringLiteral("Disable webcam") )
 	{
-		return QStringLiteral("Matikan webcam");
+		return QStringLiteral("Matikan kamera");
 	}
 
 	return displayName;
@@ -182,7 +182,7 @@ QString localizedFeatureActiveLabel( const Feature& feature )
 
 	if( featureName == QStringLiteral("Demo") )
 	{
-		return QStringLiteral("Stop peraga");
+		return QStringLiteral("Hentikan peraga");
 	}
 	if( featureName == QStringLiteral("ScreenLock") )
 	{
@@ -190,7 +190,7 @@ QString localizedFeatureActiveLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("ScreenRecorder") )
 	{
-		return QStringLiteral("Stop rekam");
+		return QStringLiteral("Hentikan rekam");
 	}
 	if( featureName == QStringLiteral("MuteAudio") || activeName == QStringLiteral("Unmute audio") )
 	{
@@ -202,7 +202,7 @@ QString localizedFeatureActiveLabel( const Feature& feature )
 	}
 	if( featureName == QStringLiteral("DisableWebcam") || activeName == QStringLiteral("Enable webcam") )
 	{
-		return QStringLiteral("Aktifkan webcam");
+		return QStringLiteral("Aktifkan kamera");
 	}
 
 	return localizedFeatureLabel( feature );
@@ -322,7 +322,8 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	auto selectedActions = new QToolButton(targetBar);
 	selectedActions->setText(tr("Tindakan pilihan"));
 	selectedActions->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	selectedActions->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/ellipsis.png"))));
+	selectedActions->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/ellipsis.png")),
+		QColor(VeyonCore::useDarkMode() ? QStringLiteral("#dedee3") : QStringLiteral("#515157"))));
 	selectedActions->setToolTip(tr("Buka tindakan untuk komputer yang dipilih"));
 	targetLayout->addWidget(selectedActions);
 	connect(selectedActions, &QToolButton::clicked, this, [this, selectedActions]() {
@@ -375,10 +376,15 @@ MainWindow::MainWindow( VeyonMaster &masterCore, QWidget* parent ) :
 	ui->statusBar->addWidget( ui->spacerLabel4 );
 	ui->statusBar->addWidget( ui->aboutButton );
 	ui->statusBar->setSizeGripEnabled( false );
-	ui->computerSelectPanelButton->setIcon(QIcon(QStringLiteral(":/core/ui-icons/monitor.png")));
-	ui->screenshotManagementPanelButton->setIcon(QIcon(QStringLiteral(":/core/ui-icons/camera.png")));
-	ui->slideshowPanelButton->setIcon(QIcon(QStringLiteral(":/core/ui-icons/presentation.png")));
-	ui->spotlightPanelButton->setIcon(QIcon(QStringLiteral(":/core/ui-icons/focus.png")));
+	const auto darkIcons = VeyonCore::useDarkMode();
+	ui->computerSelectPanelButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/monitor.png")),
+		QColor(darkIcons ? QStringLiteral("#93c5fd") : QStringLiteral("#2563eb"))));
+	ui->screenshotManagementPanelButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/camera.png")),
+		QColor(darkIcons ? QStringLiteral("#fdba74") : QStringLiteral("#c2410c"))));
+	ui->slideshowPanelButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/presentation.png")),
+		QColor(darkIcons ? QStringLiteral("#c4b5fd") : QStringLiteral("#7c3aed"))));
+	ui->spotlightPanelButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/focus.png")),
+		QColor(darkIcons ? QStringLiteral("#5eead4") : QStringLiteral("#0f766e"))));
 	for (auto* button : ui->statusBar->findChildren<QToolButton*>())
 	{
 		button->setIcon(DesktopTheme::icon(button->icon()));
@@ -825,7 +831,8 @@ void MainWindow::addFeaturesToToolBar()
 	allActionsButton->setText(tr("Semua yang tampil"));
 	allActionsButton->setToolTip(tr("Semua tindakan komputer"));
 	allActionsButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	allActionsButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/ellipsis.png"))));
+	allActionsButton->setIcon(DesktopTheme::icon(QIcon(QStringLiteral(":/core/ui-icons/ellipsis.png")),
+		QColor(VeyonCore::useDarkMode() ? QStringLiteral("#dedee3") : QStringLiteral("#515157"))));
 	connect(allActionsButton, &QToolButton::clicked, this, [this]() {
 		QDialog panel(this);
 		panel.setWindowTitle(tr("Tindakan untuk semua komputer yang tampil"));
@@ -865,6 +872,7 @@ void MainWindow::addFeaturesToToolBar()
 			const auto subFeatures = m_master.subFeatures(feature.uid());
 			auto addButton = [&, section](const QString& label, const QIcon& icon) {
 				auto action = new QPushButton(content);
+				action->setAutoDefault(false);
 				action->setAccessibleName(label);
 				action->setToolTip(label);
 				auto buttonLayout = new QHBoxLayout(action);

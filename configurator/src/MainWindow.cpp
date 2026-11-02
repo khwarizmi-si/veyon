@@ -26,6 +26,7 @@
 #include <QDir>
 #include <QProcess>
 #include <QCloseEvent>
+#include <QComboBox>
 #include <QFileDialog>
 #include <QPushButton>
 #include <QMessageBox>
@@ -75,6 +76,11 @@ MainWindow::MainWindow( QWidget* parent ) :
 	setWindowTitle(tr("Khwarizmi Configurator %1").arg(VeyonCore::versionString()));
 
 	loadConfigurationPagePlugins();
+	for (auto combo : findChildren<QComboBox*>())
+	{
+		combo->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+		combo->setMinimumContentsLength(12);
+	}
 	const QMap<QString, QString> pageTitles{
 		{QStringLiteral("Authentication keys"), tr("Kunci autentikasi")},
 		{QStringLiteral("Locations & computers"), tr("Lokasi dan komputer")},
@@ -173,7 +179,11 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 	connect( &VeyonCore::config(), &VeyonConfiguration::configurationChanged, this, &MainWindow::configurationChanged );
 
-	connect( ui->configPages, &QStackedWidget::currentChanged, this, &MainWindow::updateSizes );
+	connect(ui->configPages, &QStackedWidget::currentChanged, this, [this]() {
+		updateSizes();
+		ui->scrollArea->verticalScrollBar()->setValue(0);
+		ui->scrollArea->horizontalScrollBar()->setValue(0);
+	});
 
 	resize(1040, 740);
 
